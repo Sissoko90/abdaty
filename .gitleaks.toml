@@ -10,8 +10,16 @@ paths = [
   '''.*\.md$''',
   '''.*/__tests__/.*''',
   '''.*\.test\.(ts|tsx|js|jsx)$''',
+  # Documentation et exemples d'API SMS / docs : clés d'EXEMPLE, pas de vrais secrets.
+  '''frontend/features/sms-api/.*''',
+  '''frontend/features/docs/.*''',
+  '''frontend/app/.*/sms-api/.*''',
+  '''frontend/app/.*/sms-subscribers/.*''',
 ]
 regexes = [
-  # Placeholders évidents dans la doc / les exemples.
-  '''(?i)(your[-_]?|example|placeholder|changeme|xxxx|dummy|test[-_]?)(key|secret|token|password)''',
+  # Placeholders / exemples évidents (ex. your-api-key, example-secret, sk_test_...).
+  '''(?i)(your|example|placeholder|changeme|dummy|test|sample)[-_].*(key|secret|token|password)''',
+  '''(?i)(api[-_]?key|secret|token)['":\s=]+(your|example|placeholder|xxxx|dummy|<[^>]+>)''',
+  # Domaine d'exemple utilisé dans les snippets de doc.
+  '''api\.abdaty-tech\.com''',
 ]

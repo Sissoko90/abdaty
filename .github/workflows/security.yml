@@ -67,19 +67,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Installation du binaire Trivy (plus fiable qu'une version d'action figée).
+      - name: Installer Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b "$RUNNER_TEMP/bin"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
       - name: Scan Trivy (vuln + secrets + misconfig)
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          scanners: vuln,secret,misconfig
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: sarif
-          output: trivy-results.sarif
-        env:
-          # Évite les échecs de rate-limit sur la base de données de vulnérabilités.
-          TRIVY_SKIP_DB_UPDATE: false
+        run: |
+          trivy fs --scanners vuln,secret,misconfig --severity CRITICAL,HIGH \
+            --ignore-unfixed --offline-scan --no-progress \
+            --skip-dirs node_modules,.next,.git,backend/target,frontend/.next \
+            --format sarif --output trivy-results.sarif .
 
       - name: Téléverser les résultats Trivy (SARIF)
         uses: github/codeql-action/upload-sarif@v3
@@ -155,16 +155,20 @@ jobs:
         working-directory: backend
         run: ./mvnw -B -ntp -q package -DskipTests
 
-      - name: Scan Trivy du jar backend
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: rootfs
-          scan-ref: backend/target
-          scanners: vuln
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: sarif
-          output: trivy-backend.sarif
+      - name: Installer Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b "$RUNNER_TEMP/bin"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: Localiser le jar
+        id: jar
+        run: echo "path=$(ls backend/target/*-SNAPSHOT.jar | head -1)" >> "$GITHUB_OUTPUT"
+
+      - name: Scan Trivy du jar backend (SARIF)
+        run: |
+          trivy rootfs --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed \
+            --no-progress --format sarif --output trivy-backend.sarif "${{ steps.jar.outputs.path }}"
 
       - name: Téléverser les résultats backend (SARIF)
         uses: github/codeql-action/upload-sarif@v3
@@ -175,15 +179,9 @@ jobs:
 
       # Échoue le job si des CVE CRITICAL/HIGH corrigeables existent (gate dédié backend).
       - name: Gate (échoue sur CRITICAL/HIGH backend)
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: rootfs
-          scan-ref: backend/target
-          scanners: vuln
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          exit-code: '1'
-          format: table
+        run: |
+          trivy rootfs --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed \
+            --no-progress --exit-code 1 "${{ steps.jar.outputs.path }}"
 
   # ─────────────── Revue des dépendances (Pull Requests) ───────────────
   dependency-review:
