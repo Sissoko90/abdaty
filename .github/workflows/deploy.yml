@@ -78,7 +78,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          key: ${{ secrets.SSS_PRIVATE_KEY }}
           source: "observabilite"
           target: "/opt/backend/observabilite"
           strip_components: 1
@@ -89,7 +89,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          key: ${{ secrets.SSS_PRIVATE_KEY }}
           source: "abdaty"
           target: "/opt/backend/abdaty"
           strip_components: 1
@@ -100,7 +100,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          key: ${{ secrets.SSS_PRIVATE_KEY }}
           source: "dist-frontend"
           target: "/var/www/frontend"
           strip_components: 1
@@ -112,7 +112,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          key: ${{ secrets.SSS_PRIVATE_KEY }}
           script: |
             set -euo pipefail
             cd /opt/backend/abdaty
