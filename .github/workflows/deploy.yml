@@ -73,17 +73,8 @@ jobs:
           cp backend/Dockerfile.runtime abdaty/Dockerfile
 
       # ───────────── Transferts SCP vers le VPS ─────────────
-      - name: Transfert observabilité → /opt/backend/observabilite
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_IP }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "observabilite"
-          target: "/opt/backend/observabilite"
-          strip_components: 1
-          overwrite: true
-
+      # NB : l'observabilité (/opt/backend/observabilite) est une config persistante
+      # posée UNE FOIS sur le VPS (comme .env/application.yml) → non re-transférée ici.
       - name: Transfert backend (jar + compose + Dockerfile) → /opt/backend/abdaty
         uses: appleboy/scp-action@v0.1.7
         with:
