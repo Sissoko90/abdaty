@@ -52,7 +52,8 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
-          queries: security-and-quality
+          # security-extended : couverture sécurité étendue, sans le bruit "qualité".
+          queries: security-extended
 
       - name: Analyse CodeQL
         uses: github/codeql-action/analyze@v3

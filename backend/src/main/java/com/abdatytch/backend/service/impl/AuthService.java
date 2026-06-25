@@ -298,19 +298,19 @@ public class AuthService implements IAuthService {
     @CircuitBreaker(name = "authService", fallbackMethod = "forgotPasswordFallback")
     @Retry(name = "authService")
     public Mono<MessageResponseDTO> forgotPassword(ForgotPasswordRequestDTO forgotPasswordRequest) {
-        logger.debug("Demande de réinitialisation de mot de passe pour l'email: {}", forgotPasswordRequest.getEmail());
+        logger.debug("Demande de réinitialisation de mot de passe reçue");
         
         Timer.Sample sample = Timer.start(meterRegistry);
         return userRepository.findByEmail(forgotPasswordRequest.getEmail())
             .flatMap(user -> generateAndSendVerificationCode(user.getEmail(), VerificationCodeType.PASSWORD_RESET)
                 .then(Mono.defer(() -> {
                     sample.stop(authOperationTimer);
-                    logger.debug("Code de réinitialisation envoyé à: {}", user.getEmail());
+                    logger.debug("Code de réinitialisation envoyé");
                     return Mono.just(new MessageResponseDTO(MessageConstants.PASSWORD_RESET_CODE_SENT));
                 })))
             .switchIfEmpty(Mono.defer(() -> {
                 sample.stop(authOperationTimer);
-                logger.debug("Email non trouvé mais message envoyé pour sécurité: {}", forgotPasswordRequest.getEmail());
+                logger.debug("Email non trouvé mais message envoyé pour sécurité");
                 return Mono.just(new MessageResponseDTO(MessageConstants.PASSWORD_RESET_CODE_SENT));
             }))
             .doOnError(error -> {

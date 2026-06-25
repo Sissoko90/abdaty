@@ -125,7 +125,7 @@ public class AuthController {
         @ApiResponse(responseCode = "400", description = "Email invalide")
     })
     public Mono<ResponseEntity<MessageResponseDTO>> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDTO forgotPasswordRequest) {
-        logger.debug("Requête d'oubli de mot de passe reçue pour l'email: {}", forgotPasswordRequest.getEmail());
+        logger.debug("Requête d'oubli de mot de passe reçue");
         return authService.forgotPassword(forgotPasswordRequest)
             .map(response -> ResponseEntity.ok(response));
             // Les erreurs (code invalide, email inexistant…) sont gérées par le
