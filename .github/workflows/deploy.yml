@@ -100,6 +100,9 @@ jobs:
           script: |
             set -euo pipefail
             cd "${{ vars.DEPLOY_PATH || '/opt/backend/abdaty' }}"
-            docker compose up -d --build --remove-orphans
+            # Compatible Docker Compose v2 (plugin "docker compose") ET v1 ("docker-compose").
+            if docker compose version >/dev/null 2>&1; then DC="docker compose"; else DC="docker-compose"; fi
+            echo "→ Utilisation de : $DC"
+            $DC up -d --build --remove-orphans
             docker image prune -f
-            docker compose ps
+            $DC ps
