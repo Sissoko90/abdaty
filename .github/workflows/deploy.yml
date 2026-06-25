@@ -1,13 +1,11 @@
 name: Déploiement Production
 
-# Sur push vers main : tests + build des artefacts (jar backend, build frontend
-# standalone), puis transfert sur le VPS et redémarrage.
-#   - /opt/backend/observabilite/  ← configs Prometheus/Grafana/Loki
-#   - /opt/backend/abdaty/         ← docker-compose.yml + Dockerfile + app.jar
-#   - /var/www/frontend/           ← build Next.js (servi en natif via systemd)
+# Sur push vers main : tests (gate), puis sur le VPS on met le code à jour et on
+# (re)construit la stack avec LE MÊME docker-compose.yml qu'en dev — front + back en
+# Docker + infra + observabilité. Les valeurs de prod (URLs, secrets) viennent des
+# .env présents sur le VPS.
 #
-# Les workflows CI (ci.yml) et Sécurité (security.yml) tournent EN PARALLÈLE sur le
-# même push (tests + scans de vulnérabilité).
+# Les workflows CI (ci.yml) et Sécurité (security.yml) tournent EN PARALLÈLE.
 on:
   push:
     branches: [main]
@@ -18,13 +16,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    name: Build & déploiement VPS
+  # ───────────────────────────── Tests (gate) ─────────────────────────────
+  test:
+    name: Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # ───────────── Build frontend (standalone) ─────────────
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -32,28 +30,14 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Frontend — install, checks, build
+      - name: Frontend — checks
         working-directory: frontend
         run: |
           npm ci
           npm run i18n:check
           npm run type-check
           npm run lint
-          npm run build
-        env:
-          NEXT_PUBLIC_API_URL: https://abdatytch.com/api/v1
-          NEXT_PUBLIC_SITE_URL: https://abdatytch.com
-          NEXTAUTH_SECRET: ci-build-secret-not-used-at-runtime
-          NEXTAUTH_URL: https://abdatytch.com
 
-      - name: Assembler le bundle frontend standalone
-        run: |
-          rm -rf dist-frontend && mkdir -p dist-frontend/.next
-          cp -r frontend/.next/standalone/. dist-frontend/
-          cp -r frontend/.next/static dist-frontend/.next/static
-          cp -r frontend/public dist-frontend/public
-
-      # ───────────── Build backend (jar + tests) ─────────────
       - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
@@ -61,57 +45,33 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
-      - name: Backend — tests + package (jar)
+      - name: Backend — tests unitaires
         working-directory: backend
-        run: ./mvnw -B -ntp package
+        run: ./mvnw -B -ntp test
 
-      - name: Assembler le bundle backend (abdaty/)
-        run: |
-          rm -rf abdaty && mkdir -p abdaty
-          cp backend/target/*-SNAPSHOT.jar abdaty/app.jar
-          cp docker-compose.prod.yml abdaty/docker-compose.yml
-          cp backend/Dockerfile.runtime abdaty/Dockerfile
-
-      # ───────────── Transferts SCP vers le VPS ─────────────
-      # NB : l'observabilité (/opt/backend/observabilite) est une config persistante
-      # posée UNE FOIS sur le VPS (comme .env/application.yml) → non re-transférée ici.
-      - name: Transfert backend (jar + compose + Dockerfile) → /opt/backend/abdaty
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_IP }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "abdaty"
-          target: "/opt/backend/abdaty"
-          strip_components: 1
-          overwrite: true
-
-      - name: Transfert frontend (build) → /var/www/frontend
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_IP }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist-frontend"
-          target: "/var/www/frontend"
-          strip_components: 1
-          overwrite: true
-
-      # ───────────── Redémarrage des services ─────────────
-      - name: Build + (re)démarrage backend/infra (Docker) & frontend (systemd)
+  # ───────────────────────────── Déploiement ─────────────────────────────
+  deploy:
+    name: Déploiement VPS
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Mise à jour du code + rebuild de la stack (docker compose)
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          command_timeout: 30m
           script: |
             set -euo pipefail
-            cd /opt/backend/abdaty
-            echo "→ Build image backend + (re)démarrage infra/backend"
+            cd "${{ vars.DEPLOY_PATH || '/opt/backend/abdaty' }}"
+            echo "→ Récupération du code"
+            git fetch --all
+            git reset --hard origin/main
+            echo "→ Build + (re)démarrage de la stack (front + back + infra)"
             docker compose up -d --build --remove-orphans
-            echo "→ Nettoyage images orphelines"
+            echo "→ Nettoyage des images orphelines"
             docker image prune -f
-            echo "→ Redémarrage du frontend (systemd)"
-            sudo systemctl restart abdaty-frontend
             echo "→ État"
             docker compose ps
