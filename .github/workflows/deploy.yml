@@ -89,8 +89,8 @@ jobs:
           strip_components: 1
           overwrite: true
 
-      # ───────────── Rebuild + redémarrage (compose déjà sur le VPS) ─────────────
-      - name: docker compose up -d --build
+      # ───────────── Rebuild Docker (backend + frontend) — compose sur le VPS ─────────────
+      - name: docker compose up -d --build (backend + frontend)
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_IP }}
@@ -100,9 +100,9 @@ jobs:
           script: |
             set -euo pipefail
             cd "${{ vars.DEPLOY_PATH || '/opt/backend/abdaty' }}"
-            # Compatible Docker Compose v2 (plugin "docker compose") ET v1 ("docker-compose").
+            # Compatible Compose v2 ("docker compose") et v1 ("docker-compose").
             if docker compose version >/dev/null 2>&1; then DC="docker compose"; else DC="docker-compose"; fi
-            echo "→ Utilisation de : $DC"
+            echo "→ $DC up -d --build"
             $DC up -d --build --remove-orphans
             docker image prune -f
             $DC ps
