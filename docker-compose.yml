@@ -1,117 +1,130 @@
-# Stack Abdaty Technologie — déploiement par ARTEFACTS (à copier dans /opt/backend/abdaty).
+# Stack complète Abdaty Technologie : applications (frontend + backend),
+# données (PostgreSQL, Redis, Kafka), observabilité (Prometheus, Grafana, Loki,
+# Promtail, Zipkin) et secrets (Vault).
 #
-# Le backend tourne depuis le JAR envoyé (./app.jar via ./Dockerfile) et le frontend
-# depuis le BUILD standalone envoyé (./frontend via ./frontend/Dockerfile). Aucun code
-# source requis sur le VPS.
+#   docker compose up -d --build           # tout démarrer
+#   docker compose up -d postgres redis kafka   # infra seule (dev backend sur l'hôte)
 #
-# Fichiers attendus à côté de ce compose :
-#   ./app.jar               (envoyé par la CI)
-#   ./Dockerfile            (backend runtime — COPY app.jar)
-#   ./frontend/             (build standalone envoyé par la CI)
-#   ./frontend/Dockerfile   (frontend runtime — node server.js)
-#   ./.env                  (secrets + valeurs prod)
-#   ./observabilite/        (configs Prometheus/Grafana/Loki)
-#
-#   docker compose up -d --build     (ou docker-compose up -d --build)
+# Accès : front http://localhost:3000 · API http://localhost:8080 · Grafana :3002
 
 services:
   # ───────────────────────────── Applications ─────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080/api/v1}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    image: abdaty/frontend:latest
+    container_name: abdaty-frontend
+    ports:
+      - "3000:3000"
+    # Secrets runtime côté serveur (NextAuth) : NEXTAUTH_SECRET / NEXTAUTH_URL.
+    env_file:
+      - ./frontend/.env.local
+    environment:
+      # URL INTERNE du backend pour le code serveur (authorize NextAuth, SSR).
+      # Le navigateur, lui, continue d'utiliser NEXT_PUBLIC_API_URL (localhost:8080).
+      INTERNAL_API_URL: http://backend:8080/api/v1
+    depends_on:
+      - backend
+    networks:
+      - abdaty-network
+    restart: unless-stopped
+
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile          # backend runtime : COPY app.jar
-    image: abdaty/backend:prod
+      context: ./backend
+    image: abdaty/backend:latest
     container_name: abdaty-backend
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:8080:8080"
+      - "8080:8080"
+    # Secrets applicatifs (JWT, mail, admin…) chargés depuis backend/.env ;
+    # les variables d'infra ci-dessous les surchargent pour le réseau Docker.
     env_file:
-      - ./.env                         # secrets backend (JWT, MAIL, ADMIN, DB_*…)
+      - ./backend/.env
     environment:
       ENVIRONMENT: production
+      # Base de données : PostgreSQL (conteneur).
       DB_VENDOR: postgresql
       DB_HOST: postgres
       DB_PORT: "5432"
+      DB_NAME: abdatydb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
       DB_MIGRATION_PATH: db/migration/postgresql
       SQL_INIT_MODE: always
+      # Caches & bus d'événements.
       REDIS_HOST: redis
       REDIS_PORT: "6379"
       KAFKA_BROKERS: kafka:29092
+      # Observabilité & secrets. Endpoint Zipkin (Spring Boot 4 / Micrometer Tracing)
+      # + ZIPKIN_URL pour neutraliser la valeur localhost héritée de backend/.env.
       ZIPKIN_ENABLED: "true"
+      ZIPKIN_URL: http://zipkin:9411
       MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://zipkin:9411/api/v2/spans
       VAULT_ENABLED: "false"
     volumes:
       - backend-logs:/app/logs
       - backend-uploads:/app/uploads
-      - /opt/geoip:/opt/geoip:ro       # bases MaxMind (partagées sur le VPS)
+      # Bases MaxMind GeoIP (géo-blocage), partagées avec d'autres applications
+      # sur l'hôte. Sur macOS, ajouter /opt/geoip au File Sharing de Docker Desktop.
+      - ${GEOIP_HOST_PATH:-/opt/geoip}:/opt/geoip:ro
     depends_on:
-      - postgres
-      - redis
-      - kafka
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
     networks:
       - abdaty-network
-
-  frontend:
-    build:
-      context: ./frontend              # build standalone envoyé + frontend/Dockerfile
-    image: abdaty/frontend:prod
-    container_name: abdaty-frontend
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:3000:3000"
-    env_file:
-      - ./.env                         # NEXTAUTH_URL / NEXTAUTH_SECRET
-    environment:
-      NODE_ENV: production
-      INTERNAL_API_URL: http://backend:8080/api/v1   # le front (SSR) joint le backend en interne
-    depends_on:
-      - backend
-    networks:
-      - abdaty-network
 
   # ───────────────────────────── Données ─────────────────────────────
   postgres:
     image: postgres:15-alpine
     container_name: abdaty-postgres
-    restart: unless-stopped
     environment:
-      POSTGRES_DB: ${DB_NAME:-abdatydb}
-      POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: abdatydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "127.0.0.1:5432:5432"
+      # Port HÔTE 5433 par défaut (évite le conflit avec un PostgreSQL local sur
+      # 5432). En interne, les conteneurs joignent toujours postgres:5432.
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - abdaty-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - abdaty-network
 
   redis:
     image: redis:7-alpine
     container_name: abdaty-redis
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:6379:6379"
+      - "6379:6379"
     volumes:
       - redis-data:/data
+    networks:
+      - abdaty-network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - abdaty-network
 
+  # Kafka KRaft (sans Zookeeper). Double listener : kafka:29092 pour les conteneurs,
+  # localhost:9092 pour un backend lancé sur l'hôte.
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: abdaty-kafka
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:9092:9092"
+      - "9092:9092"
     environment:
       CLUSTER_ID: abdaty-kafka-cluster-1
       KAFKA_NODE_ID: 1
@@ -138,9 +151,8 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: abdaty-prometheus
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:9090:9090"
+      - "9090:9090"
     volumes:
       - ./observabilite/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
@@ -153,18 +165,21 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: abdaty-grafana
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:3002:3000"
-    env_file:
-      - ./.env
+      # Exposé sur 3002 pour laisser le 3000 au frontend.
+      - "3002:3000"
     environment:
-      GF_SMTP_ENABLED: "true"
-      GF_SMTP_HOST: smtp.gmail.com:587
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      # SMTP des alertes : réutilise les identifiants Gmail du backend (MAIL_* du .env).
+      GF_SMTP_ENABLED: ${GF_SMTP_ENABLED:-true}
+      GF_SMTP_HOST: ${GF_SMTP_HOST:-smtp.gmail.com:587}
       GF_SMTP_USER: ${MAIL_USERNAME:-}
       GF_SMTP_PASSWORD: ${MAIL_PASSWORD:-}
       GF_SMTP_FROM_ADDRESS: ${MAIL_USERNAME:-alerts@abdatytch.com}
+      GF_SMTP_FROM_NAME: ${GF_SMTP_FROM_NAME:-Abdaty Monitoring}
       GF_SMTP_STARTTLS_POLICY: MandatoryStartTLS
+      GF_SMTP_SKIP_VERIFY: "false"
     volumes:
       - grafana-data:/var/lib/grafana
       - ./observabilite/provisioning:/etc/grafana/provisioning
@@ -178,9 +193,8 @@ services:
   loki:
     image: grafana/loki:2.9.8
     container_name: abdaty-loki
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:3100:3100"
+      - "3100:3100"
     command: -config.file=/etc/loki/loki-config.yml
     volumes:
       - ./observabilite/loki/loki-config.yml:/etc/loki/loki-config.yml
@@ -188,10 +202,10 @@ services:
     networks:
       - abdaty-network
 
+  # Promtail lit les logs du conteneur backend (volume partagé) et les pousse vers Loki.
   promtail:
     image: grafana/promtail:2.9.8
     container_name: abdaty-promtail
-    restart: unless-stopped
     command: -config.file=/etc/promtail/promtail-config.yml
     volumes:
       - ./observabilite/loki/promtail-config.yml:/etc/promtail/promtail-config.yml
@@ -205,28 +219,27 @@ services:
   zipkin:
     image: openzipkin/zipkin:latest
     container_name: abdaty-zipkin
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:9411:9411"
+      - "9411:9411"
     networks:
       - abdaty-network
 
+  # ───────────────────────────── Secrets ─────────────────────────────
   vault:
     image: hashicorp/vault:latest
     container_name: abdaty-vault
-    restart: unless-stopped
     ports:
-      - "127.0.0.1:8200:8200"
+      - "8200:8200"
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID:-dev-root-token}
+      VAULT_DEV_ROOT_TOKEN_ID: dev-root-token
       VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
     cap_add:
       - IPC_LOCK
     volumes:
       - vault-data:/vault/data
-    command: server -dev
     networks:
       - abdaty-network
+    command: server -dev
 
 volumes:
   postgres-data:
