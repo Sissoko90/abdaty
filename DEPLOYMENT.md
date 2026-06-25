@@ -18,7 +18,7 @@ Déploiement automatisé par **push sur `main`** : la CI build le **jar backend*
 │   ├── app.jar             #   (jar construit en CI)
 │   ├── .env                #   ⚠️ ONE-TIME, manuel (secrets) — jamais écrasé
 │   └── application.yml     #   ⚠️ ONE-TIME, manuel (override config) — jamais écrasé
-└── observabilite/          # transféré par la CI (Prometheus/Grafana/Loki)
+└── observabilite/          # ⚠️ ONE-TIME, manuel (Prometheus/Grafana/Loki) — jamais écrasé
 /var/www/frontend/          # build Next.js standalone (transféré par la CI)
 └── .env                    #   ⚠️ ONE-TIME, manuel (NEXTAUTH_*, INTERNAL_API_URL)
 /opt/geoip/*.mmdb           #   bases MaxMind (déjà présentes, partagées)
