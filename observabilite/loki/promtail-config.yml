@@ -1,0 +1,41 @@
+# Promtail : lit les fichiers de logs du backend (montés en lecture seule depuis
+# ./logs) et les pousse vers Loki avec le label job="abdaty-backend".
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+  log_level: warn
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: abdaty-backend
+    static_configs:
+      - targets: [localhost]
+        labels:
+          job: abdaty-backend
+          host: backend
+          __path__: /var/log/abdaty/application.log
+      - targets: [localhost]
+        labels:
+          job: abdaty-backend
+          stream: error
+          host: backend
+          __path__: /var/log/abdaty/error.log
+    pipeline_stages:
+      # Regroupe les lignes d'une même entrée (stack traces) : une nouvelle entrée
+      # commence par une date AAAA-MM-JJ.
+      - multiline:
+          firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+          max_wait_time: 3s
+      # Extrait l'horodatage et le niveau de log.
+      - regex:
+          expression: '^(?P<ts>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+) \[[^\]]*\] (?P<level>\w+)'
+      - labels:
+          level:
+      - timestamp:
+          source: ts
+          format: '2006-01-02 15:04:05.000'

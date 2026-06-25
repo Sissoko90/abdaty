@@ -1,0 +1,126 @@
+name: Déploiement Production
+
+# Sur push vers main : tests + build des artefacts (jar backend, build frontend
+# standalone), puis transfert sur le VPS et redémarrage.
+#   - /opt/backend/observabilite/  ← configs Prometheus/Grafana/Loki
+#   - /opt/backend/abdaty/         ← docker-compose.yml + Dockerfile + app.jar
+#   - /var/www/frontend/           ← build Next.js (servi en natif via systemd)
+#
+# Les workflows CI (ci.yml) et Sécurité (security.yml) tournent EN PARALLÈLE sur le
+# même push (tests + scans de vulnérabilité).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build & déploiement VPS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ───────────── Build frontend (standalone) ─────────────
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Frontend — install, checks, build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run i18n:check
+          npm run type-check
+          npm run lint
+          npm run build
+        env:
+          NEXT_PUBLIC_API_URL: https://abdatytch.com/api/v1
+          NEXT_PUBLIC_SITE_URL: https://abdatytch.com
+          NEXTAUTH_SECRET: ci-build-secret-not-used-at-runtime
+          NEXTAUTH_URL: https://abdatytch.com
+
+      - name: Assembler le bundle frontend standalone
+        run: |
+          rm -rf dist-frontend && mkdir -p dist-frontend/.next
+          cp -r frontend/.next/standalone/. dist-frontend/
+          cp -r frontend/.next/static dist-frontend/.next/static
+          cp -r frontend/public dist-frontend/public
+
+      # ───────────── Build backend (jar + tests) ─────────────
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Backend — tests + package (jar)
+        working-directory: backend
+        run: ./mvnw -B -ntp package
+
+      - name: Assembler le bundle backend (abdaty/)
+        run: |
+          rm -rf abdaty && mkdir -p abdaty
+          cp backend/target/*-SNAPSHOT.jar abdaty/app.jar
+          cp docker-compose.prod.yml abdaty/docker-compose.yml
+          cp backend/Dockerfile.runtime abdaty/Dockerfile
+
+      # ───────────── Transferts SCP vers le VPS ─────────────
+      - name: Transfert observabilité → /opt/backend/observabilite
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          source: "observabilite"
+          target: "/opt/backend/observabilite"
+          strip_components: 1
+          overwrite: true
+
+      - name: Transfert backend (jar + compose + Dockerfile) → /opt/backend/abdaty
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          source: "abdaty"
+          target: "/opt/backend/abdaty"
+          strip_components: 1
+          overwrite: true
+
+      - name: Transfert frontend (build) → /var/www/frontend
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          source: "dist-frontend"
+          target: "/var/www/frontend"
+          strip_components: 1
+          overwrite: true
+
+      # ───────────── Redémarrage des services ─────────────
+      - name: Build + (re)démarrage backend/infra (Docker) & frontend (systemd)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          script: |
+            set -euo pipefail
+            cd /opt/backend/abdaty
+            echo "→ Build image backend + (re)démarrage infra/backend"
+            docker compose up -d --build --remove-orphans
+            echo "→ Nettoyage images orphelines"
+            docker image prune -f
+            echo "→ Redémarrage du frontend (systemd)"
+            sudo systemctl restart abdaty-frontend
+            echo "→ État"
+            docker compose ps

@@ -1,0 +1,135 @@
+apiVersion: 1
+
+# Règles d'alerte critiques provisionnées (évaluées par Grafana).
+groups:
+  - orgId: 1
+    name: backend-critical
+    folder: Alertes
+    interval: 1m
+    rules:
+      - uid: alert-app-down
+        title: "Backend DOWN"
+        condition: C
+        for: 1m
+        labels: { severity: critical }
+        annotations:
+          summary: "Le backend ne répond plus (up=0) depuis 1 min."
+        noDataState: Alerting
+        execErrState: Error
+        data:
+          - refId: A
+            relativeTimeRange: { from: 300, to: 0 }
+            datasourceUid: prometheus
+            model: { refId: A, instant: true, expr: 'up{job="abdaty-backend"}' }
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: lt, params: [1] }
+
+      - uid: alert-error-rate
+        title: "Taux d'erreur 5xx élevé (>5%)"
+        condition: C
+        for: 5m
+        labels: { severity: critical }
+        annotations:
+          summary: "Plus de 5% de réponses 5xx sur 5 min."
+        noDataState: OK
+        execErrState: Error
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              expr: 'sum(rate(http_server_requests_seconds_count{job="abdaty-backend",status=~"5.."}[5m])) / clamp_min(sum(rate(http_server_requests_seconds_count{job="abdaty-backend"}[5m])), 0.001)'
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: gt, params: [0.05] }
+
+      - uid: alert-latency-p95
+        title: "Latence p95 élevée (>2s)"
+        condition: C
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "La latence p95 dépasse 2s sur 5 min."
+        noDataState: OK
+        execErrState: Error
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              expr: 'histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{job="abdaty-backend"}[5m])))'
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: gt, params: [2] }
+
+      - uid: alert-heap
+        title: "Mémoire heap critique (>90%)"
+        condition: C
+        for: 5m
+        labels: { severity: critical }
+        annotations:
+          summary: "La heap JVM dépasse 90% depuis 5 min (risque OOM)."
+        noDataState: OK
+        execErrState: Error
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              expr: 'sum(jvm_memory_used_bytes{job="abdaty-backend",area="heap"}) / sum(jvm_memory_max_bytes{job="abdaty-backend",area="heap"})'
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: gt, params: [0.9] }
+
+      - uid: alert-cpu
+        title: "CPU élevé (>85%)"
+        condition: C
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "Le CPU process dépasse 85% depuis 5 min."
+        noDataState: OK
+        execErrState: Error
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              expr: 'process_cpu_usage{job="abdaty-backend"}'
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: { type: gt, params: [0.85] }

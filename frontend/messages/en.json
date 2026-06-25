@@ -1,0 +1,2197 @@
+{
+  "footer": {
+    "description": "Innovative digital solutions to transform your business",
+    "quickLinks": "Quick Links",
+    "services": "Services",
+    "legal": "Legal",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "rights": "All rights reserved."
+  },
+  "cookies": {
+    "title": "We use cookies",
+    "description": "We use cookies to improve your experience and analyze site usage. You can customize your preferences.",
+    "learnMore": "Learn more",
+    "settings": "Settings",
+    "acceptAll": "Accept All",
+    "rejectAll": "Reject All",
+    "acceptSelected": "Accept Selection",
+    "necessary": "Necessary",
+    "necessaryDescription": "Essential cookies for site functionality",
+    "analytics": "Analytics",
+    "analyticsDescription": "Cookies to analyze usage and improve the site",
+    "marketing": "Marketing",
+    "marketingDescription": "Cookies for personalized advertising"
+  },
+  "sla": {
+    "title": "SLA and Guarantees",
+    "subtitle": "Our quality and availability commitments for your services",
+    "uptime": {
+      "percentage": "99.9%",
+      "description": "Guaranteed service availability"
+    },
+    "response": {
+      "time": "30 min",
+      "description": "Average response time"
+    },
+    "support": {
+      "hours": "24/7",
+      "description": "Technical support available"
+    },
+    "security": {
+      "level": "Enterprise Grade",
+      "description": "Military-grade security"
+    },
+    "serviceLevels": {
+      "title": "Service Levels",
+      "popular": "Popular",
+      "standard": {
+        "title": "Standard",
+        "uptime": "99.5% Uptime",
+        "feature1": "Email support (24h)",
+        "feature2": "Daily backups",
+        "feature3": "SSL included",
+        "feature4": "Basic monitoring"
+      },
+      "professional": {
+        "title": "Professional",
+        "uptime": "99.9% Uptime",
+        "feature1": "24/7 phone and email support",
+        "feature2": "Backups every 4 hours",
+        "feature3": "SSL + DDoS Protection",
+        "feature4": "Advanced monitoring",
+        "feature5": "Monthly reports"
+      },
+      "enterprise": {
+        "title": "Enterprise",
+        "uptime": "99.99% Uptime",
+        "feature1": "Dedicated 24/7/365 support",
+        "feature2": "Real-time backups",
+        "feature3": "SSL + DDoS + Advanced Firewall",
+        "feature4": "Premium monitoring + alerts",
+        "feature5": "Custom SLA",
+        "feature6": "Dedicated account manager"
+      }
+    },
+    "guarantees": {
+      "title": "Our Guarantees",
+      "dataProtection": {
+        "title": "Data Protection",
+        "description": "Your data is encrypted and secured in compliance with GDPR and PCI-DSS standards"
+      },
+      "backups": {
+        "title": "Automatic Backups",
+        "description": "Automatic daily backups with 30-day retention and restore option"
+      },
+      "support": {
+        "title": "Expert Support",
+        "description": "Certified expert team available 24/7 to resolve your issues quickly"
+      },
+      "incidentResponse": {
+        "title": "Incident Response",
+        "description": "Incident response procedure with guaranteed response time under 1 hour"
+      }
+    },
+    "cta": {
+      "title": "Need a Custom SLA?",
+      "description": "Contact us to discuss your specific needs and get a tailored solution",
+      "button": "Contact Us"
+    }
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you're looking for doesn't exist or has been moved.",
+    "message": "We searched everywhere, but we couldn't find this page. It may have been moved or deleted.",
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "buttons": {
+      "home": "Home",
+      "services": "Services",
+      "contact": "Contact"
+    },
+    "help": {
+      "title": "Looking for something specific?",
+      "about": "About",
+      "faq": "FAQ",
+      "sla": "SLA"
+    },
+    "back": "Back to Home",
+    "backHome": "Back to Home",
+    "suggestions": "You might be looking for:"
+  },
+  "error": {
+    "title": "An error occurred",
+    "description": "Sorry, something went wrong. Please try again or return home.",
+    "retry": "Try again",
+    "backHome": "Back to home",
+    "suggestions": "You can also:",
+    "contact": "Contact us",
+    "faq": "Check the FAQ",
+    "services": "View our services"
+  },
+  "newsletter": {
+    "title": "Stay Informed",
+    "description": "Join our newsletter to receive the latest news, tutorials and exclusive offers.",
+    "benefit1": "Latest tech news",
+    "benefit2": "Exclusive tutorials and guides",
+    "benefit3": "Special offers and promotions",
+    "placeholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "sending": "Sending...",
+    "subscribed": "Subscribed!",
+    "privacy": "We respect your privacy. Unsubscribe at any time."
+  },
+  "accessibility": {
+    "skipToMain": "Skip to main content",
+    "menu": "Menu",
+    "search": "Search",
+    "close": "Close",
+    "open": "Open",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "smsApi": "SMS API",
+    "docs": "Documentation",
+    "blog": "Blog",
+    "about": "About",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "login": "Login",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Digital Solutions for Your Business",
+    "subtitle": "Innovation & Technological Excellence",
+    "description": "We design and develop cutting-edge digital solutions: web applications, mobile apps, desktop software, UI/UX design, network infrastructure, and cybersecurity.",
+    "cta": "Start a Project",
+    "ctaSecondary": "Explore Our Services",
+    "stats": {
+      "projects": "Projects Delivered",
+      "clients": "Happy Clients",
+      "experience": "Years Experience",
+      "satisfaction": "Client Satisfaction"
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Tailored technology solutions to propel your business to success",
+    "process": {
+      "title": "Our Process",
+      "subtitle": "From idea to reality in 4 simple steps",
+      "discovery": {
+        "title": "Discovery",
+        "description": "We analyze your needs and goals in depth"
+      },
+      "development": {
+        "title": "Development",
+        "description": "We build your solution with cutting-edge technology"
+      },
+      "launch": {
+        "title": "Launch",
+        "description": "We deploy and optimize your product"
+      },
+      "support": {
+        "title": "Support",
+        "description": "We provide ongoing maintenance and support"
+      }
+    },
+    "web": {
+      "title": "Web Development",
+      "subtitle": "Modern and high-performance web applications",
+      "description": "Modern, responsive, and scalable web applications built with the latest technologies.",
+      "benefits": {
+        "fast": "Lightning Fast",
+        "fastDesc": "Optimized performance with Next.js and modern frameworks",
+        "scalable": "Scalable Architecture",
+        "scalableDesc": "Built to grow with your business needs",
+        "secure": "Secure by Design",
+        "secureDesc": "Enterprise-grade security standards",
+        "user": "User-Centric",
+        "userDesc": "Beautiful interfaces that users love"
+      },
+      "stats": {
+        "apps": "Web Apps Built",
+        "uptime": "Uptime",
+        "loadTime": "Avg Load Time",
+        "mobile": "Mobile Ready"
+      },
+      "features": [
+        "Custom web applications",
+        "E-commerce platforms",
+        "Progressive Web Apps (PWA)",
+        "API development"
+      ]
+    },
+    "mobile": {
+      "title": "Mobile Development",
+      "subtitle": "Native iOS and Android applications",
+      "description": "Native and cross-platform mobile applications for iOS and Android.",
+      "benefits": {
+        "cross": "Cross-Platform",
+        "crossDesc": "One codebase for iOS and Android",
+        "native": "Native Performance",
+        "nativeDesc": "Smooth 60fps animations and instant response",
+        "offline": "Offline First",
+        "offlineDesc": "Works perfectly without internet",
+        "push": "Push Notifications",
+        "pushDesc": "Engage users with timely updates"
+      },
+      "stats": {
+        "apps": "Apps Published",
+        "users": "Active Users",
+        "rating": "Avg Rating",
+        "retention": "Retention Rate"
+      },
+      "features": [
+        "iOS & Android apps",
+        "Cross-platform development",
+        "Mobile UI/UX design",
+        "App maintenance & support"
+      ]
+    },
+    "desktop": {
+      "title": "Desktop Applications",
+      "subtitle": "Powerful desktop software for Windows, macOS and Linux",
+      "description": "Powerful desktop software solutions for Windows, macOS, and Linux.",
+      "benefits": {
+        "high": "High Performance",
+        "highDesc": "Native speed with optimized resource usage",
+        "integration": "System Integration",
+        "integrationDesc": "Deep OS integration and automation",
+        "offline": "Offline Capable",
+        "offlineDesc": "Full functionality without internet",
+        "updates": "Automatic Updates",
+        "updatesDesc": "Automatic updates and distribution setup"
+      },
+      "stats": {
+        "apps": "Desktop Apps",
+        "reliability": "Reliability",
+        "support": "Support",
+        "platforms": "Platforms"
+      },
+      "features": [
+        "Cross-platform desktop apps",
+        "Enterprise software",
+        "System integration",
+        "Performance optimization"
+      ]
+    },
+    "design": {
+      "title": "UI/UX Design",
+      "subtitle": "Exceptional user interfaces",
+      "description": "Beautiful, intuitive, and user-centered design solutions.",
+      "benefits": {
+        "user": "User-Centered",
+        "userDesc": "Design decisions based on research",
+        "modern": "Modern Design",
+        "modernDesc": "Current design trends",
+        "accessible": "Accessible",
+        "accessibleDesc": "WCAG compliant for all users",
+        "consistent": "Consistent",
+        "consistentDesc": "Cohesive design systems"
+      },
+      "stats": {
+        "projects": "Design Projects",
+        "wireframes": "Wireframes",
+        "prototypes": "Prototypes",
+        "satisfaction": "Satisfaction"
+      },
+      "features": [
+        "User interface design",
+        "User experience research",
+        "Prototyping & wireframing",
+        "Design systems"
+      ]
+    },
+    "network": {
+      "title": "Network & Infrastructure",
+      "subtitle": "Complete network infrastructure and server management",
+      "description": "Complete network setup, administration, and server management.",
+      "benefits": {
+        "high": "High Availability",
+        "highDesc": "Redundant systems for zero downtime",
+        "scalable": "Scalable",
+        "scalableDesc": "Grows with your business needs",
+        "monitored": "Monitored",
+        "monitoredDesc": "Real-time performance tracking",
+        "secure": "Secure",
+        "secureDesc": "Multi-layer security architecture"
+      },
+      "stats": {
+        "networks": "Networks Built",
+        "latency": "Latency",
+        "monitoring": "Monitoring",
+        "uptimeSLA": "Uptime SLA"
+      },
+      "features": [
+        "Network architecture",
+        "Server administration",
+        "IT infrastructure",
+        "System monitoring"
+      ]
+    },
+    "security": {
+      "title": "Cybersecurity",
+      "subtitle": "Protection of your data and systems",
+      "description": "Comprehensive security solutions to protect your digital assets.",
+      "benefits": {
+        "audit": "Security Audit",
+        "auditDesc": "Complete vulnerability assessment",
+        "monitoring": "Continuous Monitoring",
+        "monitoringDesc": "Real-time threat detection",
+        "compliance": "Compliance",
+        "complianceDesc": "Ready for GDPR, ISO 27001",
+        "response": "Incident Response",
+        "responseDesc": "24/7 incident response team"
+      },
+      "stats": {
+        "audits": "Audits Done",
+        "threats": "Threats Blocked",
+        "compliance": "Compliance",
+        "response": "Response Time"
+      },
+      "features": [
+        "Security audits",
+        "Penetration testing",
+        "Security monitoring",
+        "Compliance consulting"
+      ]
+    },
+    "dataAi": {
+      "title": "Data Analysis & AI",
+      "subtitle": "Data analytics and artificial intelligence",
+      "description": "Artificial intelligence and data analysis solutions for informed decision-making.",
+      "benefits": {
+        "predictive": "Predictive Analytics",
+        "predictiveDesc": "AI-powered insights for better decision making",
+        "bigdata": "Big Data Processing",
+        "bigdataDesc": "Handle massive datasets with ease",
+        "security": "Data Security",
+        "securityDesc": "Enterprise-grade data protection",
+        "custom": "Custom ML Models",
+        "customDesc": "Tailored machine learning solutions"
+      },
+      "stats": {
+        "projects": "AI Projects",
+        "accuracy": "Accuracy",
+        "data": "Data Processed",
+        "models": "ML Models"
+      },
+      "features": [
+        "Machine Learning & Deep Learning",
+        "Predictive analytics",
+        "Big Data processing",
+        "Data visualization"
+      ]
+    },
+    "data": {
+      "title": "Data & AI",
+      "subtitle": "Data analysis and artificial intelligence",
+      "description": "Data analytics, machine learning, and AI solutions to turn your data into actionable insights.",
+      "benefits": {
+        "predictive": "Predictive Analytics",
+        "predictiveDesc": "AI-driven insights for better decisions",
+        "bigdata": "Big Data",
+        "bigdataDesc": "Processing massive datasets",
+        "security": "Data Security",
+        "securityDesc": "Enterprise-grade protection",
+        "custom": "Custom ML Models",
+        "customDesc": "Tailored machine learning solutions"
+      },
+      "stats": {
+        "projects": "AI Projects",
+        "accuracy": "Accuracy",
+        "data": "Data Processed",
+        "models": "ML Models 24/7"
+      },
+      "features": [
+        "Machine Learning & Deep Learning",
+        "Predictive analytics",
+        "Big Data processing",
+        "Data visualization"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "description": "Sign in to your account to access all features",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign In",
+      "loading": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up"
+    },
+    "register": {
+      "title": "Sign Up",
+      "description": "Create your account to start using our services",
+      "name": "Full Name",
+      "namePlaceholder": "Votre nom complet",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "••••••••",
+      "agreeTerms": "I agree to the terms of service",
+      "termsLink": "Terms of Service",
+      "submit": "Sign Up",
+      "loading": "Signing up...",
+      "haveAccount": "Already have an account?",
+      "login": "Sign In",
+      "passwordMismatch": "Passwords do not match"
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "description": "Enter your email address and we'll send you a link to reset your password",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "submit": "Send Reset Link",
+      "loading": "Sending...",
+      "backToLogin": "Back to Login",
+      "success": {
+        "title": "Email Sent",
+        "description": "A password reset email has been sent to your address",
+        "instructions": "Check your inbox and follow the instructions"
+      }
+    }
+  },
+  "legal": {
+    "termsOfService": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: May 7, 2026",
+      "backToHome": "← Back to Home",
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing the Abdaty Technologie website and using our services, you agree to be bound by these Terms of Service. If you do not agree to these terms in their entirety, you must not access this website or use our services. Access to this website and use of our services are subject to these Terms and our Privacy Policy."
+      },
+      "services": {
+        "title": "2. Our Services",
+        "content": "Abdaty Technologie provides a comprehensive range of technology services including, but not limited to, web and mobile application development, desktop software development, UI/UX design, network infrastructure, cybersecurity, and data analytics and artificial intelligence. We reserve the right to modify, suspend, or discontinue any service at any time without prior notice for any reason, including but not limited to maintenance, updates, or technical improvements."
+      },
+      "userAccount": {
+        "title": "3. User Account",
+        "content": "To access certain of our services, you must create a user account. You declare and warrant that all information you provide during registration is accurate, complete, and current. You are responsible for maintaining the confidentiality of your password and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.",
+        "points": {
+          "accuracy": "Maintain the accuracy and completeness of your personal information",
+          "security": "Secure your password and account against any unauthorized access",
+          "responsibility": "Assume full responsibility for all activities performed under your account"
+        }
+      },
+      "payment": {
+        "title": "4. Payment Terms",
+        "content": "Payments for our services are made in accordance with the rates displayed on our website at the time of ordering. We accept various payment methods including credit cards, bank transfers, and other secure electronic payment methods. All payments are non-refundable unless expressly stated otherwise in our specific Terms of Sale or in case of non-performance of our contractual obligations."
+      },
+      "cancellation": {
+        "title": "5. Cancellation and Refund",
+        "content": "You may cancel your subscription at any time by logging into your account and following the cancellation procedure. Cancellation will take effect at the end of the current billing period. No partial or prorated refund will be provided for the current period. In case of early termination of a service contract, refund terms will be defined in the specific contract."
+      },
+      "limitation": {
+        "title": "6. Limitation of Liability",
+        "content": "To the maximum extent permitted by applicable law, Abdaty Technologie shall not be liable for any direct, indirect, incidental, consequential, or punitive damages resulting from the use or inability to use our services. This limitation applies to damages for loss of profits, data loss, business interruption, or any other pecuniary loss, even if Abdaty Technologie has been advised of the possibility of such damages."
+      },
+      "intellectual": {
+        "title": "7. Intellectual Property",
+        "content": "All content, trademarks, logos, graphics, software, databases, and copyrights on this website are the exclusive property of Abdaty Technologie or its licensors and are protected by national and international intellectual property laws. You may not reproduce, distribute, modify, adapt, publish, transmit, create derivative works, or use this content, in whole or in part, without our prior written consent."
+      },
+      "privacy": {
+        "title": "8. Privacy Policy",
+        "content": "Your privacy is of paramount importance to us. We are committed to protecting your personal data in accordance with our",
+        "link": "Privacy Policy"
+      },
+      "modifications": {
+        "title": "9. Modification of Terms",
+        "content": "We reserve the right to modify these Terms of Service at any time at our sole discretion. All modifications will become effective immediately upon posting on this website. Your continued use of our services after posting of modifications constitutes your acceptance of the new terms. It is your responsibility to review these Terms regularly to stay informed of any changes."
+      },
+      "contact": {
+        "title": "10. Contact and Support",
+        "content": "For any questions regarding these Terms of Service, or to report a potential violation, please contact us through our",
+        "link": "contact page"
+      }
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: May 7, 2026",
+      "backToHome": "← Back to Home",
+      "introduction": {
+        "title": "Introduction",
+        "content": "Abdaty Technologie is firmly committed to protecting the privacy and data confidentiality of its users. This Privacy Policy aims to inform you transparently about the nature, purposes, and methods of collection, processing, and protection of your personal data."
+      },
+      "information": {
+        "title": "1. Data Collected",
+        "content": "We collect the following categories of personal data when you use our services:",
+        "points": {
+          "personal": "Identification data: first name, last name, email address, phone number",
+          "contact": "Professional contact details: company, position, business address",
+          "usage": "Usage data: browsing history, preferences, interactions with our services",
+          "payment": "Payment data: secure banking information (processed in compliance with PCI-DSS standards)"
+        }
+      },
+      "collection": {
+        "title": "2. Collection Methods",
+        "content": "Data is collected directly from you when you create an account, subscribe to our services, communicate with our customer service team, or participate in our promotional programs. We may also automatically collect certain technical data during your use of our website and applications."
+      },
+      "usage": {
+        "title": "3. Data Usage",
+        "content": "Your personal data is used exclusively for the following purposes:",
+        "points": {
+          "service": "Provision, personalization, and improvement of our technology services",
+          "communication": "Communication with you regarding your account, orders, and our offerings",
+          "security": "Securing your account and preventing fraudulent activities",
+          "analytics": "Analysis of usage trends to optimize our services and develop new features"
+        }
+      },
+      "sharing": {
+        "title": "4. Data Sharing",
+        "content": "Abdaty Technologie does not sell, rent, or share your personal data with third parties, except in the following cases: (i) with your explicit consent, (ii) to comply with legal or regulatory obligations, (iii) to protect our rights or property, or (iv) with our duly authorized subcontractors strictly for the provision of services."
+      },
+      "security": {
+        "title": "5. Data Security",
+        "content": "We implement state-of-the-art technical and organizational security measures in accordance with industry best practices to protect your data against any unauthorized access, alteration, disclosure, or destruction. These measures include data encryption, two-factor authentication, and regular security audits."
+      },
+      "cookies": {
+        "title": "6. Cookies and Similar Technologies",
+        "content": "We use cookies and similar technologies to enhance your user experience, analyze service usage, and personalize content. You can configure your browser to refuse cookies, although this may affect certain functionalities of our website."
+      },
+      "rights": {
+        "title": "7. Your Rights",
+        "content": "In accordance with the General Data Protection Regulation (GDPR) and applicable national legislation, you have the following rights regarding your personal data:",
+        "points": {
+          "access": "Right of access: obtain confirmation of processing and a copy of your data",
+          "correction": "Right of rectification: correct inaccurate or incomplete data",
+          "deletion": "Right to erasure: request deletion of your data (right to be forgotten)",
+          "objection": "Right to object: object to processing of your data for legitimate reasons"
+        }
+      },
+      "retention": {
+        "title": "8. Data Retention",
+        "content": "We retain your personal data only for as long as necessary to achieve the purposes for which it was collected, in compliance with applicable legal and regulatory requirements. Upon expiration of this period, data is either deleted or anonymized."
+      },
+      "gdpr": {
+        "title": "9. GDPR Compliance",
+        "content": "Abdaty Technologie is fully compliant with Regulation (EU) 2016/679 on the protection of natural persons with regard to the processing of personal data (GDPR). We have appointed a Data Protection Officer (DPO) and maintain processing records in accordance with regulatory requirements."
+      },
+      "contact": {
+        "title": "10. Contact and Exercise of Rights",
+        "content": "For any questions regarding this Privacy Policy, or to exercise your rights over your personal data, please contact us through our",
+        "link": "contact page"
+      }
+    }
+  },
+  "smsApi": {
+    "title": "SMS API Service",
+    "subtitle": "Reliable SMS delivery for your applications",
+    "description": "Integrate our powerful SMS API into your applications with ease. Send transactional messages, notifications, and marketing campaigns in Mali.",
+    "hero": {
+      "cta": "Get Started",
+      "ctaDocs": "Documentation",
+      "ctaSwagger": "Swagger API"
+    },
+    "plans": {
+      "title": "Choose Your Plan",
+      "description": "Flexible pricing to fit your needs. Start for free and scale as you grow.",
+      "popular": "Popular",
+      "subscribe": "Subscribe",
+      "features": {
+        "fast": {
+          "title": "Fast Delivery",
+          "description": "Your SMS are delivered in seconds thanks to our optimized infrastructure."
+        },
+        "secure": {
+          "title": "Secure",
+          "description": "Your data is protected with end-to-end encryption and GDPR compliance."
+        },
+        "support": {
+          "title": "24/7 Support",
+          "description": "Our team of experts is available anytime to help you."
+        }
+      },
+      "faq": {
+        "title": "Need help choosing?",
+        "contact": "Contact Us"
+      }
+    },
+    "features": {
+      "title": "Features",
+      "reliable": "99.9% uptime guarantee",
+      "mali": "Complete coverage in Mali",
+      "fast": "Delivery in less than 3 seconds",
+      "secure": "Enterprise-grade security"
+    },
+    "pricing": {
+      "title": "Transparent Pricing",
+      "subtitle": "Pay only for what you use",
+      "perSMS": "per SMS"
+    },
+    "documentation": {
+      "title": "API Documentation",
+      "subtitle": "Easy integration with comprehensive docs",
+      "viewDocs": "View Documentation",
+      "tryNow": "Try Now"
+    },
+    "integration": {
+      "title": "Quick Integration",
+      "description": "Get started in minutes with our simple REST API"
+    }
+  },
+  "about": {
+    "title": "About Abdaty Technologie",
+    "subtitle": "Your Trusted Technology Partner",
+    "description": "We are a leading technology company specializing in digital solutions and business transformation. Our team of experts delivers innovative solutions tailored to your needs.",
+    "mission": "Our Mission",
+    "missionText": "To empower businesses through cutting-edge technology solutions that drive growth and innovation.",
+    "vision": "Our Vision",
+    "visionText": "To be the leading provider of digital solutions in Africa and beyond.",
+    "whyChooseUs": {
+      "title": "Why Choose Us",
+      "subtitle": "What makes us different",
+      "expertise": {
+        "title": "Expertise",
+        "description": "10+ years of experience in digital solutions"
+      },
+      "clientFocused": {
+        "title": "Client-Focused",
+        "description": "Your success is our top priority"
+      },
+      "fastDelivery": {
+        "title": "Fast Delivery",
+        "description": "Quick turnaround without compromising quality"
+      },
+      "secure": {
+        "title": "Secure",
+        "description": "Enterprise-grade security standards"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Always here when you need us"
+      },
+      "scalable": {
+        "title": "Scalable",
+        "description": "Solutions that grow with your business"
+      }
+    },
+    "certifications": {
+      "title": "Certifications and Security",
+      "subtitle": "Compliance with international standards for complete trust",
+      "ssl": {
+        "title": "SSL/TLS Security",
+        "description": "Data encryption in transit with enterprise-grade SSL/TLS certificates"
+      },
+      "pci": {
+        "title": "PCI-DSS Compliance",
+        "description": "Compliance with payment card data security standards"
+      },
+      "iso": {
+        "title": "ISO 27001 Certification",
+        "description": "Certified information security management system"
+      },
+      "gdpr": {
+        "title": "GDPR Compliance",
+        "description": "Personal data protection compliant with European regulations"
+      },
+      "cta": {
+        "title": "Security and Compliance Guaranteed",
+        "description": "Our commitment to security and data compliance",
+        "audit": "Regular security audits",
+        "compliance": "International standards compliance",
+        "security": "Enterprise-grade security"
+      }
+    },
+    "stats": {
+      "projects": "Completed Projects",
+      "clients": "Satisfied Clients",
+      "awards": "Awards",
+      "countries": "Countries Served"
+    },
+    "values": {
+      "title": "Our Values",
+      "subtitle": "The principles that guide our daily work",
+      "passion": {
+        "title": "Passion",
+        "description": "We love what we do and it shows in every project"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We adopt the latest technologies to stay ahead"
+      },
+      "excellence": {
+        "title": "Excellence",
+        "description": "We aim for perfection in every line of code"
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "We work hand in hand with our clients"
+      }
+    },
+    "timeline": {
+      "title": "Our Story",
+      "subtitle": "The journey since our inception",
+      "founded": {
+        "title": "Abdaty Tech Founded",
+        "description": "Company creation with a clear vision: revolutionize digital in Mali"
+      },
+      "firstOffice": {
+        "title": "First Office in Bamako",
+        "description": "Opening of our modern premises in the heart of Bamako"
+      },
+      "expansion": {
+        "title": "Regional Expansion",
+        "description": "Extension of our services throughout West Africa"
+      },
+      "awards": {
+        "title": "First Awards",
+        "description": "Recognition of our excellence through national and international awards"
+      },
+      "international": {
+        "title": "International Presence",
+        "description": "Collaboration with clients and partners worldwide"
+      }
+    },
+    "team": {
+      "title": "Our Team",
+      "subtitle": "Passionate experts dedicated to your success",
+      "ceo": {
+        "bio": "Visionary and entrepreneur, leading Abdaty Tech with passion since its creation"
+      },
+      "cto": {
+        "bio": "Software architecture expert with over 15 years of experience"
+      },
+      "leadDev": {
+        "bio": "Full-stack developer passionate about cutting-edge technologies"
+      },
+      "designer": {
+        "bio": "Creative designer specialized in UX/UI and design thinking"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Let's discuss your project and bring your ideas to life",
+    "form": {
+      "title": "Send us a message",
+      "name": "Full Name",
+      "email": "Email Address",
+      "company": "Company (Optional)",
+      "phone": "Phone Number (Optional)",
+      "service": "Service you're interested in",
+      "message": "Your Message",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "An error occurred. Please try again.",
+      "namePlaceholder": "Your full name",
+      "emailPlaceholder": "your@email.com",
+      "companyPlaceholder": "Your company",
+      "phonePlaceholder": "+223 70 00 00 00",
+      "servicePlaceholder": "Web development, mobile app, etc.",
+      "messagePlaceholder": "Tell us about your project..."
+    },
+    "info": {
+      "title": "Contact Information",
+      "description": "Get in touch with us through any of these channels. We're here to help you bring your digital vision to life.",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "hours": "Working Hours",
+      "hoursValue": "Mon - Fri: 8:00 AM - 6:00 PM",
+      "cta": {
+        "title": "Ready to start your project?",
+        "description": "We're excited to hear about your ideas and help you turn them into reality. Our team is ready to provide you with a free consultation.",
+        "getStarted": "Get Started",
+        "responseTime": "Response within 24h"
+      }
+    },
+    "getStarted": "Get Started",
+    "readMore": "Read More",
+    "viewAll": "View All",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success"
+  },
+  "cta": {
+    "title": "Ready to Start Your Project?",
+    "description": "Let's discuss how we can help you achieve your digital goals with our expert solutions.",
+    "button": "Start a Project"
+  },
+  "testimonials": {
+    "title": "What Our Clients Say",
+    "subtitle": "Over 200 companies trust us for their digital projects",
+    "stats": {
+      "clients": "Satisfied Clients",
+      "projects": "Projects Delivered",
+      "satisfaction": "Satisfaction Rate",
+      "support": "Support Available"
+    }
+  },
+  "faq": {
+    "hero": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Find answers to your questions quickly"
+    },
+    "general": {
+      "title": "General Questions",
+      "what": {
+        "question": "What is Abdaty Tech?",
+        "answer": "Abdaty Tech is a software development company based in Mali, specializing in web, mobile, and desktop applications, as well as UI/UX design, network infrastructure, and cybersecurity."
+      },
+      "where": {
+        "question": "Where are you located?",
+        "answer": "Our headquarters is located in Bamako, Mali. We serve clients locally and internationally."
+      },
+      "how": {
+        "question": "How can I start a project?",
+        "answer": "Contact us via our contact form, email, or phone. We'll arrange a free consultation to discuss your needs."
+      },
+      "who": {
+        "question": "Who are your clients?",
+        "answer": "We work with startups, SMEs, and large enterprises across various sectors: finance, healthcare, education, e-commerce, etc."
+      }
+    },
+    "services": {
+      "title": "Services",
+      "types": {
+        "question": "What types of services do you offer?",
+        "answer": "We offer web, mobile, and desktop development, UI/UX design, network infrastructure, cybersecurity, data analysis and AI, as well as an SMS API."
+      },
+      "custom": {
+        "question": "Do you do custom development?",
+        "answer": "Yes, all our projects are customized to your specific needs. We don't offer off-the-shelf solutions."
+      },
+      "timeline": {
+        "question": "What is the delivery timeline?",
+        "answer": "It depends on project complexity. A simple website takes 2-4 weeks, a complex application can take 3-6 months. We establish a detailed schedule during the discovery phase."
+      },
+      "support": {
+        "question": "Do you offer post-delivery support?",
+        "answer": "Yes, we offer ongoing technical support, updates, and maintenance for all our projects."
+      }
+    },
+    "pricing": {
+      "title": "Pricing",
+      "cost": {
+        "question": "How much do your services cost?",
+        "answer": "Our rates vary depending on project complexity and scope. Contact us for a free personalized quote."
+      },
+      "payment": {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept bank transfers, Orange Money, Moov Money, and international credit cards."
+      },
+      "refund": {
+        "question": "What is your refund policy?",
+        "answer": "We work in stages with validation at each phase. If you're not satisfied, we revise the work until you're completely satisfied."
+      },
+      "discount": {
+        "question": "Do you offer discounts?",
+        "answer": "Yes, we offer discounts for long-term projects, startups, and non-profit organizations."
+      }
+    },
+    "technical": {
+      "title": "Technical Questions",
+      "technologies": {
+        "question": "What technologies do you use?",
+        "answer": "We use modern technologies: React, Next.js, Node.js, Python, Java, PHP, Flutter, React Native, PostgreSQL, MongoDB, AWS, etc."
+      },
+      "security": {
+        "question": "How do you ensure security?",
+        "answer": "We follow security best practices: data encryption, secure authentication, penetration testing, GDPR compliance, etc."
+      },
+      "hosting": {
+        "question": "Do you manage hosting?",
+        "answer": "Yes, we can manage hosting on AWS, Google Cloud, Azure, or any other provider of your choice."
+      },
+      "maintenance": {
+        "question": "What does maintenance include?",
+        "answer": "Maintenance includes security updates, bug fixes, regular backups, performance monitoring, and technical support."
+      }
+    },
+    "contact": {
+      "title": "Didn't find your answer?",
+      "subtitle": "Contact us directly, we'll be happy to help",
+      "email": "Email",
+      "phone": "Phone",
+      "chat": "Live Chat",
+      "chatDescription": "Available 24/7",
+      "contactUs": "Contact us",
+      "fullContactForm": "Full Contact Form"
+    }
+  },
+  "chatbot": {
+    "title": "Abdaty Assistant",
+    "status": "Online",
+    "welcome": "Hello! I'm Abdaty Tech's virtual assistant. How can I help you today?",
+    "placeholder": "Type your message...",
+    "quickQuestionsTitle": "Quick questions:",
+    "quickQuestions": {
+      "services": "What services do you offer?",
+      "pricing": "What are your rates?",
+      "contact": "How to contact you?",
+      "about": "Who are you?",
+      "web": "Web development",
+      "mobile": "Mobile development",
+      "security": "Cybersecurity"
+    },
+    "responses": {
+      "greeting": "Hello! Welcome to Abdaty Tech. How can I help you today?",
+      "services": "We offer a full range of services: web (websites, web applications), mobile (iOS, Android) development, UI/UX design, network infrastructure, cybersecurity, data analysis and AI, as well as an SMS API. We are based in Mali and serve all of Africa. Which service interests you?",
+      "pricing": "Our rates vary depending on project complexity and the service chosen. For a free personalized quote, contact us at contact@abdatytch.com or visit our contact page. For SMS API, our plans start at 20 FCFA per message.",
+      "contact": "You can contact us by email at contact@abdatytch.com, by phone at +223 76 71 41 42, or via our contact form on the website. We generally respond within 24h.",
+      "sms": "Our SMS API allows you to send messages in Mali with delivery in less than 3 seconds. We offer 3 plans: Starter (20 FCFA/SMS), Business (18 FCFA/SMS) and Enterprise (15 FCFA/SMS). The API is easy to integrate with complete documentation. Visit /en/sms-api for more info.",
+      "about": "Abdaty Technologie is a technology development company based in Mali. We specialize in web, mobile development, UI/UX design, cybersecurity and AI. Our mission is to transform African businesses through innovative technological solutions. We have over 10 years of experience.",
+      "web": "Our web development service includes creating showcase websites, e-commerce, custom web applications, and CMS. We use modern technologies like React, Next.js, Node.js, etc. Our sites are SEO optimized, responsive and performant.",
+      "mobile": "We develop native (iOS and Android) and hybrid (React Native, Flutter) mobile applications. Our apps are performant, secure and offer excellent user experience. We manage the complete development from design to deployment on stores.",
+      "security": "Our cybersecurity services include: security audits, penetration testing, DDoS protection, data encryption, GDPR compliance, and security training. We protect your systems and data against cyber threats.",
+      "technologies": "We use the most modern technologies: React, Next.js, Vue.js, Node.js, Python, React Native, Flutter, AWS, Docker, Kubernetes, and many more. We choose technologies adapted to each project.",
+      "portfolio": "We have completed over 500 projects for clients in Mali and across Africa. Our clients include startups, SMEs, large enterprises and government organizations. You can see some of our projects on our website.",
+      "location": "We are based in Mali, but we serve clients across Africa and beyond. Our team is capable of working remotely on international projects.",
+      "timeline": "Development timeline depends on project complexity. A simple showcase site can take 2-4 weeks, a complex web application 2-3 months, and a mobile app 3-6 months. Contact us for a precise estimate.",
+      "support": "We offer technical support after delivery. Our maintenance plans include bug fixes, security updates, continuous improvement, and email/phone support.",
+      "default": "I'm not sure I understand. Can you rephrase your question? You can also choose a quick question below or contact our team directly for personalized assistance."
+    }
+  },
+  "docs": {
+    "hero": {
+      "title": "Documentation",
+      "subtitle": "Everything you need to integrate our services",
+      "searchPlaceholder": "Search documentation...",
+      "cta": "Get Started",
+      "ctaSecondary": "View Documentation",
+      "ctaDocs": "Documentation",
+      "ctaSwagger": "Swagger API"
+    },
+    "sidebar": {
+      "title": "Navigation",
+      "getting-started": {
+        "title": "Getting Started",
+        "introduction": "Introduction",
+        "installation": "Installation",
+        "quickstart": "Quick Start"
+      },
+      "api-reference": {
+        "title": "API Reference",
+        "authentication": "Authentication",
+        "endpoints": "Endpoints",
+        "errors": "Error Handling"
+      },
+      "guides": {
+        "title": "Guides",
+        "sms-api": "SMS API",
+        "webhooks": "Webhooks",
+        "best-practices": "Best Practices"
+      },
+      "examples": {
+        "title": "Examples",
+        "nodejs": "Node.js",
+        "python": "Python",
+        "php": "PHP",
+        "java": "Java"
+      }
+    },
+    "content": {
+      "introduction": {
+        "title": "Introduction",
+        "description": "Welcome to Abdaty Tech documentation. Here you'll find everything you need to integrate our services into your applications.",
+        "note": {
+          "title": "Need help?",
+          "text": "Our support team is available 24/7 to assist you. Contact us at support@abdaty-tech.com"
+        }
+      },
+      "installation": {
+        "title": "Installation",
+        "description": "Install our SDK in your project using npm or yarn."
+      },
+      "quickstart": {
+        "title": "Quick Start",
+        "description": "Start using our services in minutes with this simple example."
+      },
+      "authentication": {
+        "title": "Authentication",
+        "description": "All API requests require a valid API key. You can get your key from your dashboard."
+      }
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Blog",
+      "subtitle": "News, tutorials and insights about technology"
+    },
+    "categories": {
+      "title": "Categories",
+      "all": "All posts",
+      "api": "API",
+      "development": "Development",
+      "design": "Design",
+      "security": "Security",
+      "mobile": "Mobile",
+      "ai": "Artificial Intelligence",
+      "recentPosts": "Recent posts"
+    },
+    "posts": {
+      "api-sms-mali-guide": {
+        "title": "Complete Guide to Mali SMS API",
+        "excerpt": "Learn how to integrate our SMS API into your applications to send messages in Mali."
+      },
+      "web-development-trends-2024": {
+        "title": "Web Development Trends in 2024",
+        "excerpt": "The technologies and frameworks that will dominate web development this year."
+      },
+      "cybersecurity-best-practices": {
+        "title": "Cybersecurity Best Practices",
+        "excerpt": "Protect your applications and data with these essential security tips."
+      },
+      "ui-ux-design-principles": {
+        "title": "Fundamental UI/UX Design Principles",
+        "excerpt": "Create intuitive and engaging user interfaces with these design principles."
+      },
+      "mobile-app-development-flutter": {
+        "title": "Mobile App Development with Flutter",
+        "excerpt": "Why Flutter is the best choice for cross-platform application development."
+      },
+      "data-ai-machine-learning": {
+        "title": "Data & AI: Introduction to Machine Learning",
+        "excerpt": "Understand the basics of machine learning and how to apply it to your projects."
+      }
+    }
+  },
+  "serviceDetails": {
+    "common": {
+      "getStarted": "Get Started",
+      "scheduleCall": "Schedule a Call",
+      "viewAllServices": "View All Services",
+      "getFreeConsultation": "Get a Free Consultation",
+      "readyToTransform": "Ready to Transform Your Business?",
+      "letsDiscuss": "Let's discuss how we can help you achieve your goals with our expert solutions.",
+      "whyChoose": "Why Choose Our",
+      "powerfulFeatures": "Powerful features that drive results",
+      "ourProcess": "Our Process",
+      "fromConceptToLaunch": "From concept to launch in 4 simple steps",
+      "technologiesWeMaster": "Technologies We Master",
+      "industryLeadingTools": "Industry-leading tools and frameworks"
+    },
+    "stats": {
+      "webAppsBuilt": "Web Apps Built",
+      "uptime": "Uptime",
+      "avgLoadTime": "Avg Load Time",
+      "mobileReady": "Mobile Ready",
+      "appsPublished": "Apps Published",
+      "avgRating": "Avg Rating",
+      "downloads": "Downloads",
+      "platforms": "Platforms",
+      "desktopApps": "Desktop Apps",
+      "reliability": "Reliability",
+      "support": "Support",
+      "designsCreated": "Designs Created",
+      "clientSatisfaction": "Client Satisfaction",
+      "conversionBoost": "Conversion Boost",
+      "accessible": "Accessible",
+      "uptimeSLA": "Uptime SLA",
+      "networksBuilt": "Networks Built",
+      "latency": "Latency",
+      "monitoring": "Monitoring",
+      "breaches": "Breaches",
+      "auditsDone": "Audits Done",
+      "threatMonitor": "Threat Monitor",
+      "certified": "Certified",
+      "aiProjects": "AI Projects",
+      "accuracy": "Accuracy",
+      "dataProcessed": "Data Processed",
+      "mlModels": "ML Models"
+    },
+    "benefits": {
+      "lightningFast": {
+        "title": "Lightning Fast",
+        "description": "Optimized performance with Next.js and modern frameworks"
+      },
+      "scalableArchitecture": {
+        "title": "Scalable Architecture",
+        "description": "Built to grow with your business"
+      },
+      "secureByDesign": {
+        "title": "Secure by Design",
+        "description": "Enterprise-grade security standards"
+      },
+      "userCentric": {
+        "title": "User-Centric",
+        "description": "Beautiful interfaces that users love"
+      },
+      "nativePerformance": {
+        "title": "Native Performance",
+        "description": "Smooth 60fps animations and instant response"
+      },
+      "crossPlatform": {
+        "title": "Cross-Platform",
+        "description": "One code for iOS and Android"
+      },
+      "offlineFirst": {
+        "title": "Offline First",
+        "description": "Works perfectly without internet"
+      },
+      "pushNotifications": {
+        "title": "Push Notifications",
+        "description": "Engage users with timely updates"
+      },
+      "highPerformance": {
+        "title": "High Performance",
+        "description": "Native speed with optimized resource usage"
+      },
+      "systemIntegration": {
+        "title": "System Integration",
+        "description": "Deep OS integration and automation"
+      },
+      "offlineCapable": {
+        "title": "Offline Capable",
+        "description": "Full functionality without internet"
+      },
+      "userCentered": {
+        "title": "User-Centered",
+        "description": "Design decisions based on research"
+      },
+      "brandConsistency": {
+        "title": "Brand Consistency",
+        "description": "Cohesive design systems"
+      },
+      "accessibility": {
+        "title": "Accessibility",
+        "description": "WCAG 2.1 AA compliant"
+      },
+      "conversionFocused": {
+        "title": "Conversion Focused",
+        "description": "Designs that drive results"
+      },
+      "highAvailability": {
+        "title": "High Availability",
+        "description": "Redundant systems for zero downtime"
+      },
+      "scalable": {
+        "title": "Scalable",
+        "description": "Grows with your business needs"
+      },
+      "secure": {
+        "title": "Secure",
+        "description": "Multi-layer security architecture"
+      },
+      "monitored": {
+        "title": "Monitored",
+        "description": "Real-time performance tracking"
+      },
+      "threatProtection": {
+        "title": "Threat Protection",
+        "description": "Advanced threat detection and prevention"
+      },
+      "compliance": {
+        "title": "Compliance",
+        "description": "Ready for GDPR, ISO 27001, SOC 2"
+      },
+      "encryption": {
+        "title": "Encryption",
+        "description": "End-to-end data encryption"
+      },
+      "soc247": {
+        "title": "SOC 24/7",
+        "description": "Security operations center monitoring"
+      },
+      "predictiveAnalytics": {
+        "title": "Predictive Analytics",
+        "description": "AI-powered insights for better decision making"
+      },
+      "bigDataProcessing": {
+        "title": "Big Data Processing",
+        "description": "Handle massive datasets with ease"
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "description": "Enterprise-grade data protection"
+      },
+      "customMLModels": {
+        "title": "Custom ML Models",
+        "description": "Tailored machine learning solutions"
+      }
+    },
+    "process": {
+      "discoveryPlanning": {
+        "title": "Discovery & Planning",
+        "description": "We analyze your requirements and create a detailed roadmap"
+      },
+      "designPrototyping": {
+        "title": "Design & Prototyping",
+        "description": "Interactive prototypes to visualize your app"
+      },
+      "development": {
+        "title": "Development",
+        "description": "Clean, maintainable code following best practices"
+      },
+      "launchSupport": {
+        "title": "Launch & Support",
+        "description": "Smooth deployment and ongoing maintenance"
+      },
+      "strategyResearch": {
+        "title": "Strategy & Research",
+        "description": "Market analysis and user persona definition"
+      },
+      "uiUxDesign": {
+        "title": "UI/UX Design",
+        "description": "Platform-specific design guidelines"
+      },
+      "nativeDevelopment": {
+        "title": "Native Development",
+        "description": "React Native or Flutter implementation"
+      },
+      "appStoreLaunch": {
+        "title": "App Store Launch",
+        "description": "Submission and optimization for stores"
+      },
+      "requirementsAnalysis": {
+        "title": "Requirements Analysis",
+        "description": "Understand your workflow and needs"
+      },
+      "architectureDesign": {
+        "title": "Architecture Design",
+        "description": "Scalable and maintainable structure"
+      },
+      "implementation": {
+        "title": "Implementation",
+        "description": "Modern frameworks like Electron or Tauri"
+      },
+      "deployment": {
+        "title": "Deployment",
+        "description": "Automatic updates and distribution setup"
+      },
+      "researchDiscovery": {
+        "title": "Research & Discovery",
+        "description": "User interviews and competitive analysis"
+      },
+      "wireframing": {
+        "title": "Wireframing",
+        "description": "Low-fidelity mockups and user flows"
+      },
+      "visualDesign": {
+        "title": "Visual Design",
+        "description": "High-fidelity mockups and prototypes"
+      },
+      "testingIteration": {
+        "title": "Testing & Iteration",
+        "description": "User testing and refinement"
+      },
+      "networkAssessment": {
+        "title": "Network Assessment",
+        "description": "Evaluate current infrastructure"
+      },
+      "designPlanning": {
+        "title": "Design & Planning",
+        "description": "Topology planning and capacity"
+      },
+      "hardwareSoftwareDeployment": {
+        "title": "Deployment",
+        "description": "Hardware and software deployment"
+      },
+      "monitoringSupport": {
+        "title": "Monitoring & Support",
+        "description": "Proactive maintenance and optimization"
+      },
+      "securityAudit": {
+        "title": "Security Audit",
+        "description": "Complete vulnerability assessment"
+      },
+      "riskAnalysis": {
+        "title": "Risk Analysis",
+        "description": "Identify and prioritize threats"
+      },
+      "securityImplementation": {
+        "title": "Implementation",
+        "description": "Deploy security controls and tools"
+      },
+      "continuousMonitoring": {
+        "title": "Continuous Monitoring",
+        "description": "Real-time threat detection"
+      },
+      "dataCollection": {
+        "title": "Data Collection",
+        "description": "Gather and clean your data sources"
+      },
+      "analysisModeling": {
+        "title": "Analysis & Modeling",
+        "description": "Build and train ML models"
+      },
+      "aiImplementation": {
+        "title": "Implementation",
+        "description": "Deploy AI solutions to production"
+      },
+      "optimization": {
+        "title": "Optimization",
+        "description": "Continuous model improvement"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to your space",
+    "sentSms": "SMS Sent",
+    "apiKeysCount": "API Keys",
+    "consumption": "Consumption",
+    "invoicesCount": "Invoices",
+    "thisMonth": "this month",
+    "smsAnalytics": "SMS Analytics",
+    "distributionByType": "Distribution by Type",
+    "transactionalSms": "Transactional SMS",
+    "marketingSms": "Marketing SMS",
+    "deliveryRateMain": "Delivery rate",
+    "failureRate": "Failure rate",
+    "last30DaysActivity": "Last 30 days activity",
+    "manageApiKeys": "Manage API Keys",
+    "smsHistoryLink": "SMS History",
+    "billingLink": "Billing",
+    "settingsLink": "Settings",
+    "recentSms": "Recent SMS",
+    "minutesAgo": "{count} minutes ago",
+    "sent": "Sent",
+    "viewAllHistory": "View all history",
+    "createdOn": "Created on {date}",
+    "active": "Active",
+    "manageAllKeys": "Manage all keys",
+    "createNewKey": "Create new key",
+    "smsHistory": {
+      "title": "SMS History",
+      "subtitle": "View all your sent SMS",
+      "date": "Date",
+      "recipient": "Recipient",
+      "status": "Status",
+      "message": "Message",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "failed": "Failed",
+      "pending": "Pending",
+      "noMessages": "No messages sent",
+      "noResults": "No results found",
+      "totalSms": "Total SMS",
+      "deliveryRate": "Delivery rate",
+      "smsToday": "SMS today",
+      "failedCount": "Failed",
+      "back": "Back"
+    },
+    "billing": {
+      "title": "Billing",
+      "subtitle": "Manage your invoices and payments",
+      "currentPlan": "Current plan",
+      "nextBilling": "Next billing",
+      "paymentMethod": "Payment method",
+      "invoices": "Invoices",
+      "download": "Download",
+      "status": "Status",
+      "date": "Date",
+      "amount": "Amount",
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "overdue": "Overdue",
+      "back": "Back",
+      "id": "ID",
+      "expensesThisMonth": "Expenses this month",
+      "paidInvoices": "Paid invoices",
+      "pendingInvoice": "Pending invoice",
+      "overdueInvoices": "Overdue invoices",
+      "professionalPlan": "Professional Plan",
+      "perMonth": "/ month",
+      "nextBillingDate": "April 15, 2024",
+      "nextBillingAmount": "50,000 FCFA",
+      "showing": "Showing 1 to 3 of 12 invoices",
+      "previous": "Previous",
+      "next": "Next",
+      "edit": "Edit",
+      "expires": "Expires 12/25"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "unreadCount": "{count} unread notifications",
+      "noUnread": "No unread notifications",
+      "markAllAsRead": "Mark all as read",
+      "markAsRead": "Mark as read",
+      "delete": "Delete",
+      "noNotifications": "No notifications"
+    },
+    "settings": {
+      "emailNotificationsDesc": "Receive email notifications",
+      "smsNotifications": "SMS notifications",
+      "smsNotificationsDesc": "Receive SMS notifications",
+      "security": "Security",
+      "changePassword": "Change password",
+      "twoFactor": "Two-factor authentication",
+      "twoFactorDesc": "Secure your account with 2FA",
+      "preferences": "Preferences",
+      "language": "Language",
+      "theme": "Theme",
+      "themeDesc": "Dark mode / Light mode",
+      "save": "Save",
+      "french": "French",
+      "english": "English",
+      "title": "Settings",
+      "subtitle": "Manage your account and preferences",
+      "profile": "Profile",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "notifications": "Notifications",
+      "emailNotifications": "Email notifications"
+    },
+    "apiKeys": {
+      "title": "API Keys",
+      "subtitle": "Manage your API keys for sending SMS",
+      "createKey": "Create key",
+      "createNewKey": "Create new API key",
+      "keyName": "Key name",
+      "keyNamePlaceholder": "Ex: Production Key",
+      "create": "Create",
+      "cancel": "Cancel",
+      "active": "Active",
+      "revoked": "Revoked",
+      "createdAt": "Created at:",
+      "lastUsed": "Last used:",
+      "important": "Important:",
+      "securityWarning": "Never share your API keys with third parties. If you think a key has been compromised, revoke it immediately.",
+      "back": "Back"
+    },
+    "createApiKey": {
+      "title": "Create new API key",
+      "subtitle": "Generate a new API key to access our services",
+      "name": "Key name",
+      "namePlaceholder": "Ex: Mobile App",
+      "permissions": "Permissions",
+      "read": "Read",
+      "write": "Write",
+      "delete": "Delete",
+      "expiry": "Expiry date",
+      "noExpiry": "No expiry",
+      "create": "Create key",
+      "cancel": "Cancel",
+      "back": "Back",
+      "success": "API key created successfully",
+      "error": "Error creating API key"
+    }
+  },
+  "admin": {
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "admin": "Admin",
+      "content": "Content",
+      "settings": "Settings"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Manage all parts of your site",
+      "quickActions": "Quick Actions",
+      "recentActivity": "Recent Activity",
+      "stats": {
+        "totalArticles": "Total Articles",
+        "activeServices": "Active Services",
+        "sitePages": "Site Pages",
+        "users": "Users"
+      },
+      "actions": {
+        "manageServices": {
+          "title": "Manage Services",
+          "description": "Add, edit or delete services"
+        },
+        "manageBlog": {
+          "title": "Manage Blog",
+          "description": "Create and edit blog posts"
+        },
+        "manageDocs": {
+          "title": "Manage Documentation",
+          "description": "Edit documentation sections"
+        },
+        "siteSettings": {
+          "title": "Site Settings",
+          "description": "Configure general settings"
+        }
+      },
+      "activity": {
+        "newBlogPost": "New blog post created",
+        "serviceModified": "Service \"Cybersecurity\" modified",
+        "settingsUpdated": "Site settings updated",
+        "hoursAgo": "{hours} hours ago",
+        "dayAgo": "{days} day ago",
+        "daysAgo": "{days} days ago"
+      }
+    },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "content": "Content",
+      "hero": "Hero",
+      "services": "Services",
+      "testimonials": "Testimonials",
+      "footer": "Footer",
+      "navigation": "Navigation",
+      "about": "About",
+      "contact": "Contact",
+      "smsApi": "SMS API",
+      "legal": "Legal",
+      "blog": "Blog",
+      "docs": "Documentation",
+      "media": "Media",
+      "management": "Management",
+      "users": "Users",
+      "smsSubscribers": "SMS Subscribers",
+      "security": "Secur & Monitoring",
+      "securityIps": "Suspicious IPs",
+      "geoBlocking": "Geo-blocking",
+      "logs": "Logs & Metrics",
+      "apiDocs": "API Docs",
+      "settings": "Settings",
+      "general": "General",
+      "languages": "Languages",
+      "theme": "Theme",
+      "seo": "SEO",
+      "social": "Social Media"
+    },
+    "content": {
+      "services": {
+        "title": "Manage Services",
+        "subtitle": "Add, edit or delete services",
+        "addService": "Add Service",
+        "editService": "Edit Service",
+        "createService": "Create Service",
+        "icon": "Icon",
+        "titleLabel": "Title",
+        "subtitleLabel": "Subtitle",
+        "description": "Description",
+        "active": "Active",
+        "inactive": "Inactive",
+        "cancel": "Cancel",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "hero": {
+        "title": "Manage Hero Section",
+        "subtitle": "Edit the hero section of the homepage",
+        "sectionSettings": "Section Settings",
+        "titleLabel": "Title",
+        "subtitleLabel": "Subtitle",
+        "description": "Description",
+        "ctaText": "CTA Button Text",
+        "ctaSecondaryText": "Secondary Button Text",
+        "ctaLink": "CTA Button Link",
+        "ctaSecondaryLink": "Secondary Button Link",
+        "active": "Active",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "footer": {
+        "title": "Manage Footer",
+        "subtitle": "Edit the site footer",
+        "footerSettings": "Footer Settings",
+        "description": "Description",
+        "quickLinks": "Quick Links",
+        "services": "Services",
+        "legal": "Legal",
+        "termsOfService": "Terms of Service",
+        "privacyPolicy": "Privacy Policy",
+        "rights": "Rights",
+        "active": "Active",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "testimonials": {
+        "title": "Manage Testimonials",
+        "subtitle": "Add, edit or delete testimonials",
+        "addTestimonial": "Add Testimonial",
+        "editTestimonial": "Edit Testimonial",
+        "createTestimonial": "Create Testimonial",
+        "clientName": "Client Name",
+        "company": "Company",
+        "role": "Role",
+        "content": "Content",
+        "rating": "Rating",
+        "order": "Order",
+        "active": "Active",
+        "inactive": "Inactive",
+        "cancel": "Cancel",
+        "save": "Save",
+        "confirmDelete": "Are you sure you want to delete this testimonial?",
+        "saved": "Saved successfully"
+      },
+      "navigation": {
+        "title": "Manage Navigation",
+        "subtitle": "Edit site navigation links",
+        "navItems": "Navigation Items",
+        "addNewItem": "Add New Item",
+        "label": "Label",
+        "href": "URL",
+        "active": "Active",
+        "external": "External Link",
+        "add": "Add",
+        "save": "Save",
+        "confirmDelete": "Are you sure you want to delete this item?",
+        "saved": "Saved successfully"
+      },
+      "about": {
+        "title": "Manage About",
+        "subtitle": "Edit the About page information",
+        "mainSection": "Main Section",
+        "titleLabel": "Title",
+        "subtitleLabel": "Subtitle",
+        "description": "Description",
+        "missionVision": "Mission & Vision",
+        "mission": "Mission",
+        "vision": "Vision",
+        "values": "Values",
+        "valueTitle": "Value Title",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "contact": {
+        "title": "Manage Contact",
+        "subtitle": "Edit contact information",
+        "mainInfo": "Main Information",
+        "titleLabel": "Title",
+        "subtitleLabel": "Subtitle",
+        "description": "Description",
+        "contactDetails": "Contact Details",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "hours": "Hours",
+        "socialMedia": "Social Media",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "faq": {
+        "title": "Manage FAQ",
+        "subtitle": "Add, edit or delete frequently asked questions",
+        "addQuestion": "Add Question",
+        "editQuestion": "Edit Question",
+        "createQuestion": "Create Question",
+        "question": "Question",
+        "answer": "Answer",
+        "category": "Category",
+        "order": "Order",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "confirmDelete": "Are you sure you want to delete this question?",
+        "saved": "Saved successfully"
+      },
+      "sla": {
+        "title": "Manage SLA",
+        "subtitle": "Edit service level agreements",
+        "mainSection": "Main Section",
+        "titleLabel": "Title",
+        "subtitleLabel": "Subtitle",
+        "description": "Description",
+        "responseTime": "Response Time",
+        "critical": "Critical",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low",
+        "guarantees": "Guarantees",
+        "guaranteeTitle": "Guarantee Title",
+        "percentage": "Percentage",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "newsletter": {
+        "title": "Manage Newsletter",
+        "subtitle": "Configure newsletter and manage subscribers",
+        "configuration": "Configuration",
+        "titleLabel": "Title",
+        "description": "Description",
+        "placeholder": "Placeholder",
+        "buttonText": "Button Text",
+        "subscribers": "Subscribers",
+        "subscribedOn": "Subscribed on",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "cookies": {
+        "title": "Manage Cookies",
+        "subtitle": "Configure cookie settings",
+        "mainConfiguration": "Main Configuration",
+        "titleLabel": "Title",
+        "description": "Description",
+        "acceptAll": "Accept All",
+        "rejectAll": "Reject All",
+        "customize": "Customize",
+        "categories": "Categories",
+        "essential": "Essential Cookies",
+        "analytics": "Analytics Cookies",
+        "marketing": "Marketing Cookies",
+        "categoryTitle": "Category Title",
+        "categoryDescription": "Category Description",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "legal": {
+        "title": "Manage Legal",
+        "subtitle": "Edit terms of service and privacy policy",
+        "termsOfService": "Terms of Service",
+        "privacyPolicy": "Privacy Policy",
+        "content": "Content",
+        "lastUpdated": "Last Updated",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "smsApi": {
+        "title": "Manage SMS API",
+        "subtitle": "Configure SMS API settings",
+        "mainSection": "Main Section",
+        "titleLabel": "Title",
+        "subtitleLabel": "Subtitle",
+        "description": "Description",
+        "pricing": "Pricing",
+        "pricePerSMS": "Price per SMS",
+        "currency": "Currency",
+        "features": "Features",
+        "featureTitle": "Feature Title",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "partners": {
+        "title": "Manage Partners",
+        "subtitle": "Add, edit or delete partners",
+        "addPartner": "Add Partner",
+        "editPartner": "Edit Partner",
+        "createPartner": "Create Partner",
+        "name": "Name",
+        "logo": "Logo (URL)",
+        "website": "Website",
+        "order": "Order",
+        "cancel": "Cancel",
+        "save": "Save",
+        "confirmDelete": "Are you sure you want to delete this partner?"
+      },
+      "media": {
+        "title": "Manage Media",
+        "subtitle": "Upload and manage your images and files",
+        "uploadFile": "Upload File",
+        "dragDrop": "Drag and drop a file here",
+        "or": "or",
+        "upload": "Upload",
+        "selectedFile": "Selected file",
+        "uploaded": "File uploaded successfully",
+        "searchPlaceholder": "Search files...",
+        "filter": "Filter",
+        "download": "Download",
+        "noFiles": "No files found",
+        "confirmDelete": "Are you sure you want to delete this file?"
+      }
+    },
+    "settings": {
+      "general": {
+        "title": "General Settings",
+        "subtitle": "Configure general site information",
+        "settings": "Settings",
+        "generalInfo": "General Information",
+        "siteName": "Site Name",
+        "siteDescription": "Site Description",
+        "contactInfo": "Contact Information",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "socialMedia": "Social Media",
+        "seoSettings": "SEO Settings",
+        "metaTitle": "Meta Title",
+        "metaDescription": "Meta Description",
+        "keywords": "Keywords",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "languages": {
+        "title": "Manage Languages",
+        "subtitle": "Configure available languages on the site",
+        "availableLanguages": "Available Languages",
+        "default": "Default",
+        "enabled": "Enabled",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "theme": {
+        "title": "Manage Theme",
+        "subtitle": "Customize site colors",
+        "colors": "Colors",
+        "primaryColor": "Primary Color",
+        "secondaryColor": "Secondary Color",
+        "accentColor": "Accent Color",
+        "backgroundColor": "Background Color",
+        "textColor": "Text Color",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "seo": {
+        "title": "SEO Settings",
+        "subtitle": "Optimize your site's SEO",
+        "metaTitle": "Meta Title",
+        "metaDescription": "Meta Description",
+        "keywords": "Keywords",
+        "ogImage": "Open Graph Image",
+        "save": "Save",
+        "saved": "Saved successfully"
+      },
+      "social": {
+        "title": "Social Media",
+        "subtitle": "Configure your social media links",
+        "facebook": "Facebook",
+        "twitter": "Twitter",
+        "linkedin": "LinkedIn",
+        "instagram": "Instagram",
+        "youtube": "YouTube",
+        "save": "Save",
+        "saved": "Saved successfully"
+      }
+    },
+    "blog": {
+      "title": "Manage Blog",
+      "subtitle": "Create and edit blog posts",
+      "addPost": "Add Post",
+      "editPost": "Edit Post",
+      "createPost": "Create Post",
+      "slug": "Slug",
+      "titleLabel": "Title",
+      "excerpt": "Excerpt",
+      "content": "Content",
+      "author": "Author",
+      "category": "Category",
+      "tags": "Tags",
+      "status": "Status",
+      "published": "Published",
+      "draft": "Draft",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "searchPlaceholder": "Search posts...",
+      "filter": "Filter",
+      "cancel": "Cancel",
+      "save": "Save",
+      "confirmDelete": "Are you sure you want to delete this post?",
+      "saved": "Saved successfully"
+    },
+    "docs": {
+      "title": "Manage Documentation",
+      "subtitle": "Create and edit documentation sections",
+      "addSection": "Add Section",
+      "editSection": "Edit Section",
+      "createSection": "Create Section",
+      "slug": "Slug",
+      "titleLabel": "Title",
+      "content": "Content",
+      "order": "Order",
+      "parent": "Parent",
+      "active": "Active",
+      "inactive": "Inactive",
+      "cancel": "Cancel",
+      "save": "Save",
+      "confirmDelete": "Are you sure you want to delete this section?",
+      "saved": "Saved successfully"
+    },
+    "users": {
+      "title": "User Management",
+      "subtitle": "Manage user accounts and permissions",
+      "totalUsers": "Total Users",
+      "activeUsers": "Active Users",
+      "bannedUsers": "Banned Users",
+      "blockedUsers": "Blocked Users",
+      "searchPlaceholder": "Search by name or email...",
+      "allStatus": "All statuses",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "statusDeactivated": "Deactivated",
+      "statusBanned": "Banned",
+      "statusBlocked": "Blocked",
+      "usersList": "Users List",
+      "name": "Name",
+      "contact": "Contact",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined",
+      "actions": "Actions",
+      "verified": "Verified",
+      "notVerified": "Not verified",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "ban": "Ban",
+      "unban": "Unban",
+      "block": "Block",
+      "unblock": "Unblock",
+      "confirmBan": "Are you sure you want to ban this user?",
+      "confirmBlock": "Are you sure you want to block this user?"
+    },
+    "smsSubscribers": {
+      "title": "SMS Subscribers",
+      "subtitle": "Manage SMS API service subscribers",
+      "totalSubscribers": "Total Subscribers",
+      "activeSubscribers": "Active Subscribers",
+      "totalMessages": "Messages Sent",
+      "totalRevenue": "Total Revenue",
+      "searchPlaceholder": "Search by name or email...",
+      "allPlans": "All plans",
+      "subscribersList": "Subscribers List",
+      "subscriber": "Subscriber",
+      "plan": "Plan",
+      "status": "Status",
+      "usage": "Usage",
+      "balance": "Balance",
+      "actions": "Actions",
+      "statusActive": "Active",
+      "statusSuspended": "Suspended",
+      "statusCancelled": "Cancelled",
+      "messages": "messages",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "cancel": "Cancel",
+      "confirmSuspend": "Are you sure you want to suspend this subscriber?",
+      "confirmCancel": "Are you sure you want to cancel this subscription?"
+    },
+    "security": {
+      "title": "Security & Suspicious IPs",
+      "subtitle": "Monitor and block suspicious IPs with MaxMind geolocation",
+      "suspiciousIPs": "Suspicious IPs",
+      "blockedIPs": "Blocked IPs",
+      "criticalThreats": "Critical Threats",
+      "totalAttempts": "Total Attempts",
+      "searchPlaceholder": "Search by IP, country or city...",
+      "allThreats": "All levels",
+      "threatLow": "Low",
+      "threatMedium": "Medium",
+      "threatHigh": "High",
+      "threatCritical": "Critical",
+      "ipList": "IP List",
+      "ipAddress": "IP Address",
+      "location": "Location",
+      "isp": "ISP",
+      "threat": "Threat",
+      "attempts": "Attempts",
+      "status": "Status",
+      "actions": "Actions",
+      "statusMonitoring": "Monitoring",
+      "statusBlocked": "Blocked",
+      "statusWhitelisted": "Whitelisted",
+      "block": "Block",
+      "unblock": "Unblock",
+      "whitelist": "Whitelist",
+      "removeWhitelist": "Remove",
+      "confirmBlock": "Are you sure you want to block this IP?"
+    },
+    "geoBlocking": {
+      "title": "Geo-blocking by Country",
+      "subtitle": "Control access by country via MaxMind GeoIP",
+      "totalCountries": "Total Countries",
+      "blockedCountries": "Blocked Countries",
+      "allowedCountries": "Allowed Countries",
+      "totalRequests": "Total Requests",
+      "searchPlaceholder": "Search for a country...",
+      "allContinents": "All continents",
+      "countries": "countries",
+      "blockAll": "Block All",
+      "unblockAll": "Unblock All",
+      "country": "Country",
+      "code": "Code",
+      "requests": "Requests",
+      "threatScore": "Threat Score",
+      "access": "Access",
+      "blocked": "Blocked",
+      "allowed": "Allowed",
+      "confirmBlockContinent": "Are you sure you want to block all countries in {continent}?"
+    },
+    "logs": {
+      "title": "Logs & Metrics",
+      "subtitle": "Monitor system logs and performance metrics",
+      "metrics": "Metrics",
+      "logs": "Logs",
+      "cpuUsage": "CPU Usage",
+      "memoryUsage": "Memory Usage",
+      "diskUsage": "Disk Usage",
+      "apiRequests": "API Requests",
+      "activeUsers": "Active Users",
+      "errorRate": "Error Rate",
+      "avgResponseTime": "Avg Response Time",
+      "smsSent": "SMS Sent",
+      "serverUptime": "Server Uptime",
+      "totalLogs": "Total Logs",
+      "errors": "Errors",
+      "warnings": "Warnings",
+      "info": "Info",
+      "searchPlaceholder": "Search in logs...",
+      "allLevels": "All levels",
+      "export": "Export",
+      "recentLogs": "Recent Logs"
+    },
+    "apiDocs": {
+      "title": "API Documentation",
+      "subtitle": "Interactive Swagger documentation and API endpoints",
+      "swaggerUI": "Swagger UI",
+      "interactive": "Interactive",
+      "downloadSpec": "Download Spec",
+      "apiKeys": "API Keys",
+      "manage": "Manage",
+      "authentication": "Authentication",
+      "openFullscreen": "Open Fullscreen",
+      "swaggerPlaceholder": "Swagger UI interface will be embedded here",
+      "viewSwagger": "View Swagger",
+      "endpoints": "API Endpoints",
+      "totalEndpoints": "Total Endpoints",
+      "apiVersion": "API Version",
+      "apiStatus": "API Status",
+      "operational": "Operational"
+    }
+  },
+  "content": {
+    "media": {
+      "title": "Manage Media",
+      "subtitle": "Upload and manage your images and files",
+      "uploadFile": "Upload File",
+      "dragDrop": "Drag and drop a file here",
+      "or": "or",
+      "upload": "Upload",
+      "selectedFile": "Selected file",
+      "uploaded": "File uploaded successfully",
+      "searchPlaceholder": "Search files...",
+      "filter": "Filter",
+      "download": "Download",
+      "noFiles": "No files found",
+      "confirmDelete": "Are you sure you want to delete this file?"
+    },
+    "about": {
+      "title": "Manage About",
+      "subtitle": "Edit About page information",
+      "mainSection": "Main Section",
+      "titleLabel": "Title",
+      "subtitleLabel": "Subtitle",
+      "description": "Description",
+      "missionVision": "Mission & Vision",
+      "mission": "Mission",
+      "vision": "Vision",
+      "values": "Values",
+      "valueTitle": "Value title",
+      "save": "Save",
+      "saved": "Saved successfully"
+    },
+    "contact": {
+      "title": "Manage Contact",
+      "subtitle": "Edit contact information",
+      "mainInfo": "Main Information",
+      "titleLabel": "Title",
+      "subtitleLabel": "Subtitle",
+      "description": "Description",
+      "contactDetails": "Contact Details",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "hours": "Hours",
+      "socialMedia": "Social Media",
+      "save": "Save",
+      "saved": "Saved successfully"
+    },
+    "faq": {
+      "title": "Manage FAQ",
+      "subtitle": "Add, edit or delete frequently asked questions",
+      "addQuestion": "Add Question",
+      "editQuestion": "Edit Question",
+      "createQuestion": "Create Question",
+      "question": "Question",
+      "answer": "Answer",
+      "category": "Category",
+      "order": "Order",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "save": "Save",
+      "confirmDelete": "Are you sure you want to delete this question?",
+      "saved": "Saved successfully"
+    },
+    "sla": {
+      "title": "Manage SLA",
+      "subtitle": "Edit service commitments",
+      "mainSection": "Main Section",
+      "titleLabel": "Title",
+      "subtitleLabel": "Subtitle",
+      "description": "Description",
+      "responseTime": "Response Time",
+      "critical": "Critical",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "guarantees": "Guarantees",
+      "guaranteeTitle": "Guarantee title",
+      "percentage": "Percentage",
+      "save": "Save",
+      "saved": "Saved successfully"
+    },
+    "newsletter": {
+      "title": "Manage Newsletter",
+      "subtitle": "Configure newsletter and manage subscribers",
+      "configuration": "Configuration",
+      "titleLabel": "Title",
+      "description": "Description",
+      "placeholder": "Placeholder",
+      "buttonText": "Button text",
+      "subscribers": "Subscribers",
+      "subscribedOn": "Subscribed on",
+      "save": "Save",
+      "saved": "Saved successfully"
+    },
+    "cookies": {
+      "title": "Manage Cookies",
+      "subtitle": "Configure cookie settings",
+      "mainConfiguration": "Main Configuration",
+      "titleLabel": "Title",
+      "description": "Description",
+      "acceptAll": "Accept all",
+      "rejectAll": "Reject all",
+      "customize": "Customize",
+      "categories": "Categories",
+      "essential": "Essential Cookies",
+      "analytics": "Analytics Cookies",
+      "marketing": "Marketing Cookies",
+      "categoryTitle": "Category title",
+      "categoryDescription": "Category description",
+      "save": "Save",
+      "saved": "Saved successfully"
+    },
+    "legal": {
+      "title": "Manage Legal",
+      "subtitle": "Edit terms of service and privacy policy",
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy",
+      "content": "Content",
+      "lastUpdated": "Last updated",
+      "save": "Save",
+      "saved": "Saved successfully"
+    },
+    "smsApi": {
+      "title": "Manage SMS API",
+      "subtitle": "Configure SMS API settings",
+      "mainSection": "Main Section",
+      "titleLabel": "Title",
+      "subtitleLabel": "Subtitle",
+      "description": "Description",
+      "pricing": "Pricing",
+      "pricePerSMS": "Price per SMS",
+      "currency": "Currency",
+      "features": "Features",
+      "featureTitle": "Feature title",
+      "save": "Save",
+      "saved": "Saved successfully"
+    },
+    "partners": {
+      "title": "Manage Partners",
+      "subtitle": "Add, edit or delete partners",
+      "addPartner": "Add Partner",
+      "editPartner": "Edit Partner",
+      "createPartner": "Create Partner",
+      "name": "Name",
+      "logo": "Logo (URL)",
+      "website": "Website",
+      "order": "Order",
+      "cancel": "Cancel",
+      "save": "Save",
+      "confirmDelete": "Are you sure you want to delete this partner?"
+    }
+  }
+}

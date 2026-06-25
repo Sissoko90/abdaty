@@ -1,0 +1,17 @@
+# Configuration gitleaks — hérite des règles par défaut et ajoute une allowlist
+# pour éviter les faux positifs (fichiers d'exemple, fixtures de test).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Chemins et valeurs sans secret réel"
+paths = [
+  '''\.env\.example$''',
+  '''.*\.md$''',
+  '''.*/__tests__/.*''',
+  '''.*\.test\.(ts|tsx|js|jsx)$''',
+]
+regexes = [
+  # Placeholders évidents dans la doc / les exemples.
+  '''(?i)(your[-_]?|example|placeholder|changeme|xxxx|dummy|test[-_]?)(key|secret|token|password)''',
+]

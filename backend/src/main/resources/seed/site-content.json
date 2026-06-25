@@ -1,0 +1,1667 @@
+[
+  {
+    "section": "hero",
+    "contentKey": "subtitle",
+    "valueFr": "Innovation & Excellence Technologique",
+    "valueEn": "Innovation & Technological Excellence",
+    "contentType": "text",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "hero",
+    "contentKey": "title",
+    "valueFr": "Solutions Digitales pour Votre Entreprise",
+    "valueEn": "Digital Solutions for Your Business",
+    "contentType": "text",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "hero",
+    "contentKey": "description",
+    "valueFr": "Nous concevons et développons des solutions digitales de pointe : applications web, applications mobiles, logiciels desktop, design UI/UX, infrastructure réseau et cybersécurité.",
+    "valueEn": "We design and develop cutting-edge digital solutions: web applications, mobile apps, desktop software, UI/UX design, network infrastructure, and cybersecurity.",
+    "contentType": "text",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "hero",
+    "contentKey": "ctaText",
+    "valueFr": "Démarrer un Projet",
+    "valueEn": "Start a Project",
+    "contentType": "text",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "hero",
+    "contentKey": "ctaSecondaryText",
+    "valueFr": "Découvrir Nos Services",
+    "valueEn": "Explore Our Services",
+    "contentType": "text",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-1",
+    "valueFr": {
+      "label": {
+        "fr": "Accueil",
+        "en": "Home"
+      },
+      "href": "/",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "Accueil",
+        "en": "Home"
+      },
+      "href": "/",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-2",
+    "valueFr": {
+      "label": {
+        "fr": "Services",
+        "en": "Services"
+      },
+      "href": "/services",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "Services",
+        "en": "Services"
+      },
+      "href": "/services",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-3",
+    "valueFr": {
+      "label": {
+        "fr": "API SMS",
+        "en": "SMS API"
+      },
+      "href": "/sms-api",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "API SMS",
+        "en": "SMS API"
+      },
+      "href": "/sms-api",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-4",
+    "valueFr": {
+      "label": {
+        "fr": "Documentation",
+        "en": "Documentation"
+      },
+      "href": "/docs",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "Documentation",
+        "en": "Documentation"
+      },
+      "href": "/docs",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-5",
+    "valueFr": {
+      "label": {
+        "fr": "Blog",
+        "en": "Blog"
+      },
+      "href": "/blog",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "Blog",
+        "en": "Blog"
+      },
+      "href": "/blog",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-6",
+    "valueFr": {
+      "label": {
+        "fr": "À propos",
+        "en": "About"
+      },
+      "href": "/about",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "À propos",
+        "en": "About"
+      },
+      "href": "/about",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-7",
+    "valueFr": {
+      "label": {
+        "fr": "FAQ",
+        "en": "FAQ"
+      },
+      "href": "/faq",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "FAQ",
+        "en": "FAQ"
+      },
+      "href": "/faq",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 7,
+    "active": true
+  },
+  {
+    "section": "navigation",
+    "contentKey": "item-8",
+    "valueFr": {
+      "label": {
+        "fr": "Contact",
+        "en": "Contact"
+      },
+      "href": "/contact",
+      "isExternal": false
+    },
+    "valueEn": {
+      "label": {
+        "fr": "Contact",
+        "en": "Contact"
+      },
+      "href": "/contact",
+      "isExternal": false
+    },
+    "contentType": "json",
+    "displayOrder": 8,
+    "active": true
+  },
+  {
+    "section": "footer",
+    "contentKey": "description",
+    "valueFr": "Solutions digitales innovantes pour transformer votre entreprise",
+    "valueEn": "Innovative digital solutions to transform your business",
+    "contentType": "text",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "footer",
+    "contentKey": "quickLinks",
+    "valueFr": "Liens Rapides",
+    "valueEn": "Quick Links",
+    "contentType": "text",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "footer",
+    "contentKey": "services",
+    "valueFr": "Services",
+    "valueEn": "Services",
+    "contentType": "text",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "footer",
+    "contentKey": "legal",
+    "valueFr": "Légal",
+    "valueEn": "Legal",
+    "contentType": "text",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "footer",
+    "contentKey": "termsOfService",
+    "valueFr": "Conditions d'utilisation",
+    "valueEn": "Terms of Service",
+    "contentType": "text",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "footer",
+    "contentKey": "privacyPolicy",
+    "valueFr": "Politique de confidentialité",
+    "valueEn": "Privacy Policy",
+    "contentType": "text",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "footer",
+    "contentKey": "rights",
+    "valueFr": "Tous droits réservés.",
+    "valueEn": "All rights reserved.",
+    "contentType": "text",
+    "displayOrder": 7,
+    "active": true
+  },
+  {
+    "section": "newsletter",
+    "contentKey": "title",
+    "valueFr": "Restez informé",
+    "valueEn": "Stay Informed",
+    "contentType": "text",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "newsletter",
+    "contentKey": "description",
+    "valueFr": "Rejoignez notre newsletter pour recevoir les dernières actualités, tutoriels et offres exclusives.",
+    "valueEn": "Join our newsletter to receive the latest news, tutorials and exclusive offers.",
+    "contentType": "text",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "newsletter",
+    "contentKey": "placeholder",
+    "valueFr": "Entrez votre email",
+    "valueEn": "Enter your email",
+    "contentType": "text",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "newsletter",
+    "contentKey": "buttonText",
+    "valueFr": "S'abonner",
+    "valueEn": "Subscribe",
+    "contentType": "text",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "newsletter",
+    "contentKey": "successMessage",
+    "valueFr": "Inscrit !",
+    "valueEn": "Subscribed!",
+    "contentType": "text",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "newsletter",
+    "contentKey": "privacyNote",
+    "valueFr": "Nous respectons votre vie privée. Désabonnement possible à tout moment.",
+    "valueEn": "We respect your privacy. Unsubscribe at any time.",
+    "contentType": "text",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "title",
+    "valueFr": "Contactez-nous",
+    "valueEn": "Contact Us",
+    "contentType": "text",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "subtitle",
+    "valueFr": "Discutons de votre projet et donnons vie à vos idées",
+    "valueEn": "Let's discuss your project and bring your ideas to life",
+    "contentType": "text",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "description",
+    "valueFr": "Contactez-nous par l'un de ces canaux. Nous sommes là pour vous aider à concrétiser votre vision digitale.",
+    "valueEn": "Get in touch with us through any of these channels. We're here to help you bring your digital vision to life.",
+    "contentType": "text",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "email",
+    "valueFr": "contact@abdatytechnologie.com",
+    "valueEn": "contact@abdatytechnologie.com",
+    "contentType": "text",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "phone",
+    "valueFr": "+223 76 71 41 42",
+    "valueEn": "+223 76 71 41 42",
+    "contentType": "text",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "address",
+    "valueFr": "Bamako, Mali",
+    "valueEn": "Bamako, Mali",
+    "contentType": "text",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "hours",
+    "valueFr": "Lun - Ven: 8h00 - 18h00",
+    "valueEn": "Mon - Fri: 8:00 AM - 6:00 PM",
+    "contentType": "text",
+    "displayOrder": 7,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "social.facebook",
+    "valueFr": "https://facebook.com/abdatytechnologie",
+    "valueEn": "https://facebook.com/abdatytechnologie",
+    "contentType": "text",
+    "displayOrder": 8,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "social.twitter",
+    "valueFr": "https://twitter.com/abdatytechnologie",
+    "valueEn": "https://twitter.com/abdatytechnologie",
+    "contentType": "text",
+    "displayOrder": 9,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "social.linkedin",
+    "valueFr": "https://linkedin.com/company/abdatytechnologie",
+    "valueEn": "https://linkedin.com/company/abdatytechnologie",
+    "contentType": "text",
+    "displayOrder": 10,
+    "active": true
+  },
+  {
+    "section": "contact",
+    "contentKey": "social.instagram",
+    "valueFr": "https://instagram.com/abdatytechnologie",
+    "valueEn": "https://instagram.com/abdatytechnologie",
+    "contentType": "text",
+    "displayOrder": 11,
+    "active": true
+  },
+  {
+    "section": "about",
+    "contentKey": "title",
+    "valueFr": "À propos d'Abdaty Technologie",
+    "valueEn": "About Abdaty Technologie",
+    "contentType": "text",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "about",
+    "contentKey": "subtitle",
+    "valueFr": "Votre Partenaire Technologique de Confiance",
+    "valueEn": "Your Trusted Technology Partner",
+    "contentType": "text",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "about",
+    "contentKey": "description",
+    "valueFr": "Nous sommes une entreprise technologique de premier plan spécialisée dans les solutions digitales et la transformation des entreprises. Notre équipe d'experts fournit des solutions innovantes adaptées à vos besoins.",
+    "valueEn": "We are a leading technology company specializing in digital solutions and business transformation. Our team of experts delivers innovative solutions tailored to your needs.",
+    "contentType": "text",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about",
+    "contentKey": "mission",
+    "valueFr": "Donner aux entreprises les moyens d'agir grâce à des solutions technologiques de pointe qui stimulent la croissance et l'innovation.",
+    "valueEn": "To empower businesses through cutting-edge technology solutions that drive growth and innovation.",
+    "contentType": "text",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "about",
+    "contentKey": "vision",
+    "valueFr": "Être le principal fournisseur de solutions digitales en Afrique et au-delà.",
+    "valueEn": "To be the leading provider of digital solutions in Africa and beyond.",
+    "contentType": "text",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "services",
+    "contentKey": "item-1",
+    "valueFr": {
+      "icon": "Code",
+      "slug": "web-development",
+      "title": "Développement Web",
+      "subtitle": "Applications web modernes et performantes",
+      "description": "Nous créons des applications web sur mesure avec les technologies les plus récentes : React, Next.js, TypeScript, Node.js, Java Spring Boot, PHP Laravel, Python Django.",
+      "features": [
+        "Applications web sur mesure",
+        "Plateformes e-commerce",
+        "Applications Web Progressives (PWA)",
+        "Développement d'API"
+      ]
+    },
+    "valueEn": {
+      "title": "Web Development",
+      "subtitle": "Modern and high-performance web applications",
+      "description": "Modern, responsive, and scalable web applications built with the latest technologies.",
+      "features": [
+        "Custom web applications",
+        "E-commerce platforms",
+        "Progressive Web Apps (PWA)",
+        "API development"
+      ]
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "services",
+    "contentKey": "item-2",
+    "valueFr": {
+      "icon": "Smartphone",
+      "slug": "mobile-apps",
+      "title": "Développement Mobile",
+      "subtitle": "Applications iOS et Android natives",
+      "description": "Développement d'applications mobiles natives et hybrides avec React Native, Flutter, Swift, Kotlin.",
+      "features": [
+        "Applications iOS & Android",
+        "Développement multiplateforme",
+        "Design UI/UX mobile",
+        "Maintenance & support d'applications"
+      ]
+    },
+    "valueEn": {
+      "title": "Mobile Development",
+      "subtitle": "Native iOS and Android applications",
+      "description": "Native and cross-platform mobile applications for iOS and Android.",
+      "features": [
+        "iOS & Android apps",
+        "Cross-platform development",
+        "Mobile UI/UX design",
+        "App maintenance & support"
+      ]
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "services",
+    "contentKey": "item-3",
+    "valueFr": {
+      "icon": "Monitor",
+      "slug": "desktop-apps",
+      "title": "Applications Desktop",
+      "subtitle": "Logiciels desktop puissants pour Windows, macOS et Linux",
+      "description": "Solutions logicielles desktop multiplateformes avec Electron ou Tauri pour des applications performantes.",
+      "features": [
+        "Applications desktop multiplateformes",
+        "Logiciels d'entreprise",
+        "Intégration système",
+        "Optimisation des performances"
+      ]
+    },
+    "valueEn": {
+      "title": "Desktop Applications",
+      "subtitle": "Powerful desktop software for Windows, macOS and Linux",
+      "description": "Powerful desktop software solutions for Windows, macOS, and Linux.",
+      "features": [
+        "Cross-platform desktop apps",
+        "Enterprise software",
+        "System integration",
+        "Performance optimization"
+      ]
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "services",
+    "contentKey": "item-4",
+    "valueFr": {
+      "icon": "Palette",
+      "slug": "ui-ux-design",
+      "title": "Design UI/UX",
+      "subtitle": "Interfaces utilisateur exceptionnelles",
+      "description": "Design thinking et prototypage interactif pour créer des expériences utilisateur mémorables.",
+      "features": [
+        "Design d'interface utilisateur",
+        "Recherche d'expérience utilisateur",
+        "Prototypage & wireframing",
+        "Systèmes de design"
+      ]
+    },
+    "valueEn": {
+      "title": "UI/UX Design",
+      "subtitle": "Exceptional user interfaces",
+      "description": "Beautiful, intuitive, and user-centered design solutions.",
+      "features": [
+        "User interface design",
+        "User experience research",
+        "Prototyping & wireframing",
+        "Design systems"
+      ]
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "services",
+    "contentKey": "item-5",
+    "valueFr": {
+      "icon": "Network",
+      "slug": "network-infrastructure",
+      "title": "Réseau & Infrastructure",
+      "subtitle": "Infrastructure réseau complète et gestion de serveurs",
+      "description": "Configuration réseau, administration serveur, et infrastructure IT pour une connectivité optimale.",
+      "features": [
+        "Architecture réseau",
+        "Administration serveur",
+        "Infrastructure IT",
+        "Surveillance système"
+      ]
+    },
+    "valueEn": {
+      "title": "Network & Infrastructure",
+      "subtitle": "Complete network infrastructure and server management",
+      "description": "Complete network setup, administration, and server management.",
+      "features": [
+        "Network architecture",
+        "Server administration",
+        "IT infrastructure",
+        "System monitoring"
+      ]
+    },
+    "contentType": "json",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "services",
+    "contentKey": "item-6",
+    "valueFr": {
+      "icon": "Shield",
+      "slug": "cybersecurity",
+      "title": "Cybersécurité",
+      "subtitle": "Protection de vos données et systèmes",
+      "description": "Audit de sécurité, tests de pénétration, mise en place de solutions de sécurité réseau et des données.",
+      "features": [
+        "Audits de sécurité",
+        "Tests de pénétration",
+        "Surveillance de sécurité",
+        "Conseil en conformité"
+      ]
+    },
+    "valueEn": {
+      "title": "Cybersecurity",
+      "subtitle": "Protection of your data and systems",
+      "description": "Comprehensive security solutions to protect your digital assets.",
+      "features": [
+        "Security audits",
+        "Penetration testing",
+        "Security monitoring",
+        "Compliance consulting"
+      ]
+    },
+    "contentType": "json",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "services",
+    "contentKey": "item-7",
+    "valueFr": {
+      "icon": "Brain",
+      "slug": "data-ai",
+      "title": "Data Analysis & IA",
+      "subtitle": "Analyse de données et intelligence artificielle",
+      "description": "Solutions d'intelligence artificielle et d'analyse de données pour des décisions éclairées.",
+      "features": [
+        "Machine Learning & Deep Learning",
+        "Analyse prédictive",
+        "Traitement du Big Data",
+        "Visualisation de données"
+      ]
+    },
+    "valueEn": {
+      "title": "Data Analysis & AI",
+      "subtitle": "Data analytics and artificial intelligence",
+      "description": "Artificial intelligence and data analysis solutions for informed decision-making.",
+      "features": [
+        "Machine Learning & Deep Learning",
+        "Predictive analytics",
+        "Big Data processing",
+        "Data visualization"
+      ]
+    },
+    "contentType": "json",
+    "displayOrder": 7,
+    "active": true
+  },
+  {
+    "section": "testimonials",
+    "contentKey": "item-1",
+    "valueFr": {
+      "clientName": "Amadou Diallo",
+      "company": "TechSolutions Mali",
+      "role": "CEO",
+      "rating": 5,
+      "content": "Abdaty Technologie a transformé notre présence en ligne. Leur équipe professionnelle a livré un projet exceptionnel dans les délais."
+    },
+    "valueEn": {
+      "content": "Abdaty Technologie transformed our online presence. Their professional team delivered an exceptional project on time."
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "testimonials",
+    "contentKey": "item-2",
+    "valueFr": {
+      "clientName": "Fatoumata Koné",
+      "company": "Mali Digital",
+      "role": "Directrice Marketing",
+      "rating": 5,
+      "content": "Excellent travail sur notre application mobile. L'équipe est réactive et les résultats dépassent nos attentes."
+    },
+    "valueEn": {
+      "content": "Excellent work on our mobile app. The team is responsive and the results exceeded our expectations."
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "testimonials",
+    "contentKey": "item-3",
+    "valueFr": {
+      "clientName": "Moussa Touré",
+      "company": "Sahel Tech",
+      "role": "CTO",
+      "rating": 4,
+      "content": "Partenaire de confiance pour tous nos projets de développement. Qualité et fiabilité au rendez-vous."
+    },
+    "valueEn": {
+      "content": "Trusted partner for all our development projects. Quality and reliability guaranteed."
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about-stats",
+    "contentKey": "item-1",
+    "valueFr": {
+      "value": "500+",
+      "label": "Projets Complétés",
+      "icon": "Briefcase"
+    },
+    "valueEn": {
+      "value": "500+",
+      "label": "Completed Projects",
+      "icon": "Briefcase"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "about-stats",
+    "contentKey": "item-2",
+    "valueFr": {
+      "value": "200+",
+      "label": "Clients Satisfaits",
+      "icon": "Users"
+    },
+    "valueEn": {
+      "value": "200+",
+      "label": "Satisfied Clients",
+      "icon": "Users"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "about-stats",
+    "contentKey": "item-3",
+    "valueFr": {
+      "value": "50+",
+      "label": "Récompenses",
+      "icon": "Award"
+    },
+    "valueEn": {
+      "value": "50+",
+      "label": "Awards",
+      "icon": "Award"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about-stats",
+    "contentKey": "item-4",
+    "valueFr": {
+      "value": "10+",
+      "label": "Pays Servis",
+      "icon": "Globe"
+    },
+    "valueEn": {
+      "value": "10+",
+      "label": "Countries Served",
+      "icon": "Globe"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "about-values",
+    "contentKey": "item-1",
+    "valueFr": {
+      "icon": "Heart",
+      "title": "Passion",
+      "description": "Nous aimons ce que nous faisons et cela se reflète dans chaque projet"
+    },
+    "valueEn": {
+      "title": "Passion",
+      "description": "We love what we do and it shows in every project"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "about-values",
+    "contentKey": "item-2",
+    "valueFr": {
+      "icon": "Lightbulb",
+      "title": "Innovation",
+      "description": "Nous adoptons les dernières technologies pour rester à la pointe"
+    },
+    "valueEn": {
+      "title": "Innovation",
+      "description": "We adopt the latest technologies to stay ahead"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "about-values",
+    "contentKey": "item-3",
+    "valueFr": {
+      "icon": "Target",
+      "title": "Excellence",
+      "description": "Nous visons la perfection dans chaque ligne de code"
+    },
+    "valueEn": {
+      "title": "Excellence",
+      "description": "We aim for perfection in every line of code"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about-values",
+    "contentKey": "item-4",
+    "valueFr": {
+      "icon": "Users",
+      "title": "Collaboration",
+      "description": "Nous travaillons main dans la main avec nos clients"
+    },
+    "valueEn": {
+      "title": "Collaboration",
+      "description": "We work hand in hand with our clients"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "about-timeline",
+    "contentKey": "item-1",
+    "valueFr": {
+      "year": "2020",
+      "title": "Fondation d'Abdaty Tech",
+      "description": "Création de l'entreprise avec une vision claire : révolutionner le digital au Mali"
+    },
+    "valueEn": {
+      "title": "Abdaty Tech Founded",
+      "description": "Company creation with a clear vision: revolutionize digital in Mali"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "about-timeline",
+    "contentKey": "item-2",
+    "valueFr": {
+      "year": "2021",
+      "title": "Premier Bureau à Bamako",
+      "description": "Ouverture de nos locaux modernes au cœur de Bamako"
+    },
+    "valueEn": {
+      "title": "First Office in Bamako",
+      "description": "Opening of our modern premises in the heart of Bamako"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "about-timeline",
+    "contentKey": "item-3",
+    "valueFr": {
+      "year": "2022",
+      "title": "Expansion Régionale",
+      "description": "Extension de nos services dans toute l'Afrique de l'Ouest"
+    },
+    "valueEn": {
+      "title": "Regional Expansion",
+      "description": "Extension of our services throughout West Africa"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about-timeline",
+    "contentKey": "item-4",
+    "valueFr": {
+      "year": "2023",
+      "title": "Premières Récompenses",
+      "description": "Reconnaissance de notre excellence par des prix nationaux et internationaux"
+    },
+    "valueEn": {
+      "title": "First Awards",
+      "description": "Recognition of our excellence through national and international awards"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "about-timeline",
+    "contentKey": "item-5",
+    "valueFr": {
+      "year": "2024",
+      "title": "Présence Internationale",
+      "description": "Collaboration avec des clients et partenaires à travers le monde"
+    },
+    "valueEn": {
+      "title": "International Presence",
+      "description": "Collaboration with clients and partners worldwide"
+    },
+    "contentType": "json",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "about-team",
+    "contentKey": "item-1",
+    "valueFr": {
+      "name": "Abdoulaye Diarra",
+      "role": "CEO & Founder",
+      "email": "abdoulaye@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Visionnaire et entrepreneur, il dirige Abdaty Tech avec passion depuis sa création"
+    },
+    "valueEn": {
+      "name": "Abdoulaye Diarra",
+      "role": "CEO & Founder",
+      "email": "abdoulaye@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Visionary and entrepreneur, leading Abdaty Tech with passion since its creation"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "about-team",
+    "contentKey": "item-2",
+    "valueFr": {
+      "name": "Fatoumata Touré",
+      "role": "CTO",
+      "email": "fatoumata@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Experte en architecture logicielle avec plus de 15 ans d'expérience"
+    },
+    "valueEn": {
+      "name": "Fatoumata Touré",
+      "role": "CTO",
+      "email": "fatoumata@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Software architecture expert with over 15 years of experience"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "about-team",
+    "contentKey": "item-3",
+    "valueFr": {
+      "name": "Mamadou Keita",
+      "role": "Lead Developer",
+      "email": "mamadou@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Développeur full-stack passionné par les technologies de pointe"
+    },
+    "valueEn": {
+      "name": "Mamadou Keita",
+      "role": "Lead Developer",
+      "email": "mamadou@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Full-stack developer passionate about cutting-edge technologies"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about-team",
+    "contentKey": "item-4",
+    "valueFr": {
+      "name": "Aminata Coulibaly",
+      "role": "UI/UX Designer",
+      "email": "aminata@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Designer créative spécialisée en UX/UI et design thinking"
+    },
+    "valueEn": {
+      "name": "Aminata Coulibaly",
+      "role": "UI/UX Designer",
+      "email": "aminata@abdaty-tech.com",
+      "image": "",
+      "linkedin": "#",
+      "github": "#",
+      "bio": "Creative designer specialized in UX/UI and design thinking"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "about-why",
+    "contentKey": "item-1",
+    "valueFr": {
+      "icon": "Award",
+      "title": "Expertise",
+      "description": "Plus de 10 ans d'expérience dans les solutions digitales"
+    },
+    "valueEn": {
+      "title": "Expertise",
+      "description": "10+ years of experience in digital solutions"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "about-why",
+    "contentKey": "item-2",
+    "valueFr": {
+      "icon": "Users",
+      "title": "Centré Client",
+      "description": "Votre succès est notre priorité absolue"
+    },
+    "valueEn": {
+      "title": "Client-Focused",
+      "description": "Your success is our top priority"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "about-why",
+    "contentKey": "item-3",
+    "valueFr": {
+      "icon": "Zap",
+      "title": "Livraison Rapide",
+      "description": "Délais courts sans compromettre la qualité"
+    },
+    "valueEn": {
+      "title": "Fast Delivery",
+      "description": "Quick turnaround without compromising quality"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about-why",
+    "contentKey": "item-4",
+    "valueFr": {
+      "icon": "Shield",
+      "title": "Sécurisé",
+      "description": "Normes de sécurité de niveau entreprise"
+    },
+    "valueEn": {
+      "title": "Secure",
+      "description": "Enterprise-grade security standards"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "about-why",
+    "contentKey": "item-5",
+    "valueFr": {
+      "icon": "Clock",
+      "title": "Support 24/7",
+      "description": "Toujours là quand vous avez besoin de nous"
+    },
+    "valueEn": {
+      "title": "24/7 Support",
+      "description": "Always here when you need us"
+    },
+    "contentType": "json",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "about-why",
+    "contentKey": "item-6",
+    "valueFr": {
+      "icon": "TrendingUp",
+      "title": "Évolutif",
+      "description": "Des solutions qui grandissent avec votre entreprise"
+    },
+    "valueEn": {
+      "title": "Scalable",
+      "description": "Solutions that grow with your business"
+    },
+    "contentType": "json",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "about-certifications",
+    "contentKey": "item-1",
+    "valueFr": {
+      "icon": "Shield",
+      "badge": "SSL/TLS",
+      "title": "Sécurité SSL/TLS",
+      "description": "Chiffrement des données en transit avec certificats SSL/TLS de grade entreprise"
+    },
+    "valueEn": {
+      "title": "SSL/TLS Security",
+      "description": "Data encryption in transit with enterprise-grade SSL/TLS certificates"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "about-certifications",
+    "contentKey": "item-2",
+    "valueFr": {
+      "icon": "Lock",
+      "badge": "PCI-DSS",
+      "title": "Conformité PCI-DSS",
+      "description": "Respect des normes de sécurité des données de carte de paiement"
+    },
+    "valueEn": {
+      "title": "PCI-DSS Compliance",
+      "description": "Compliance with payment card data security standards"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "about-certifications",
+    "contentKey": "item-3",
+    "valueFr": {
+      "icon": "Award",
+      "badge": "ISO 27001",
+      "title": "Certification ISO 27001",
+      "description": "Système de management de la sécurité de l'information certifié"
+    },
+    "valueEn": {
+      "title": "ISO 27001 Certification",
+      "description": "Certified information security management system"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "about-certifications",
+    "contentKey": "item-4",
+    "valueFr": {
+      "icon": "CheckCircle",
+      "badge": "RGPD",
+      "title": "Conformité RGPD",
+      "description": "Protection des données personnelles conforme au règlement européen"
+    },
+    "valueEn": {
+      "title": "GDPR Compliance",
+      "description": "Personal data protection compliant with European regulations"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "partners",
+    "contentKey": "item-1",
+    "valueFr": {
+      "name": "Orange Mali",
+      "logo": "/api.png",
+      "website": "https://orange.ml"
+    },
+    "valueEn": {
+      "name": "Orange Mali",
+      "logo": "/api.png",
+      "website": "https://orange.ml"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "partners",
+    "contentKey": "item-2",
+    "valueFr": {
+      "name": "Moov Africa",
+      "logo": "/moov.jpg",
+      "website": "https://moov-africa.ml"
+    },
+    "valueEn": {
+      "name": "Moov Africa",
+      "logo": "/moov.jpg",
+      "website": "https://moov-africa.ml"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "partners",
+    "contentKey": "item-3",
+    "valueFr": {
+      "name": "Malitel",
+      "logo": "/chapchap.png",
+      "website": "https://malitel.ml"
+    },
+    "valueEn": {
+      "name": "Malitel",
+      "logo": "/chapchap.png",
+      "website": "https://malitel.ml"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "partners",
+    "contentKey": "item-4",
+    "valueFr": {
+      "name": "Bank of Africa",
+      "logo": "/aua.jpg",
+      "website": "#"
+    },
+    "valueEn": {
+      "name": "Bank of Africa",
+      "logo": "/aua.jpg",
+      "website": "#"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "partners",
+    "contentKey": "item-5",
+    "valueFr": {
+      "name": "Ecobank",
+      "logo": "/ecobank.png",
+      "website": "https://ecobank.com"
+    },
+    "valueEn": {
+      "name": "Ecobank",
+      "logo": "/ecobank.png",
+      "website": "https://ecobank.com"
+    },
+    "contentType": "json",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "stats",
+    "contentKey": "item-1",
+    "valueFr": {
+      "value": "500+",
+      "label": "Projets Livrés"
+    },
+    "valueEn": {
+      "value": "500+",
+      "label": "Projects Delivered"
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "stats",
+    "contentKey": "item-2",
+    "valueFr": {
+      "value": "200+",
+      "label": "Clients Satisfaits"
+    },
+    "valueEn": {
+      "value": "200+",
+      "label": "Satisfied Clients"
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "stats",
+    "contentKey": "item-3",
+    "valueFr": {
+      "value": "99%",
+      "label": "Taux de Satisfaction"
+    },
+    "valueEn": {
+      "value": "99%",
+      "label": "Satisfaction Rate"
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "stats",
+    "contentKey": "item-4",
+    "valueFr": {
+      "value": "24/7",
+      "label": "Support Disponible"
+    },
+    "valueEn": {
+      "value": "24/7",
+      "label": "Support Available"
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "stats",
+    "contentKey": "item-5",
+    "valueFr": {
+      "value": "10+",
+      "label": "Ans d'Expérience"
+    },
+    "valueEn": {
+      "value": "10+",
+      "label": "Years Experience"
+    },
+    "contentType": "json",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "stats",
+    "contentKey": "item-6",
+    "valueFr": {
+      "value": "50+",
+      "label": "Récompenses"
+    },
+    "valueEn": {
+      "value": "50+",
+      "label": "Awards"
+    },
+    "contentType": "json",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-1",
+    "valueFr": {
+      "question": "Qu'est-ce qu'Abdaty Tech ?",
+      "answer": "Abdaty Tech est une entreprise de développement logiciel basée au Mali, spécialisée dans la création d'applications web, mobiles, desktop, ainsi que dans le design UI/UX, l'infrastructure réseau et la cybersécurité.",
+      "category": "general"
+    },
+    "valueEn": {
+      "question": "What is Abdaty Tech?",
+      "answer": "Abdaty Tech is a software development company based in Mali, specializing in web, mobile, and desktop applications, as well as UI/UX design, network infrastructure, and cybersecurity."
+    },
+    "contentType": "json",
+    "displayOrder": 1,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-2",
+    "valueFr": {
+      "question": "Où êtes-vous situés ?",
+      "answer": "Notre siège social est situé à Bamako, Mali. Nous servons des clients localement et internationalement.",
+      "category": "general"
+    },
+    "valueEn": {
+      "question": "Where are you located?",
+      "answer": "Our headquarters is located in Bamako, Mali. We serve clients locally and internationally."
+    },
+    "contentType": "json",
+    "displayOrder": 2,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-3",
+    "valueFr": {
+      "question": "Comment puis-je démarrer un projet ?",
+      "answer": "Contactez-nous via notre formulaire de contact, par email ou par téléphone. Nous organiserons une consultation gratuite pour discuter de vos besoins.",
+      "category": "general"
+    },
+    "valueEn": {
+      "question": "How can I start a project?",
+      "answer": "Contact us via our contact form, email, or phone. We'll arrange a free consultation to discuss your needs."
+    },
+    "contentType": "json",
+    "displayOrder": 3,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-4",
+    "valueFr": {
+      "question": "Qui sont vos clients ?",
+      "answer": "Nous travaillons avec des startups, PME et grandes entreprises dans divers secteurs : finance, santé, éducation, e-commerce, etc.",
+      "category": "general"
+    },
+    "valueEn": {
+      "question": "Who are your clients?",
+      "answer": "We work with startups, SMEs, and large enterprises across various sectors: finance, healthcare, education, e-commerce, etc."
+    },
+    "contentType": "json",
+    "displayOrder": 4,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-5",
+    "valueFr": {
+      "question": "Quels types de services offrez-vous ?",
+      "answer": "Nous offrons le développement web, mobile et desktop, le design UI/UX, l'infrastructure réseau, la cybersécurité, l'analyse de données et l'IA, ainsi qu'une API SMS.",
+      "category": "services"
+    },
+    "valueEn": {
+      "question": "What types of services do you offer?",
+      "answer": "We offer web, mobile, and desktop development, UI/UX design, network infrastructure, cybersecurity, data analysis and AI, as well as an SMS API."
+    },
+    "contentType": "json",
+    "displayOrder": 5,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-6",
+    "valueFr": {
+      "question": "Faites-vous du développement sur mesure ?",
+      "answer": "Oui, tous nos projets sont personnalisés selon vos besoins spécifiques. Nous ne proposons pas de solutions toutes faites.",
+      "category": "services"
+    },
+    "valueEn": {
+      "question": "Do you do custom development?",
+      "answer": "Yes, all our projects are customized to your specific needs. We don't offer off-the-shelf solutions."
+    },
+    "contentType": "json",
+    "displayOrder": 6,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-7",
+    "valueFr": {
+      "question": "Quel est le délai de réalisation ?",
+      "answer": "Cela dépend de la complexité du projet. Un site web simple prend 2-4 semaines, une application complexe peut prendre 3-6 mois. Nous établissons un calendrier détaillé lors de la phase de découverte.",
+      "category": "services"
+    },
+    "valueEn": {
+      "question": "What is the delivery timeline?",
+      "answer": "It depends on project complexity. A simple website takes 2-4 weeks, a complex application can take 3-6 months. We establish a detailed schedule during the discovery phase."
+    },
+    "contentType": "json",
+    "displayOrder": 7,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-8",
+    "valueFr": {
+      "question": "Offrez-vous un support après livraison ?",
+      "answer": "Oui, nous offrons un support technique continu, des mises à jour et de la maintenance pour tous nos projets.",
+      "category": "services"
+    },
+    "valueEn": {
+      "question": "Do you offer post-delivery support?",
+      "answer": "Yes, we offer ongoing technical support, updates, and maintenance for all our projects."
+    },
+    "contentType": "json",
+    "displayOrder": 8,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-9",
+    "valueFr": {
+      "question": "Combien coûtent vos services ?",
+      "answer": "Nos tarifs varient selon la complexité et l'envergure du projet. Contactez-nous pour un devis personnalisé gratuit.",
+      "category": "pricing"
+    },
+    "valueEn": {
+      "question": "How much do your services cost?",
+      "answer": "Our rates vary depending on project complexity and scope. Contact us for a free personalized quote."
+    },
+    "contentType": "json",
+    "displayOrder": 9,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-10",
+    "valueFr": {
+      "question": "Quels modes de paiement acceptez-vous ?",
+      "answer": "Nous acceptons les virements bancaires, Orange Money, Moov Money et les cartes bancaires internationales.",
+      "category": "pricing"
+    },
+    "valueEn": {
+      "question": "What payment methods do you accept?",
+      "answer": "We accept bank transfers, Orange Money, Moov Money, and international credit cards."
+    },
+    "contentType": "json",
+    "displayOrder": 10,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-11",
+    "valueFr": {
+      "question": "Quelle est votre politique de remboursement ?",
+      "answer": "Nous travaillons par étapes avec validation à chaque phase. Si vous n'êtes pas satisfait, nous révisons le travail jusqu'à votre satisfaction complète.",
+      "category": "pricing"
+    },
+    "valueEn": {
+      "question": "What is your refund policy?",
+      "answer": "We work in stages with validation at each phase. If you're not satisfied, we revise the work until you're completely satisfied."
+    },
+    "contentType": "json",
+    "displayOrder": 11,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-12",
+    "valueFr": {
+      "question": "Offrez-vous des réductions ?",
+      "answer": "Oui, nous offrons des réductions pour les projets à long terme, les startups et les organisations à but non lucratif.",
+      "category": "pricing"
+    },
+    "valueEn": {
+      "question": "Do you offer discounts?",
+      "answer": "Yes, we offer discounts for long-term projects, startups, and non-profit organizations."
+    },
+    "contentType": "json",
+    "displayOrder": 12,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-13",
+    "valueFr": {
+      "question": "Quelles technologies utilisez-vous ?",
+      "answer": "Nous utilisons les technologies modernes : React, Next.js, Node.js, Python, Java, PHP, Flutter, React Native, PostgreSQL, MongoDB, AWS, etc.",
+      "category": "technical"
+    },
+    "valueEn": {
+      "question": "What technologies do you use?",
+      "answer": "We use modern technologies: React, Next.js, Node.js, Python, Java, PHP, Flutter, React Native, PostgreSQL, MongoDB, AWS, etc."
+    },
+    "contentType": "json",
+    "displayOrder": 13,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-14",
+    "valueFr": {
+      "question": "Comment assurez-vous la sécurité ?",
+      "answer": "Nous suivons les meilleures pratiques de sécurité : chiffrement des données, authentification sécurisée, tests de pénétration, conformité RGPD, etc.",
+      "category": "technical"
+    },
+    "valueEn": {
+      "question": "How do you ensure security?",
+      "answer": "We follow security best practices: data encryption, secure authentication, penetration testing, GDPR compliance, etc."
+    },
+    "contentType": "json",
+    "displayOrder": 14,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-15",
+    "valueFr": {
+      "question": "Gérez-vous l'hébergement ?",
+      "answer": "Oui, nous pouvons gérer l'hébergement sur AWS, Google Cloud, Azure ou tout autre fournisseur de votre choix.",
+      "category": "technical"
+    },
+    "valueEn": {
+      "question": "Do you manage hosting?",
+      "answer": "Yes, we can manage hosting on AWS, Google Cloud, Azure, or any other provider of your choice."
+    },
+    "contentType": "json",
+    "displayOrder": 15,
+    "active": true
+  },
+  {
+    "section": "faq",
+    "contentKey": "item-16",
+    "valueFr": {
+      "question": "Qu'inclut la maintenance ?",
+      "answer": "La maintenance inclut les mises à jour de sécurité, les corrections de bugs, les sauvegardes régulières, la surveillance des performances et le support technique.",
+      "category": "technical"
+    },
+    "valueEn": {
+      "question": "What does maintenance include?",
+      "answer": "Maintenance includes security updates, bug fixes, regular backups, performance monitoring, and technical support."
+    },
+    "contentType": "json",
+    "displayOrder": 16,
+    "active": true
+  }
+]

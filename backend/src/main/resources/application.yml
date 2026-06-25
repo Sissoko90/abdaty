@@ -1,0 +1,310 @@
+spring:
+  application:
+    name: ${APP_NAME:abdaty-backend}
+  profiles:
+    active: ${ENVIRONMENT:development}
+
+  # Import des secrets depuis Vault (source de propriétés PRIORITAIRE).
+  # `optional:` + fail-fast=false ci-dessous : si Vault est désactivé/indisponible
+  # ou si une clé manque, repli AUTOMATIQUE sur les variables d'env (.env) / les
+  # valeurs par défaut déclarées plus bas. → Vault-first, env-fallback.
+  config:
+    import: optional:vault://
+
+  # Configuration de Vault pour les secrets (KV v2 monté sur "secret").
+  cloud:
+    vault:
+      enabled: ${VAULT_ENABLED:false}
+      uri: ${VAULT_URI:http://localhost:8200}
+      # Méthode d'auth configurable : TOKEN en dev (token root du mode dev),
+      # APPROLE en PROD (role-id/secret-id injectés par l'orchestrateur, JAMAIS
+      # de token root en production).
+      authentication: ${VAULT_AUTH_METHOD:TOKEN}
+      token: ${VAULT_TOKEN:}
+      app-role:
+        role-id: ${VAULT_ROLE_ID:}
+        secret-id: ${VAULT_SECRET_ID:}
+      scheme: ${VAULT_SCHEME:http}
+      connection-timeout: 5000
+      read-timeout: 15000
+      # Ne PAS bloquer le démarrage si Vault est injoignable : on bascule sur l'env.
+      fail-fast: false
+      kv:
+        enabled: true
+        backend: secret
+        default-context: abdaty-backend
+        application-name: abdaty-backend
+        profile-separator: '/'
+  
+  # Base de données R2DBC. Vendor pilotable par l'env (un seul fichier dev+prod) :
+  #  - DEV  : DB_VENDOR=mysql (défaut), port 8889 (MAMP), user root.
+  #  - PROD : DB_VENDOR=postgresql, DB_PORT=5432, DB_USERNAME=postgres, DB_PASSWORD=…
+  # Le driver (r2dbc-mysql / r2dbc-postgresql) est auto-détecté depuis l'URL.
+  r2dbc:
+    url: r2dbc:${DB_VENDOR:mysql}://${DB_HOST:localhost}:${DB_PORT:8889}/${DB_NAME:abdatydb}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    pool:
+      initial-size: 5
+      max-size: ${DB_POOL_SIZE:20}
+      max-idle-time: ${DB_MAX_LIFETIME:30m}
+      idle-timeout: ${DB_IDLE_TIMEOUT:600000}
+
+  # Initialisation du schéma. Dossier des scripts pilotable par l'env :
+  #  - DEV  : DB_MIGRATION_PATH=db/migration (défaut) → scripts MySQL.
+  #  - PROD : DB_MIGRATION_PATH=db/migration/postgresql → scripts PostgreSQL (validés).
+  # Mêmes noms de fichiers V1…V15 dans les deux dossiers.
+  sql:
+    init:
+      mode: ${SQL_INIT_MODE:always}
+      continue-on-error: true
+      schema-locations:
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V1__create_core_tables.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V2__create_blog_posts.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V3__create_documentation.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V4__create_site_settings.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V5__create_site_content.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V6__create_media.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V7__create_api_keys.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V8__create_notifications.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V9__widen_refresh_token.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V10__create_newsletter.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V11__create_cookie_consents.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V12__add_campaign_attachments.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V13__create_contact_messages.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V14__create_analytics_indexes.sql
+        - classpath:${DB_MIGRATION_PATH:db/migration}/V15__create_scheduler_locks.sql
+
+  # Configuration de Redis
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:0}
+      timeout: ${REDIS_TIMEOUT:60000}ms
+      lettuce:
+        pool:
+          max-active: ${REDIS_POOL_SIZE:8}
+          max-idle: ${REDIS_POOL_SIZE:8}
+          min-idle: 0
+          max-wait: -1ms
+  
+  # Configuration de Kafka
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:abdaty-group}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  
+  # Configuration du mail
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    from: ${MAIL_FROM:noreply@abdaty.com}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # Configuration de Zipkin pour le tracing
+  zipkin:
+    base-url: ${ZIPKIN_URL:http://localhost:9411}
+    enabled: ${ZIPKIN_ENABLED:true}
+  sleuth:
+    zipkin:
+      enabled: ${ZIPKIN_ENABLED:true}
+    sampler:
+      probability: 1.0
+
+# Configuration de l'actuator pour les métriques
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      # when-authorized : les détails (DB, Redis, Vault…) ne sont visibles que pour
+      # un appelant authentifié ; un anonyme ne voit que UP/DOWN. Évite la fuite
+      # d'infos d'infrastructure via /actuator/health public.
+      show-details: when-authorized
+      roles: ADMIN
+    metrics:
+      enabled: ${METRICS_ENABLED:true}
+    prometheus:
+      enabled: ${PROMETHEUS_ENABLED:true}
+  metrics:
+    export:
+      prometheus:
+        enabled: ${PROMETHEUS_ENABLED:true}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5,0.95,0.99
+      sla:
+        http.server.requests: 100ms,500ms,1s,2s
+    tags:
+      application: ${spring.application.name}
+      environment: ${ENVIRONMENT:dev}
+
+# Configuration de Resilience4j
+resilience4j:
+  circuitbreaker:
+    instances:
+      default:
+        register-health-indicator: true
+        sliding-window-size: ${CIRCUIT_BREAKER_SLIDING_WINDOW_SIZE:10}
+        minimum-number-of-calls: ${CIRCUIT_BREAKER_MINIMUM_NUMBER_OF_CALLS:5}
+        failure-rate-threshold: ${CIRCUIT_BREAKER_FAILURE_RATE_THRESHOLD:50}
+        wait-duration-in-open-state: ${CIRCUIT_BREAKER_WAIT_DURATION_IN_OPEN_STATE:30s}
+        permitted-number-of-calls-in-half-open-state: ${CIRCUIT_BREAKER_PERMITTED_NUMBER_OF_CALLS_IN_HALF_OPEN_STATE:3}
+        automatic-transition-from-open-to-half-open-enabled: true
+  retry:
+    instances:
+      default:
+        max-attempts: ${RETRY_MAX_ATTEMPTS:3}
+        wait-duration: ${RETRY_WAIT_DURATION:1s}
+        retry-exceptions:
+          - java.lang.RuntimeException
+          - java.io.IOException
+        ignore-exceptions:
+          - java.lang.IllegalArgumentException
+  timelimiter:
+    instances:
+      default:
+        timeout-duration: 10s
+
+# Configuration du logging
+logging:
+  level:
+    root: INFO
+    com.abdatytch.backend: INFO
+    org.springframework: INFO
+    io.github.resilience4j: INFO
+    io.micrometer: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/application.log
+
+# Configuration de Swagger
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:true}
+    # /v3/api-docs est déjà autorisé publiquement par SecurityConfig.
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:true}
+    path: ${SWAGGER_PATH:/swagger-ui.html}
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: true
+
+# Configuration personnalisée
+app:
+  notifications:
+    kafka:
+      # Topic du bus d'événements pour les notifications push admin.
+      topic: ${NOTIFICATIONS_KAFKA_TOPIC:admin-notifications}
+  security:
+    cors:
+      enabled: ${CORS_ENABLED:true}
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
+      allowed-methods: ${CORS_ALLOWED_METHODS:GET,POST,PUT,DELETE,OPTIONS,PATCH}
+      allowed-headers: ${CORS_ALLOWED_HEADERS:Authorization,Content-Type,Accept,Origin,X-Requested-With,X-User-Id,X-Refresh-Token}
+      allow-credentials: ${CORS_ALLOW_CREDENTIALS:true}
+    csrf:
+      enabled: ${CSRF_ENABLED:false}
+      token-header: ${CSRF_TOKEN_HEADER:X-CSRF-TOKEN}
+      cookie-name: ${CSRF_COOKIE_NAME:XSRF-TOKEN}
+    rate-limit:
+      enabled: ${RATE_LIMIT_ENABLED:true}
+      requests-per-minute: ${RATE_LIMIT_REQUESTS_PER_MINUTE:100}
+      requests-per-hour: ${RATE_LIMIT_REQUESTS_PER_HOUR:1000}
+      requests-per-day: ${RATE_LIMIT_REQUESTS_PER_DAY:10000}
+    ddos-circuit-breaker:
+      enabled: ${DDOS_CIRCUIT_BREAKER_ENABLED:true}
+      failure-rate: ${DDOS_CIRCUIT_BREAKER_FAILURE_RATE:70}
+      wait-duration-ms: ${DDOS_CIRCUIT_BREAKER_WAIT_DURATION_MS:30000}
+      request-threshold: ${DDOS_CIRCUIT_BREAKER_REQUEST_THRESHOLD:1000}
+    ip-blacklist:
+      enabled: ${IP_BLACKLIST_ENABLED:true}
+      check-enabled: ${IP_BLACKLIST_CHECK_ENABLED:true}
+      auto-block-enabled: ${IP_AUTO_BLOCK_ENABLED:true}
+      auto-block-threshold: ${IP_AUTO_BLOCK_THRESHOLD:10}
+      auto-block-cooldown-minutes: ${IP_AUTO_BLOCK_COOLDOWN_MINUTES:60}
+    headers:
+      enabled: ${SECURITY_HEADERS_ENABLED:true}
+      hsts-enabled: ${SECURITY_HSTS_ENABLED:true}
+      hsts-max-age: ${SECURITY_HSTS_MAX_AGE:31536000}
+      x-frame-options: ${SECURITY_X_FRAME_OPTIONS:DENY}
+      x-content-type-options: ${SECURITY_X_CONTENT_TYPE_OPTIONS:NOSNIFF}
+      x-xss-protection: ${SECURITY_X_XSS_PROTECTION:1; mode=block}
+      content-security-policy: ${SECURITY_CONTENT_SECURITY_POLICY:default-src 'self'}
+      referrer-policy: ${SECURITY_REFERRER_POLICY:no-referrer}
+    input-validation:
+      enabled: ${INPUT_VALIDATION_ENABLED:true}
+      max-length: ${INPUT_MAX_LENGTH:10000}
+      sanitize-enabled: ${INPUT_SANITIZE_ENABLED:true}
+    logging:
+      enabled: ${SECURITY_LOGGING_ENABLED:true}
+      level: ${SECURITY_LOG_LEVEL:INFO}
+      file: ${SECURITY_LOG_FILE:security.log}
+    jwt:
+      expiration: ${JWT_EXPIRATION:86400000}
+      refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+      rsa:
+        key-size: ${JWT_RSA_KEY_SIZE:2048}
+        rotation:
+          enabled: ${JWT_RSA_ROTATION_ENABLED:true}
+          interval-days: ${JWT_RSA_ROTATION_INTERVAL_DAYS:30}
+        # Store PARTAGÉ Vault (actif seulement si spring.cloud.vault.enabled=true).
+        # Permet à tous les réplicas de signer/valider avec la même paire RSA.
+        # En dev (Vault off), repli automatique sur le disque local ~/.abdaty/rsa.
+        vault:
+          mount: ${JWT_RSA_VAULT_MOUNT:secret}
+          path: ${JWT_RSA_VAULT_PATH:abdaty/rsa}
+          kv-version: ${JWT_RSA_VAULT_KV_VERSION:2}
+  validation:
+    verification-code-expiration-minutes: ${VERIFICATION_CODE_EXPIRATION_MINUTES:15}
+  api:
+    prefix: ${API_PREFIX:/api}
+    version: ${API_VERSION:v1}
+  geoip:
+    database-path: ${GEOIP_DATABASE_PATH:/opt/geoip}
+    city-database: ${GEOIP_CITY_DATABASE:GeoLite2-City.mmdb}
+    asn-database: ${GEOIP_ASN_DATABASE:GeoLite2-ASN.mmdb}
+    country-database: ${GEOIP_COUNTRY_DATABASE:GeoLite2-Country.mmdb}
+  cache:
+    ttl: ${CACHE_TTL:3600}
+    max-size: ${CACHE_MAX_SIZE:1000}
+  pagination:
+    default-size: ${DEFAULT_PAGE_SIZE:20}
+    max-size: ${MAX_PAGE_SIZE:100}
+
+# Configuration Netty
+server:
+  port: ${SERVER_PORT:8080}
+  netty:
+    keep-alive: ${NETTY_KEEP_ALIVE:60}s
+
+netty:
+  max-connections: ${NETTY_MAX_CONNECTIONS:1000}
+  pending-acquire-timeout: ${NETTY_PENDING_ACQUIRE_TIMEOUT:60000}
+  pending-acquire-max-count: ${NETTY_PENDING_ACQUIRE_MAX_COUNT:2000}
+  max-idle-time: ${NETTY_MAX_IDLE_TIME:30000}
+  max-life-time: ${NETTY_MAX_LIFE_TIME:300000}
+

@@ -1,0 +1,200 @@
+name: Sécurité — scan de vulnérabilités
+
+# Analyse de sécurité du projet (frontend Next.js + backend Spring Boot) :
+#  - CodeQL          : analyse statique du code (Java + JS/TS)
+#  - Trivy           : dépendances, secrets et mauvaises configurations (IaC/Docker)
+#  - gitleaks        : détection de secrets dans l'historique et le diff
+#  - npm audit       : vulnérabilités des dépendances frontend
+#  - OWASP / Trivy   : vulnérabilités des dépendances backend (Maven)
+#  - dependency-review : diff de dépendances sur les Pull Requests
+#
+# Les résultats SARIF remontent dans l'onglet "Security > Code scanning" de GitHub.
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  schedule:
+    # Tous les lundis à 04h00 UTC (analyse hebdomadaire des nouvelles CVE).
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+# Annule les runs redondants sur une même branche/PR.
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  # ───────────────────────────── CodeQL ─────────────────────────────
+  codeql:
+    name: CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: java-kotlin
+            build-mode: none
+          - language: javascript-typescript
+            build-mode: none
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialiser CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+          queries: security-and-quality
+
+      - name: Analyse CodeQL
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  # ──────────────────── Trivy (deps / secrets / IaC) ────────────────────
+  trivy:
+    name: Trivy — système de fichiers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan Trivy (vuln + secrets + misconfig)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          format: sarif
+          output: trivy-results.sarif
+        env:
+          # Évite les échecs de rate-limit sur la base de données de vulnérabilités.
+          TRIVY_SKIP_DB_UPDATE: false
+
+      - name: Téléverser les résultats Trivy (SARIF)
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
+          category: trivy-fs
+
+  # ──────────────────────────── gitleaks ────────────────────────────
+  gitleaks:
+    name: gitleaks — détection de secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (historique complet)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ────────────────────── npm audit (frontend) ──────────────────────
+  npm-audit:
+    name: npm audit — frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      # Rapport complet (informatif) — visible dans les logs.
+      - name: Audit (rapport)
+        run: npm audit || true
+
+      # Le projet est à 0 vulnérabilité (Next 16 + overrides postcss/uuid) :
+      # on bloque sur toute régression HIGH/CRITICAL.
+      - name: Audit (échoue sur HIGH/CRITICAL)
+        run: npm audit --audit-level=high
+
+  # ─────────────────── Dépendances backend (Maven) ───────────────────
+  backend-deps:
+    name: Trivy — dépendances backend (Java)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JDK 17 (+ cache Maven)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      # On construit le fat-jar Spring Boot et on scanne l'artefact réellement
+      # packagé (Trivy lit BOOT-INF/lib : versions exactes de TOUTES les dépendances
+      # transitives). Plus fiable que scanner le pom.xml (résolution distante / 429).
+      - name: Construire le jar (sans tests)
+        working-directory: backend
+        run: ./mvnw -B -ntp -q package -DskipTests
+
+      - name: Scan Trivy du jar backend
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: rootfs
+          scan-ref: backend/target
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          format: sarif
+          output: trivy-backend.sarif
+
+      - name: Téléverser les résultats backend (SARIF)
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-backend.sarif
+          category: trivy-backend
+
+      # Échoue le job si des CVE CRITICAL/HIGH corrigeables existent (gate dédié backend).
+      - name: Gate (échoue sur CRITICAL/HIGH backend)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: rootfs
+          scan-ref: backend/target
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: '1'
+          format: table
+
+  # ─────────────── Revue des dépendances (Pull Requests) ───────────────
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high

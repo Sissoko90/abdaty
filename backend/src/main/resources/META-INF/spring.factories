@@ -1,0 +1,5 @@
+# Charge le fichier .env très tôt (avant la résolution de spring.config.import /
+# vault://) afin que les variables VAULT_*, DB_*, MAIL_*… soient disponibles à
+# l'initialisation de Vault. Voir DotenvEnvironmentPostProcessor.
+org.springframework.boot.EnvironmentPostProcessor=\
+com.abdatytch.backend.config.DotenvEnvironmentPostProcessor

@@ -1,0 +1,35 @@
+# .gitignore racine du monorepo.
+# Le frontend (frontend/.gitignore) et le backend (backend/.gitignore) ont aussi
+# le leur. Ce fichier ajoute les filets de sécurité au niveau dépôt.
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Dépendances & artefacts de build (filets de sécurité)
+**/node_modules/
+**/.next/
+**/out/
+**/build/
+**/dist/
+**/target/
+*.tsbuildinfo
+
+# Secrets — JAMAIS versionnés (.env.example reste suivi via les .gitignore enfants)
+.env
+.env.*
+!.env.example
+
+# Artefacts lourds / runtime
+*.mmdb
+**/geoip/
+**/logs/
+**/uploads/
+*.log

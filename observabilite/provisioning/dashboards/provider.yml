@@ -1,0 +1,14 @@
+apiVersion: 1
+
+# Charge automatiquement tous les dashboards JSON présents dans le dossier monté.
+providers:
+  - name: 'Abdaty Dashboards'
+    orgId: 1
+    folder: 'Abdaty Technologie'
+    type: file
+    disableDeletion: false
+    allowUiUpdates: true
+    updateIntervalSeconds: 30
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: true

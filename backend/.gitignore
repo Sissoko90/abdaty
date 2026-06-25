@@ -1,0 +1,47 @@
+HELP.md
+target/
+
+### Secrets — ne JAMAIS versionner (.env.example reste suivi) ###
+.env
+.env.*
+!.env.example
+# Clés RSA persistées localement par instance
+*.key
+.abdaty/
+
+### Fichiers médias uploadés (stockés sur le disque, ne pas versionner) ###
+uploads/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+logs/
+geoip/
+*.mmdb

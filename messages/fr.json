@@ -1,0 +1,2045 @@
+{
+  "footer": {
+    "description": "Solutions digitales innovantes pour transformer votre entreprise",
+    "quickLinks": "Liens Rapides",
+    "services": "Services",
+    "legal": "Légal",
+    "termsOfService": "Conditions d'utilisation",
+    "privacyPolicy": "Politique de confidentialité",
+    "rights": "Tous droits réservés."
+  },
+  "cookies": {
+    "title": "Nous utilisons des cookies",
+    "description": "Nous utilisons des cookies pour améliorer votre expérience et analyser l'utilisation du site. Vous pouvez personnaliser vos préférences.",
+    "learnMore": "En savoir plus",
+    "settings": "Paramètres",
+    "acceptAll": "Tout accepter",
+    "rejectAll": "Tout refuser",
+    "acceptSelected": "Accepter la sélection",
+    "necessary": "Nécessaires",
+    "necessaryDescription": "Cookies essentiels pour le fonctionnement du site",
+    "analytics": "Analytics",
+    "analyticsDescription": "Cookies pour analyser l'utilisation et améliorer le site",
+    "marketing": "Marketing",
+    "marketingDescription": "Cookies pour des publicités personnalisées"
+  },
+  "sla": {
+    "title": "SLA et Garanties",
+    "subtitle": "Nos engagements de qualité et de disponibilité pour vos services",
+    "uptime": {
+      "percentage": "99.9%",
+      "description": "Disponibilité garantie de nos services"
+    },
+    "response": {
+      "time": "30 min",
+      "description": "Temps de réponse moyen"
+    },
+    "support": {
+      "hours": "24/7",
+      "description": "Support technique disponible"
+    },
+    "security": {
+      "level": "Niveau Entreprise",
+      "description": "Sécurité de grade militaire"
+    },
+    "serviceLevels": {
+      "title": "Niveaux de Service",
+      "popular": "Populaire",
+      "standard": {
+        "title": "Standard",
+        "uptime": "99.5% Uptime",
+        "feature1": "Support par email (24h)",
+        "feature2": "Sauvegardes quotidiennes",
+        "feature3": "SSL inclus",
+        "feature4": "Monitoring de base"
+      },
+      "professional": {
+        "title": "Professionnel",
+        "uptime": "99.9% Uptime",
+        "feature1": "Support 24/7 par téléphone et email",
+        "feature2": "Sauvegardes toutes les 4 heures",
+        "feature3": "SSL + WDDoS Protection",
+        "feature4": "Monitoring avancé",
+        "feature5": "Rapports mensuels"
+      },
+      "enterprise": {
+        "title": "Enterprise",
+        "uptime": "99.99% Uptime",
+        "feature1": "Support dédié 24/7/365",
+        "feature2": "Sauvegardes en temps réel",
+        "feature3": "SSL + WDDoS + Firewall avancé",
+        "feature4": "Monitoring premium + alertes",
+        "feature5": "SLA personnalisé",
+        "feature6": "Gestionnaire de compte dédié"
+      }
+    },
+    "guarantees": {
+      "title": "Nos Garanties",
+      "dataProtection": {
+        "title": "Protection des Données",
+        "description": "Vos données sont chiffrées et sécurisées conformément au RGPD et aux normes PCI-DSS"
+      },
+      "backups": {
+        "title": "Sauvegardes Automatiques",
+        "description": "Sauvegardes automatiques quotidiennes avec rétention de 30 jours et option de restauration"
+      },
+      "support": {
+        "title": "Support Expert",
+        "description": "Équipe d'experts certifiés disponibles 24/7 pour résoudre vos problèmes rapidement"
+      },
+      "incidentResponse": {
+        "title": "Réponse aux Incidents",
+        "description": "Procédure de réponse aux incidents avec temps de réponse garanti sous 1 heure"
+      }
+    },
+    "cta": {
+      "title": "Besoin d'un SLA personnalisé ?",
+      "description": "Contactez-nous pour discuter de vos besoins spécifiques et obtenir une solution sur mesure",
+      "button": "Nous Contacter"
+    }
+  },
+  "notFound": {
+    "title": "Page Non Trouvée",
+    "description": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée.",
+    "message": "Nous avons cherché partout, mais nous n'avons pas pu trouver cette page. Peut-être a-t-elle été déplacée ou supprimée.",
+    "home": "Accueil",
+    "services": "Services",
+    "about": "À propos",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "buttons": {
+      "home": "Accueil",
+      "services": "Services",
+      "contact": "Contact"
+    },
+    "help": {
+      "title": "Vous cherchez quelque chose de spécifique ?",
+      "about": "À propos",
+      "faq": "FAQ",
+      "sla": "SLA"
+    },
+    "back": "Retour à l'accueil",
+    "backHome": "Retour à l'accueil",
+    "suggestions": "Vous cherchiez peut-être :"
+  },
+  "error": {
+    "title": "Une erreur est survenue",
+    "description": "Désolé, quelque chose s'est mal passé. Veuillez réessayer ou revenir à l'accueil.",
+    "retry": "Réessayer",
+    "backHome": "Retour à l'accueil",
+    "suggestions": "Vous pouvez également :",
+    "contact": "Nous contacter",
+    "faq": "Consulter la FAQ",
+    "services": "Voir nos services"
+  },
+  "newsletter": {
+    "title": "Restez informé",
+    "description": "Rejoignez notre newsletter pour recevoir les dernières actualités, tutoriels et offres exclusives.",
+    "benefit1": "Dernières actualités technologiques",
+    "benefit2": "Tutoriels et guides exclusifs",
+    "benefit3": "Offres spéciales et promotions",
+    "placeholder": "Entrez votre email",
+    "subscribe": "S'abonner",
+    "sending": "Envoi...",
+    "subscribed": "Inscrit !",
+    "privacy": "Nous respectons votre vie privée. Désabonnement possible à tout moment."
+  },
+  "accessibility": {
+    "skipToMain": "Aller au contenu principal",
+    "menu": "Menu",
+    "search": "Rechercher",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "smsApi": "API SMS",
+    "docs": "Documentation",
+    "blog": "Blog",
+    "about": "À propos",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "login": "Connexion",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion"
+  },
+  "hero": {
+    "title": "Solutions Digitales pour Votre Entreprise",
+    "subtitle": "Innovation & Excellence Technologique",
+    "description": "Nous concevons et développons des solutions digitales de pointe : applications web, applications mobiles, logiciels desktop, design UI/UX, infrastructure réseau et cybersécurité.",
+    "cta": "Démarrer un Projet",
+    "ctaSecondary": "Découvrir Nos Services",
+    "stats": {
+      "projects": "Projets Livrés",
+      "clients": "Clients Satisfaits",
+      "experience": "Ans d'Expérience",
+      "satisfaction": "Satisfaction Client"
+    }
+  },
+  "testimonials": {
+    "title": "Ce que disent nos clients",
+    "subtitle": "Plus de 200 entreprises nous font confiance pour leurs projets digitaux",
+    "stats": {
+      "clients": "Clients Satisfaits",
+      "projects": "Projets Livrés",
+      "satisfaction": "Taux de Satisfaction",
+      "support": "Support Disponible"
+    }
+  },
+  "services": {
+    "title": "Nos Services",
+    "subtitle": "Des solutions technologiques sur mesure pour propulser votre entreprise vers le succès",
+    "web": {
+      "title": "Développement Web",
+      "subtitle": "Applications web modernes et performantes",
+      "description": "Nous créons des applications web sur mesure avec les technologies les plus récentes : React, Next.js, TypeScript, Node.js, Java Spring Boot, PHP Laravel, Python Django.",
+      "benefits": {
+        "fast": "Ultra Rapide",
+        "fastDesc": "Performance optimisée avec Next.js et frameworks modernes",
+        "scalable": "Architecture Évolutive",
+        "scalableDesc": "Conçu pour croître avec vos besoins",
+        "secure": "Sécurisé par Conception",
+        "secureDesc": "Standards de sécurité niveau entreprise",
+        "user": "Centré Utilisateur",
+        "userDesc": "Interfaces que les utilisateurs adorent"
+      },
+      "stats": {
+        "apps": "Apps Web Créées",
+        "uptime": "Disponibilité",
+        "loadTime": "Temps de Chargement",
+        "mobile": "Prêt Mobile"
+      },
+      "features": [
+        "Applications web sur mesure",
+        "Plateformes e-commerce",
+        "Applications Web Progressives (PWA)",
+        "Développement d'API"
+      ]
+    },
+    "mobile": {
+      "title": "Développement Mobile",
+      "subtitle": "Applications iOS et Android natives",
+      "description": "Développement d'applications mobiles natives et hybrides avec React Native, Flutter, Swift, Kotlin.",
+      "benefits": {
+        "cross": "Multi-plateforme",
+        "crossDesc": "Une base de code pour iOS et Android",
+        "native": "Performance Native",
+        "nativeDesc": "Expérience utilisateur fluide",
+        "offline": "Mode Hors Ligne",
+        "offlineDesc": "Fonctionne sans connexion",
+        "push": "Notifications Push",
+        "pushDesc": "Engagement utilisateur en temps réel"
+      },
+      "stats": {
+        "apps": "Apps Mobiles",
+        "users": "Utilisateurs Actifs",
+        "rating": "Note Moyenne",
+        "retention": "Taux de Rétention"
+      },
+      "features": [
+        "Applications iOS & Android",
+        "Développement multiplateforme",
+        "Design UI/UX mobile",
+        "Maintenance & support d'applications"
+      ]
+    },
+    "design": {
+      "title": "Design UI/UX",
+      "subtitle": "Interfaces utilisateur exceptionnelles",
+      "description": "Design thinking et prototypage interactif pour créer des expériences utilisateur mémorables.",
+      "benefits": {
+        "user": "Centré Utilisateur",
+        "userDesc": "Design basé sur la recherche utilisateur",
+        "modern": "Design Moderne",
+        "modernDesc": "Tendances actuelles du design",
+        "accessible": "Accessible",
+        "accessibleDesc": "Conforme WCAG pour tous les utilisateurs",
+        "consistent": "Cohérent",
+        "consistentDesc": "Système de design unifié"
+      },
+      "stats": {
+        "projects": "Projets Design",
+        "wireframes": "Wireframes",
+        "prototypes": "Prototypes",
+        "satisfaction": "Satisfaction"
+      },
+      "features": [
+        "Design d'interface utilisateur",
+        "Recherche d'expérience utilisateur",
+        "Prototypage & wireframing",
+        "Systèmes de design"
+      ]
+    },
+    "security": {
+      "title": "Cybersécurité",
+      "subtitle": "Protection de vos données et systèmes",
+      "description": "Audit de sécurité, tests de pénétration, mise en place de solutions de sécurité réseau et des données.",
+      "benefits": {
+        "audit": "Audit de Sécurité",
+        "auditDesc": "Évaluation complète des vulnérabilités",
+        "monitoring": "Surveillance Continue",
+        "monitoringDesc": "Détection de menaces en temps réel",
+        "compliance": "Conformité",
+        "complianceDesc": "Normes RGPD et ISO 27001",
+        "response": "Réponse Incident",
+        "responseDesc": "Équipe d'intervention 24/7"
+      },
+      "stats": {
+        "audits": "Audits Réalisés",
+        "threats": "Menaces Bloquées",
+        "compliance": "Conformité",
+        "response": "Temps de Réponse"
+      },
+      "features": [
+        "Audits de sécurité",
+        "Tests de pénétration",
+        "Surveillance de sécurité",
+        "Conseil en conformité"
+      ]
+    },
+    "data": {
+      "title": "Data & IA",
+      "subtitle": "Analyse de données et intelligence artificielle",
+      "description": "Solutions d'analyse de données, machine learning, et IA pour transformer vos données en insights.",
+      "benefits": {
+        "predictive": "Analyse Prédictive",
+        "predictiveDesc": "Insights basés sur l'IA pour meilleures décisions",
+        "bigdata": "Big Data",
+        "bigdataDesc": "Traitement de masses de données",
+        "security": "Sécurité des Données",
+        "securityDesc": "Protection de niveau entreprise",
+        "custom": "Modèles ML Personnalisés",
+        "customDesc": "Solutions d'apprentissage automatique sur mesure"
+      },
+      "stats": {
+        "projects": "Projets IA",
+        "accuracy": "Précision",
+        "data": "Données Traitées",
+        "models": "Modèles ML 24/7"
+      },
+      "features": [
+        "Machine Learning & Deep Learning",
+        "Analyse prédictive",
+        "Traitement du Big Data",
+        "Visualisation de données"
+      ]
+    },
+    "desktop": {
+      "title": "Applications Desktop",
+      "subtitle": "Logiciels desktop puissants pour Windows, macOS et Linux",
+      "description": "Solutions logicielles desktop multiplateformes avec Electron ou Tauri pour des applications performantes.",
+      "benefits": {
+        "high": "Haute Performance",
+        "highDesc": "Vitesse native avec utilisation optimisée des ressources",
+        "integration": "Intégration Système",
+        "integrationDesc": "Intégration profonde de l'OS et automation",
+        "offline": "Capacité Hors Ligne",
+        "offlineDesc": "Fonctionnalité complète sans internet",
+        "updates": "Mises à Jour",
+        "updatesDesc": "Mises à jour automatiques et configuration de distribution"
+      },
+      "stats": {
+        "apps": "Apps Desktop",
+        "reliability": "Fiabilité",
+        "support": "Support",
+        "platforms": "Plateformes"
+      },
+      "features": [
+        "Applications desktop multiplateformes",
+        "Logiciels d'entreprise",
+        "Intégration système",
+        "Optimisation des performances"
+      ]
+    },
+    "network": {
+      "title": "Réseau & Infrastructure",
+      "subtitle": "Infrastructure réseau complète et gestion de serveurs",
+      "description": "Configuration réseau, administration serveur, et infrastructure IT pour une connectivité optimale.",
+      "benefits": {
+        "high": "Haute Disponibilité",
+        "highDesc": "Systèmes redondants pour zéro temps d'arrêt",
+        "scalable": "Évolutif",
+        "scalableDesc": "Grandit avec les besoins de votre entreprise",
+        "monitored": "Surveillé",
+        "monitoredDesc": "Suivi des performances en temps réel",
+        "secure": "Sécurisé",
+        "secureDesc": "Architecture de sécurité multi-couches"
+      },
+      "stats": {
+        "networks": "Réseaux Construits",
+        "latency": "Latence",
+        "monitoring": "Surveillance",
+        "uptimeSLA": "SLA Disponibilité"
+      },
+      "features": [
+        "Architecture réseau",
+        "Administration serveur",
+        "Infrastructure IT",
+        "Surveillance système"
+      ]
+    },
+    "process": {
+      "title": "Notre Processus",
+      "subtitle": "De l'idée à la réalité en 4 étapes simples",
+      "discovery": {
+        "title": "Découverte",
+        "description": "Nous analysons vos besoins et objectifs en profondeur"
+      },
+      "development": {
+        "title": "Développement",
+        "description": "Nous construisons votre solution avec les technologies de pointe"
+      },
+      "launch": {
+        "title": "Lancement",
+        "description": "Nous déployons et optimisons votre produit"
+      },
+      "support": {
+        "title": "Support",
+        "description": "Nous assurons la maintenance et le support continu"
+      }
+    },
+    "dataAi": {
+      "title": "Data Analysis & IA",
+      "subtitle": "Analyse de données et intelligence artificielle",
+      "description": "Solutions d'intelligence artificielle et d'analyse de données pour des décisions éclairées.",
+      "benefits": {
+        "predictive": "Analyse Prédictive",
+        "predictiveDesc": "Insights basés sur l'IA pour meilleures décisions",
+        "bigdata": "Big Data",
+        "bigdataDesc": "Traitement de masses de données",
+        "security": "Sécurité des Données",
+        "securityDesc": "Protection de niveau entreprise",
+        "custom": "Modèles ML Personnalisés",
+        "customDesc": "Solutions d'apprentissage automatique sur mesure"
+      },
+      "stats": {
+        "projects": "Projets IA",
+        "accuracy": "Précision",
+        "data": "Données Traitées",
+        "models": "Modèles ML 24/7"
+      },
+      "features": [
+        "Machine Learning & Deep Learning",
+        "Analyse prédictive",
+        "Traitement du Big Data",
+        "Visualisation de données"
+      ]
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "description": "Connectez-vous à votre compte pour accéder à toutes les fonctionnalités",
+      "email": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Se souvenir de moi",
+      "forgotPassword": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "loading": "Connexion...",
+      "noAccount": "Pas encore de compte ?",
+      "register": "S'inscrire"
+    },
+    "register": {
+      "title": "Inscription",
+      "description": "Créez votre compte pour commencer à utiliser nos services",
+      "name": "Nom complet",
+      "namePlaceholder": "Jean Dupont",
+      "email": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "••••••••",
+      "agreeTerms": "J'accepte les conditions d'utilisation",
+      "termsLink": "Conditions d'utilisation",
+      "submit": "S'inscrire",
+      "loading": "Inscription...",
+      "haveAccount": "Déjà un compte ?",
+      "login": "Se connecter",
+      "passwordMismatch": "Les mots de passe ne correspondent pas"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "description": "Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe",
+      "email": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "submit": "Envoyer le lien",
+      "loading": "Envoi en cours...",
+      "backToLogin": "Retour à la connexion",
+      "success": {
+        "title": "Email envoyé",
+        "description": "Un email de réinitialisation a été envoyé à votre adresse",
+        "instructions": "Vérifiez votre boîte de réception et suivez les instructions"
+      }
+    }
+  },
+  "legal": {
+    "termsOfService": {
+      "title": "Conditions Générales d'Utilisation",
+      "lastUpdated": "Dernière mise à jour : 7 mai 2026",
+      "backToHome": "← Retour à l'accueil",
+      "acceptance": {
+        "title": "1. Acceptation des Conditions",
+        "content": "En accédant au site web d'Abdaty Technologie et en utilisant nos services, vous acceptez d'être lié par les présentes Conditions Générales d'Utilisation (« CGU »). Si vous n'acceptez pas ces conditions dans leur intégralité, vous ne devez pas accéder à ce site web ni utiliser nos services. L'accès à ce site web et l'utilisation de nos services sont soumis aux présentes CGU ainsi qu'à notre Politique de Confidentialité."
+      },
+      "services": {
+        "title": "2. Nos Services",
+        "content": "Abdaty Technologie propose une gamme complète de services technologiques incluant, sans s'y limiter, le développement d'applications web et mobile, le développement logiciel desktop, le design UI/UX, l'infrastructure réseau, la cybersécurité, et l'analyse de données et intelligence artificielle. Nous nous réservons le droit de modifier, suspendre ou interrompre tout service à tout moment, sans préavis, pour quelque raison que ce soit, y compris mais sans s'y limiter, pour des raisons de maintenance, de mise à jour ou d'amélioration technique."
+      },
+      "userAccount": {
+        "title": "3. Compte Utilisateur",
+        "content": "Pour accéder à certains de nos services, vous devez créer un compte utilisateur. Vous déclarez et garantissez que toutes les informations que vous fournissez lors de l'inscription sont exactes, complètes et à jour. Vous êtes responsable de la confidentialité de votre mot de passe et de toutes les activités qui surviennent sous votre compte. Vous acceptez de nous notifier immédiatement toute utilisation non autorisée de votre compte.",
+        "points": {
+          "accuracy": "Maintenir l'exactitude et l'exhaustivité de vos informations personnelles",
+          "security": "Sécuriser votre mot de passe et votre compte contre tout accès non autorisé",
+          "responsibility": "Assumer l'entière responsabilité de toutes les activités effectuées sous votre compte"
+        }
+      },
+      "payment": {
+        "title": "4. Modalités de Paiement",
+        "content": "Les paiements pour nos services sont effectués conformément aux tarifs affichés sur notre site web au moment de la commande. Nous acceptons divers modes de paiement incluant cartes bancaires, virements bancaires et autres méthodes de paiement électronique sécurisées. Tous les paiements sont non remboursables sauf disposition contraire expresse dans nos Conditions de Vente spécifiques ou en cas de non-exécution de nos obligations contractuelles."
+      },
+      "cancellation": {
+        "title": "5. Annulation et Remboursement",
+        "content": "Vous pouvez annuler votre abonnement à tout moment en vous connectant à votre compte et en suivant la procédure d'annulation. L'annulation prendra effet à la fin de la période de facturation en cours. Aucun remboursement partiel ou proportionnel ne sera accordé pour la période en cours. En cas de résiliation anticipée d'un contrat de service, les modalités de remboursement seront définies dans le contrat spécifique."
+      },
+      "limitation": {
+        "title": "6. Limitation de Responsabilité",
+        "content": "Dans la mesure maximale permise par la loi applicable, Abdaty Technologie ne sera pas responsable des dommages directs, indirects, fortuits, consécutifs ou punitifs résultant de l'utilisation ou de l'impossibilité d'utiliser nos services. Cette limitation s'applique aux dommages pour perte de profits, perte de données, interruption d'activité, ou toute autre perte pécuniaire, même si Abdaty Technologie a été informée de la possibilité de tels dommages."
+      },
+      "intellectual": {
+        "title": "7. Propriété Intellectuelle",
+        "content": "Tout le contenu, les marques, les logos, les graphismes, les logiciels, les bases de données et les droits d'auteur sur ce site web sont la propriété exclusive d'Abdaty Technologie ou de ses concédants et sont protégés par les lois nationales et internationales sur la propriété intellectuelle. Vous ne pouvez pas reproduire, distribuer, modifier, adapter, publier, transmettre, créer des œuvres dérivées ou utiliser ce contenu, en tout ou en partie, sans notre autorisation écrite préalable."
+      },
+      "privacy": {
+        "title": "8. Confidentialité des Données",
+        "content": "Votre vie privée est d'une importance capitale pour nous. Nous nous engageons à protéger vos données personnelles conformément à notre",
+        "link": "Politique de Confidentialité"
+      },
+      "modifications": {
+        "title": "9. Modifications des Conditions",
+        "content": "Nous nous réservons le droit de modifier ces Conditions Générales d'Utilisation à tout moment et à notre discrétion. Toutes les modifications prendront effet immédiatement dès leur publication sur ce site web. Votre utilisation continue de nos services après la publication des modifications constitue votre acceptation des nouvelles conditions. Il est de votre responsabilité de consulter régulièrement les présentes CGU pour rester informé des modifications."
+      },
+      "contact": {
+        "title": "10. Contact et Support",
+        "content": "Pour toute question concernant ces Conditions Générales d'Utilisation, ou pour signaler une violation potentielle, veuillez nous contacter via notre",
+        "link": "page de contact"
+      }
+    },
+    "privacyPolicy": {
+      "title": "Politique de Confidentialité",
+      "lastUpdated": "Dernière mise à jour : 7 mai 2026",
+      "backToHome": "← Retour à l'accueil",
+      "introduction": {
+        "title": "Introduction",
+        "content": "Abdaty Technologie s'engage fermement à protéger la vie privée et la confidentialité des données de ses utilisateurs. La présente Politique de Confidentialité a pour but de vous informer de manière transparente sur la nature, les finalités et les modalités de collecte, de traitement et de protection de vos données personnelles."
+      },
+      "information": {
+        "title": "1. Données Collectées",
+        "content": "Nous collectons les catégories suivantes de données personnelles lorsque vous utilisez nos services :",
+        "points": {
+          "personal": "Données d'identification : nom, prénom, adresse email, numéro de téléphone",
+          "contact": "Coordonnées professionnelles : entreprise, fonction, adresse professionnelle",
+          "usage": "Données d'utilisation : historique de navigation, préférences, interactions avec nos services",
+          "payment": "Données de paiement : informations bancaires sécurisées (traitées conformément aux normes PCI-DSS)"
+        }
+      },
+      "collection": {
+        "title": "2. Modalités de Collecte",
+        "content": "Les données sont collectées directement auprès de vous lorsque vous créez un compte, souscrivez à nos services, communiquez avec notre équipe client, ou participez à nos programmes promotionnels. Nous pouvons également collecter automatiquement certaines données techniques lors de votre utilisation de notre site web et de nos applications."
+      },
+      "usage": {
+        "title": "3. Utilisation des Données",
+        "content": "Vos données personnelles sont utilisées exclusivement pour les finalités suivantes :",
+        "points": {
+          "service": "Fourniture, personnalisation et amélioration de nos services technologiques",
+          "communication": "Communication avec vous concernant votre compte, vos commandes et nos offres",
+          "security": "Sécurisation de votre compte et prévention des activités frauduleuses",
+          "analytics": "Analyse des tendances d'utilisation pour optimiser nos services et développer de nouvelles fonctionnalités"
+        }
+      },
+      "sharing": {
+        "title": "4. Partage des Données",
+        "content": "Abdaty Technologie ne vend pas, ne loue pas et ne partage pas vos données personnelles avec des tiers, sauf dans les cas suivants : (i) avec votre consentement explicite, (ii) pour se conformer aux obligations légales ou réglementaires, (iii) pour protéger nos droits ou notre propriété, ou (iv) avec nos sous-traitants dûment autorisés dans le cadre strict de la prestation de services."
+      },
+      "security": {
+        "title": "5. Sécurité des Données",
+        "content": "Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles de pointe conformément aux meilleures pratiques de l'industrie pour protéger vos données contre tout accès non autorisé, toute altération, toute divulgation ou toute destruction. Ces mesures incluent le cryptage des données, l'authentification à deux facteurs, et des audits de sécurité réguliers."
+      },
+      "cookies": {
+        "title": "6. Cookies et Technologies Similaires",
+        "content": "Nous utilisons des cookies et autres technologies similaires pour améliorer votre expérience utilisateur, analyser l'utilisation de nos services et personnaliser le contenu. Vous pouvez configurer votre navigateur pour refuser les cookies, bien que cela puisse affecter certaines fonctionnalités de notre site web."
+      },
+      "rights": {
+        "title": "7. Vos Droits",
+        "content": "Conformément au Règlement Général sur la Protection des Données (RGPD) et aux législations nationales applicables, vous disposez des droits suivants sur vos données personnelles :",
+        "points": {
+          "access": "Droit d'accès : obtenir confirmation du traitement et une copie de vos données",
+          "correction": "Droit de rectification : corriger les données inexactes ou incomplètes",
+          "deletion": "Droit à l'effacement : demander la suppression de vos données (droit à l'oubli)",
+          "objection": "Droit d'opposition : vous opposer au traitement de vos données pour des motifs légitimes"
+        }
+      },
+      "retention": {
+        "title": "8. Conservation des Données",
+        "content": "Nous conservons vos données personnelles uniquement pendant la durée nécessaire à la réalisation des finalités pour lesquelles elles ont été collectées, conformément aux exigences légales et réglementaires applicables. À l'expiration de cette durée, les données sont soit supprimées, soit anonymisées."
+      },
+      "gdpr": {
+        "title": "9. Conformité RGPD",
+        "content": "Abdaty Technologie est pleinement conforme au Règlement (UE) 2016/679 relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel (RGPD). Nous avons désigné un Délégué à la Protection des Données (DPO) et maintenu des registres de traitement conformes aux exigences réglementaires."
+      },
+      "contact": {
+        "title": "10. Contact et Exercice des Droits",
+        "content": "Pour toute question relative à cette Politique de Confidentialité, ou pour exercer vos droits sur vos données personnelles, veuillez nous contacter via notre",
+        "link": "page de contact"
+      }
+    }
+  },
+  "smsApi": {
+    "title": "Service API SMS",
+    "subtitle": "Livraison SMS fiable pour vos applications",
+    "description": "Intégrez notre puissante API SMS dans vos applications en toute simplicité. Envoyez des messages transactionnels, des notifications et des campagnes marketing au Mali.",
+    "hero": {
+      "cta": "Commencer Maintenant",
+      "ctaDocs": "Documentation",
+      "ctaSwagger": "Swagger API"
+    },
+    "plans": {
+      "title": "Choisissez Votre Plan",
+      "description": "Des tarifs flexibles adaptés à vos besoins. Commencez gratuitement et évoluez selon votre croissance.",
+      "popular": "Populaire",
+      "subscribe": "S'abonner",
+      "features": {
+        "fast": {
+          "title": "Livraison Rapide",
+          "description": "Vos SMS sont livrés en quelques secondes grâce à notre infrastructure optimisée."
+        },
+        "secure": {
+          "title": "Sécurité Garantie",
+          "description": "Vos données sont protégées avec un cryptage de bout en bout et conformité RGPD."
+        },
+        "support": {
+          "title": "Support 24/7",
+          "description": "Notre équipe d'experts est disponible à tout moment pour vous aider."
+        }
+      },
+      "faq": {
+        "title": "Besoin d'aide pour choisir ?",
+        "contact": "Contactez-nous"
+      }
+    },
+    "features": {
+      "title": "Fonctionnalités",
+      "reliable": "Garantie de disponibilité 99,9%",
+      "mali": "Couverture complète au Mali",
+      "fast": "Livraison en moins de 3 secondes",
+      "secure": "Sécurité de niveau entreprise"
+    },
+    "pricing": {
+      "title": "Tarification Transparente",
+      "subtitle": "Payez uniquement ce que vous utilisez",
+      "perSMS": "par SMS"
+    },
+    "documentation": {
+      "title": "Documentation API",
+      "subtitle": "Intégration facile avec une documentation complète",
+      "viewDocs": "Voir la Documentation",
+      "tryNow": "Essayer Maintenant"
+    },
+    "integration": {
+      "title": "Intégration Rapide",
+      "description": "Commencez en quelques minutes avec notre API REST simple"
+    }
+  },
+  "about": {
+    "title": "À propos d'Abdaty Technologie",
+    "subtitle": "Votre Partenaire Technologique de Confiance",
+    "description": "Nous sommes une entreprise technologique de premier plan spécialisée dans les solutions digitales et la transformation des entreprises. Notre équipe d'experts fournit des solutions innovantes adaptées à vos besoins.",
+    "mission": "Notre Mission",
+    "missionText": "Donner aux entreprises les moyens d'agir grâce à des solutions technologiques de pointe qui stimulent la croissance et l'innovation.",
+    "vision": "Notre Vision",
+    "visionText": "Être le principal fournisseur de solutions digitales en Afrique et au-delà.",
+    "whyChooseUs": {
+      "title": "Pourquoi Nous Choisir",
+      "subtitle": "Ce qui nous distingue",
+      "expertise": {
+        "title": "Expertise",
+        "description": "Plus de 10 ans d'expérience dans les solutions digitales"
+      },
+      "clientFocused": {
+        "title": "Centré Client",
+        "description": "Votre succès est notre priorité absolue"
+      },
+      "fastDelivery": {
+        "title": "Livraison Rapide",
+        "description": "Délais courts sans compromettre la qualité"
+      },
+      "secure": {
+        "title": "Sécurisé",
+        "description": "Normes de sécurité de niveau entreprise"
+      },
+      "support": {
+        "title": "Support 24/7",
+        "description": "Toujours là quand vous avez besoin de nous"
+      },
+      "scalable": {
+        "title": "Évolutif",
+        "description": "Des solutions qui grandissent avec votre entreprise"
+      }
+    },
+    "certifications": {
+      "title": "Certifications et Sécurité",
+      "subtitle": "Conformité aux normes internationales pour une confiance totale",
+      "ssl": {
+        "title": "Sécurité SSL/TLS",
+        "description": "Chiffrement des données en transit avec certificats SSL/TLS de grade entreprise"
+      },
+      "pci": {
+        "title": "Conformité PCI-DSS",
+        "description": "Respect des normes de sécurité des données de carte de paiement"
+      },
+      "iso": {
+        "title": "Certification ISO 27001",
+        "description": "Système de management de la sécurité de l'information certifié"
+      },
+      "gdpr": {
+        "title": "Conformité RGPD",
+        "description": "Protection des données personnelles conforme au règlement européen"
+      },
+      "cta": {
+        "title": "Sécurité et Conformité Garanties",
+        "description": "Notre engagement envers la sécurité et la conformité des données",
+        "audit": "Audits de sécurité réguliers",
+        "compliance": "Conformité aux normes internationales",
+        "security": "Sécurité de niveau entreprise"
+      }
+    },
+    "stats": {
+      "projects": "Projets Complétés",
+      "clients": "Clients Satisfaits",
+      "awards": "Récompenses",
+      "countries": "Pays Servis"
+    },
+    "values": {
+      "title": "Nos Valeurs",
+      "subtitle": "Les principes qui guident notre travail au quotidien",
+      "passion": {
+        "title": "Passion",
+        "description": "Nous aimons ce que nous faisons et cela se reflète dans chaque projet"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "Nous adoptons les dernières technologies pour rester à la pointe"
+      },
+      "excellence": {
+        "title": "Excellence",
+        "description": "Nous visons la perfection dans chaque ligne de code"
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "Nous travaillons main dans la main avec nos clients"
+      }
+    },
+    "timeline": {
+      "title": "Notre Histoire",
+      "subtitle": "Le chemin parcouru depuis notre création",
+      "founded": {
+        "title": "Fondation d'Abdaty Tech",
+        "description": "Création de l'entreprise avec une vision claire : révolutionner le digital au Mali"
+      },
+      "firstOffice": {
+        "title": "Premier Bureau à Bamako",
+        "description": "Ouverture de nos locaux modernes au cœur de Bamako"
+      },
+      "expansion": {
+        "title": "Expansion Régionale",
+        "description": "Extension de nos services dans toute l'Afrique de l'Ouest"
+      },
+      "awards": {
+        "title": "Premières Récompenses",
+        "description": "Reconnaissance de notre excellence par des prix nationaux et internationaux"
+      },
+      "international": {
+        "title": "Présence Internationale",
+        "description": "Collaboration avec des clients et partenaires à travers le monde"
+      }
+    },
+    "team": {
+      "title": "Notre Équipe",
+      "subtitle": "Des experts passionnés dédiés à votre succès",
+      "ceo": {
+        "bio": "Visionnaire et entrepreneur, il dirige Abdaty Tech avec passion depuis sa création"
+      },
+      "cto": {
+        "bio": "Experte en architecture logicielle avec plus de 15 ans d'expérience"
+      },
+      "leadDev": {
+        "bio": "Développeur full-stack passionné par les technologies de pointe"
+      },
+      "designer": {
+        "bio": "Designer créative spécialisée en UX/UI et design thinking"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Discutons de votre projet et donnons vie à vos idées",
+    "form": {
+      "title": "Envoyez-nous un message",
+      "name": "Nom Complet",
+      "email": "Adresse Email",
+      "company": "Entreprise (Optionnel)",
+      "phone": "Numéro de Téléphone (Optionnel)",
+      "service": "Service qui vous intéresse",
+      "message": "Votre Message",
+      "submit": "Envoyer le Message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé avec succès !",
+      "error": "Échec de l'envoi du message. Veuillez réessayer.",
+      "namePlaceholder": "Votre nom complet",
+      "emailPlaceholder": "votre@email.com",
+      "companyPlaceholder": "Votre société",
+      "phonePlaceholder": "+223 70 00 00 00",
+      "servicePlaceholder": "Développement web, application mobile, etc.",
+      "messagePlaceholder": "Parlez-nous de votre projet..."
+    },
+    "info": {
+      "title": "Informations de Contact",
+      "description": "Contactez-nous par l'un de ces canaux. Nous sommes là pour vous aider à concrétiser votre vision digitale.",
+      "email": "Email",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "hours": "Heures d'Ouverture",
+      "hoursValue": "Lun - Ven: 8h00 - 18h00",
+      "cta": {
+        "title": "Prêt à Démarrer Votre Projet ?",
+        "description": "Nous sommes ravis d'entendre parler de vos idées et de vous aider à les concrétiser. Notre équipe est prête à vous fournir une consultation gratuite.",
+        "getStarted": "Commencer",
+        "responseTime": "Réponse sous 24h"
+      }
+    },
+    "getStarted": "Commencer",
+    "readMore": "Lire Plus",
+    "viewAll": "Voir Tout",
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès"
+  },
+  "cta": {
+    "title": "Prêt à Transformer Votre Entreprise ?",
+    "description": "Discutons de la façon dont nous pouvons vous aider à atteindre vos objectifs digitaux avec nos solutions expertes.",
+    "button": "Contactez-nous"
+  },
+  "faq": {
+    "hero": {
+      "title": "Questions Fréquentes",
+      "subtitle": "Trouvez rapidement les réponses à vos questions"
+    },
+    "general": {
+      "title": "Questions Générales",
+      "what": {
+        "question": "Qu'est-ce qu'Abdaty Tech ?",
+        "answer": "Abdaty Tech est une entreprise de développement logiciel basée au Mali, spécialisée dans la création d'applications web, mobiles, desktop, ainsi que dans le design UI/UX, l'infrastructure réseau et la cybersécurité."
+      },
+      "where": {
+        "question": "Où êtes-vous situés ?",
+        "answer": "Notre siège social est situé à Bamako, Mali. Nous servons des clients localement et internationalement."
+      },
+      "how": {
+        "question": "Comment puis-je démarrer un projet ?",
+        "answer": "Contactez-nous via notre formulaire de contact, par email ou par téléphone. Nous organiserons une consultation gratuite pour discuter de vos besoins."
+      },
+      "who": {
+        "question": "Qui sont vos clients ?",
+        "answer": "Nous travaillons avec des startups, PME et grandes entreprises dans divers secteurs : finance, santé, éducation, e-commerce, etc."
+      }
+    },
+    "services": {
+      "title": "Services",
+      "types": {
+        "question": "Quels types de services offrez-vous ?",
+        "answer": "Nous offrons le développement web, mobile et desktop, le design UI/UX, l'infrastructure réseau, la cybersécurité, l'analyse de données et l'IA, ainsi qu'une API SMS."
+      },
+      "custom": {
+        "question": "Faites-vous du développement sur mesure ?",
+        "answer": "Oui, tous nos projets sont personnalisés selon vos besoins spécifiques. Nous ne proposons pas de solutions toutes faites."
+      },
+      "timeline": {
+        "question": "Quel est le délai de réalisation ?",
+        "answer": "Cela dépend de la complexité du projet. Un site web simple prend 2-4 semaines, une application complexe peut prendre 3-6 mois. Nous établissons un calendrier détaillé lors de la phase de découverte."
+      },
+      "support": {
+        "question": "Offrez-vous un support après livraison ?",
+        "answer": "Oui, nous offrons un support technique continu, des mises à jour et de la maintenance pour tous nos projets."
+      }
+    },
+    "pricing": {
+      "title": "Tarification",
+      "cost": {
+        "question": "Combien coûtent vos services ?",
+        "answer": "Nos tarifs varient selon la complexité et l'envergure du projet. Contactez-nous pour un devis personnalisé gratuit."
+      },
+      "payment": {
+        "question": "Quels modes de paiement acceptez-vous ?",
+        "answer": "Nous acceptons les virements bancaires, Orange Money, Moov Money et les cartes bancaires internationales."
+      },
+      "refund": {
+        "question": "Quelle est votre politique de remboursement ?",
+        "answer": "Nous travaillons par étapes avec validation à chaque phase. Si vous n'êtes pas satisfait, nous révisons le travail jusqu'à votre satisfaction complète."
+      },
+      "discount": {
+        "question": "Offrez-vous des réductions ?",
+        "answer": "Oui, nous offrons des réductions pour les projets à long terme, les startups et les organisations à but non lucratif."
+      }
+    },
+    "technical": {
+      "title": "Questions Techniques",
+      "technologies": {
+        "question": "Quelles technologies utilisez-vous ?",
+        "answer": "Nous utilisons les technologies modernes : React, Next.js, Node.js, Python, Java, PHP, Flutter, React Native, PostgreSQL, MongoDB, AWS, etc."
+      },
+      "security": {
+        "question": "Comment assurez-vous la sécurité ?",
+        "answer": "Nous suivons les meilleures pratiques de sécurité : chiffrement des données, authentification sécurisée, tests de pénétration, conformité RGPD, etc."
+      },
+      "hosting": {
+        "question": "Gérez-vous l'hébergement ?",
+        "answer": "Oui, nous pouvons gérer l'hébergement sur AWS, Google Cloud, Azure ou tout autre fournisseur de votre choix."
+      },
+      "maintenance": {
+        "question": "Qu'inclut la maintenance ?",
+        "answer": "La maintenance inclut les mises à jour de sécurité, les corrections de bugs, les sauvegardes régulières, la surveillance des performances et le support technique."
+      }
+    },
+    "contact": {
+      "title": "Vous n'avez pas trouvé votre réponse ?",
+      "subtitle": "Contactez-nous directement, nous serons ravis de vous aider",
+      "email": "Email",
+      "phone": "Téléphone",
+      "chat": "Chat en Direct",
+      "chatDescription": "Disponible 24/7",
+      "contactUs": "Nous contacter",
+      "fullContactForm": "Formulaire de Contact Complet"
+    }
+  },
+  "chatbot": {
+    "title": "Assistant Abdaty",
+    "status": "En ligne",
+    "welcome": "Bonjour ! Je suis l'assistant virtuel d'Abdaty Tech. Comment puis-je vous aider aujourd'hui ?",
+    "placeholder": "Tapez votre message...",
+    "quickQuestionsTitle": "Questions rapides :",
+    "quickQuestions": {
+      "services": "Quels services offrez-vous ?",
+      "pricing": "Quels sont vos tarifs ?",
+      "contact": "Comment vous contacter ?",
+      "about": "Qui êtes-vous ?",
+      "web": "Développement web",
+      "mobile": "Développement mobile",
+      "security": "Cybersécurité"
+    },
+    "responses": {
+      "greeting": "Bonjour ! Bienvenue chez Abdaty Tech. Comment puis-je vous aider aujourd'hui ?",
+      "services": "Nous offrons une gamme complète de services : développement web (sites, applications web), développement mobile (iOS, Android), design UI/UX, infrastructure réseau, cybersécurité, analyse de données et IA, ainsi qu'une API SMS. Nous sommes basés au Mali et servons toute l'Afrique. Quel service vous intéresse ?",
+      "pricing": "Nos tarifs varient selon la complexité du projet et le service choisi. Pour un devis personnalisé gratuit, contactez-nous à contact@abdatytch.com ou visitez notre page de contact. Pour l'API SMS, nos plans commencent à 20 FCFA par message.",
+      "contact": "Vous pouvez nous contacter par email à contact@abdatytch.com, par téléphone au +223 76 71 41 42, ou via notre formulaire de contact sur le site. Nous répondons généralement sous 24h.",
+      "sms": "Notre API SMS vous permet d'envoyer des messages au Mali avec une livraison en moins de 3 secondes. Nous proposons 3 plans : Starter (20 FCFA/SMS), Business (18 FCFA/SMS) et Enterprise (15 FCFA/SMS). L'API est facile à intégrer avec documentation complète. Visitez /fr/sms-api pour plus d'infos.",
+      "about": "Abdaty Technologie est une entreprise de développement technologique basée au Mali. Nous sommes spécialisés dans le développement web, mobile, le design UI/UX, la cybersécurité et l'IA. Notre mission est de transformer les entreprises africaines grâce à des solutions technologiques innovantes. Nous avons plus de 10 ans d'expérience.",
+      "web": "Notre service de développement web comprend la création de sites vitrines, e-commerce, applications web personnalisées, et CMS. Nous utilisons les technologies modernes comme React, Next.js, Node.js, etc. Nos sites sont optimisés pour le SEO, responsives et performants.",
+      "mobile": "Nous développons des applications mobiles natives (iOS et Android) et hybrides (React Native, Flutter). Nos applications sont performantes, sécurisées et offrent une excellente expérience utilisateur. Nous gérons le développement complet du design au déploiement sur les stores.",
+      "security": "Nos services de cybersécurité incluent : audits de sécurité, tests de pénétration, protection DDoS, chiffrement de données, conformité RGPD, et formation à la sécurité. Nous protégeons vos systèmes et données contre les cybermenaces.",
+      "technologies": "Nous utilisons les technologies les plus modernes : React, Next.js, Vue.js, Node.js, Python, React Native, Flutter, AWS, Docker, Kubernetes, et bien d'autres. Nous choisissons les technologies adaptées à chaque projet.",
+      "portfolio": "Nous avons réalisé plus de 500 projets pour des clients au Mali et dans toute l'Afrique. Nos clients incluent des startups, PME, grandes entreprises et organisations gouvernementales. Vous pouvez voir quelques-uns de nos projets sur notre site.",
+      "location": "Nous sommes basés au Mali, mais nous servons des clients dans toute l'Afrique et au-delà. Notre équipe est capable de travailler à distance sur des projets internationaux.",
+      "timeline": "Le délai de développement dépend de la complexité du projet. Un site vitrine simple peut prendre 2-4 semaines, une application web complexe 2-3 mois, et une application mobile 3-6 mois. Contactez-nous pour une estimation précise.",
+      "support": "Nous offrons un support technique après livraison. Nos plans de maintenance incluent la correction de bugs, les mises à jour de sécurité, l'amélioration continue, et un support par email/téléphone.",
+      "default": "Je ne suis pas sûr de comprendre. Pouvez-vous reformuler votre question ? Vous pouvez aussi choisir une question rapide ci-dessous ou contacter notre équipe directement pour une assistance personnalisée."
+    }
+  },
+  "docs": {
+    "hero": {
+      "title": "Documentation",
+      "subtitle": "Tout ce dont vous avez besoin pour intégrer nos services",
+      "searchPlaceholder": "Rechercher dans la documentation...",
+      "cta": "Commencer Maintenant",
+      "ctaSecondary": "Voir la Documentation",
+      "ctaDocs": "Documentation",
+      "ctaSwagger": "Swagger API"
+    },
+    "sidebar": {
+      "title": "Navigation",
+      "getting-started": {
+        "title": "Démarrage",
+        "introduction": "Introduction",
+        "installation": "Installation",
+        "quickstart": "Démarrage rapide"
+      },
+      "api-reference": {
+        "title": "Référence API",
+        "authentication": "Authentification",
+        "endpoints": "Endpoints",
+        "errors": "Gestion des erreurs"
+      },
+      "guides": {
+        "title": "Guides",
+        "sms-api": "API SMS",
+        "webhooks": "Webhooks",
+        "best-practices": "Bonnes pratiques"
+      },
+      "examples": {
+        "title": "Exemples",
+        "nodejs": "Node.js",
+        "python": "Python",
+        "php": "PHP",
+        "java": "Java"
+      }
+    },
+    "content": {
+      "introduction": {
+        "title": "Introduction",
+        "description": "Bienvenue dans la documentation Abdaty Tech. Vous trouverez ici tout ce dont vous avez besoin pour intégrer nos services dans vos applications.",
+        "note": {
+          "title": "Besoin d'aide ?",
+          "text": "Notre équipe support est disponible 24/7 pour vous aider. Contactez-nous à support@abdaty-tech.com"
+        }
+      },
+      "installation": {
+        "title": "Installation",
+        "description": "Installez notre SDK dans votre projet en utilisant npm ou yarn."
+      },
+      "quickstart": {
+        "title": "Démarrage rapide",
+        "description": "Commencez à utiliser nos services en quelques minutes avec cet exemple simple."
+      },
+      "authentication": {
+        "title": "Authentification",
+        "description": "Toutes les requêtes API nécessitent une clé API valide. Vous pouvez obtenir votre clé depuis votre tableau de bord."
+      }
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Blog",
+      "subtitle": "Actualités, tutoriels et insights sur la technologie"
+    },
+    "categories": {
+      "title": "Catégories",
+      "all": "Tous les articles",
+      "api": "API",
+      "development": "Développement",
+      "design": "Design",
+      "security": "Sécurité",
+      "mobile": "Mobile",
+      "ai": "Intelligence Artificielle",
+      "recentPosts": "Articles récents"
+    },
+    "posts": {
+      "api-sms-mali-guide": {
+        "title": "Guide complet de l'API SMS Mali",
+        "excerpt": "Découvrez comment intégrer notre API SMS dans vos applications pour envoyer des messages au Mali."
+      },
+      "web-development-trends-2024": {
+        "title": "Tendances du développement web en 2024",
+        "excerpt": "Les technologies et frameworks qui vont dominer le développement web cette année."
+      },
+      "cybersecurity-best-practices": {
+        "title": "Meilleures pratiques en cybersécurité",
+        "excerpt": "Protégez vos applications et données avec ces conseils essentiels de sécurité."
+      },
+      "ui-ux-design-principles": {
+        "title": "Principes fondamentaux du design UI/UX",
+        "excerpt": "Créez des interfaces utilisateur intuitives et engageantes avec ces principes de design."
+      },
+      "mobile-app-development-flutter": {
+        "title": "Développement d'applications mobiles avec Flutter",
+        "excerpt": "Pourquoi Flutter est le meilleur choix pour le développement d'applications multiplateformes."
+      },
+      "data-ai-machine-learning": {
+        "title": "Data & IA : Introduction au Machine Learning",
+        "excerpt": "Comprendre les bases du machine learning et comment l'appliquer à vos projets."
+      }
+    }
+  },
+  "serviceDetails": {
+    "common": {
+      "getStarted": "Commencer Maintenant",
+      "scheduleCall": "Planifier un Appel",
+      "viewAllServices": "Voir Tous les Services",
+      "getFreeConsultation": "Obtenir une Consultation Gratuite",
+      "readyToTransform": "Prêt à Transformer Votre Entreprise ?",
+      "letsDiscuss": "Discutons de la façon dont nous pouvons vous aider à atteindre vos objectifs avec nos solutions expertes.",
+      "whyChoose": "Pourquoi Choisir Notre",
+      "powerfulFeatures": "Fonctionnalités puissantes qui génèrent des résultats",
+      "ourProcess": "Notre Processus",
+      "fromConceptToLaunch": "Du concept au lancement en 4 étapes simples",
+      "technologiesWeMaster": "Technologies Que Nous Maîtrisons",
+      "industryLeadingTools": "Outils et frameworks de pointe"
+    },
+    "stats": {
+      "webAppsBuilt": "Applications Web",
+      "uptime": "Disponibilité",
+      "avgLoadTime": "Temps de Chargement",
+      "mobileReady": "Mobile Ready",
+      "appsPublished": "Apps Publiées",
+      "avgRating": "Note Moyenne",
+      "downloads": "Téléchargements",
+      "platforms": "Plateformes",
+      "desktopApps": "Apps Desktop",
+      "reliability": "Fiabilité",
+      "support": "Support",
+      "designsCreated": "Designs Créés",
+      "clientSatisfaction": "Satisfaction Client",
+      "conversionBoost": "Boost de Conversion",
+      "accessible": "Accessible",
+      "uptimeSLA": "SLA Disponibilité",
+      "networksBuilt": "Réseaux Construits",
+      "latency": "Latence",
+      "monitoring": "Surveillance",
+      "breaches": "Violations",
+      "auditsDone": "Audits Effectués",
+      "threatMonitor": "Surveillance Menaces",
+      "certified": "Certifié",
+      "aiProjects": "Projets IA",
+      "accuracy": "Précision",
+      "dataProcessed": "Données Traitées",
+      "mlModels": "Modèles ML"
+    },
+    "benefits": {
+      "lightningFast": {
+        "title": "Ultra Rapide",
+        "description": "Performance optimisée avec Next.js et frameworks modernes"
+      },
+      "scalableArchitecture": {
+        "title": "Architecture Évolutive",
+        "description": "Conçu pour grandir avec votre entreprise"
+      },
+      "secureByDesign": {
+        "title": "Sécurisé par Conception",
+        "description": "Standards de sécurité de niveau entreprise"
+      },
+      "userCentric": {
+        "title": "Centré Utilisateur",
+        "description": "Interfaces magnifiques que les utilisateurs adorent"
+      },
+      "nativePerformance": {
+        "title": "Performance Native",
+        "description": "Animations fluides 60fps et réponse instantanée"
+      },
+      "crossPlatform": {
+        "title": "Multi-Plateforme",
+        "description": "Un seul code pour iOS et Android"
+      },
+      "offlineFirst": {
+        "title": "Hors Ligne d'Abord",
+        "description": "Fonctionne parfaitement sans internet"
+      },
+      "pushNotifications": {
+        "title": "Notifications Push",
+        "description": "Engagez les utilisateurs avec des mises à jour opportunes"
+      },
+      "highPerformance": {
+        "title": "Haute Performance",
+        "description": "Vitesse native avec utilisation optimisée des ressources"
+      },
+      "systemIntegration": {
+        "title": "Intégration Système",
+        "description": "Intégration profonde de l'OS et automation"
+      },
+      "offlineCapable": {
+        "title": "Capacité Hors Ligne",
+        "description": "Fonctionnalité complète sans internet"
+      },
+      "userCentered": {
+        "title": "Centré Utilisateur",
+        "description": "Décisions de design basées sur la recherche"
+      },
+      "brandConsistency": {
+        "title": "Cohérence de Marque",
+        "description": "Systèmes de design cohésifs"
+      },
+      "accessibility": {
+        "title": "Accessibilité",
+        "description": "Conformité WCAG 2.1 AA"
+      },
+      "conversionFocused": {
+        "title": "Axé Conversion",
+        "description": "Designs qui génèrent des résultats"
+      },
+      "highAvailability": {
+        "title": "Haute Disponibilité",
+        "description": "Systèmes redondants pour zéro temps d'arrêt"
+      },
+      "scalable": {
+        "title": "Évolutif",
+        "description": "Grandit avec les besoins de votre entreprise"
+      },
+      "secure": {
+        "title": "Sécurisé",
+        "description": "Architecture de sécurité multi-couches"
+      },
+      "monitored": {
+        "title": "Surveillé",
+        "description": "Suivi des performances en temps réel"
+      },
+      "threatProtection": {
+        "title": "Protection contre les Menaces",
+        "description": "Détection et prévention avancées des menaces"
+      },
+      "compliance": {
+        "title": "Conformité",
+        "description": "Prêt pour RGPD, ISO 27001, SOC 2"
+      },
+      "encryption": {
+        "title": "Chiffrement",
+        "description": "Chiffrement de bout en bout des données"
+      },
+      "soc247": {
+        "title": "SOC 24/7",
+        "description": "Surveillance du centre d'opérations de sécurité"
+      },
+      "predictiveAnalytics": {
+        "title": "Analyses Prédictives",
+        "description": "Insights alimentés par l'IA pour une meilleure prise de décision"
+      },
+      "bigDataProcessing": {
+        "title": "Traitement Big Data",
+        "description": "Gérez des ensembles de données massifs avec facilité"
+      },
+      "dataSecurity": {
+        "title": "Sécurité des Données",
+        "description": "Protection des données de niveau entreprise"
+      },
+      "customMLModels": {
+        "title": "Modèles ML Personnalisés",
+        "description": "Solutions d'apprentissage automatique sur mesure"
+      }
+    },
+    "process": {
+      "discoveryPlanning": {
+        "title": "Découverte & Planification",
+        "description": "Nous analysons vos besoins et créons une feuille de route détaillée"
+      },
+      "designPrototyping": {
+        "title": "Design & Prototypage",
+        "description": "Prototypes interactifs pour visualiser votre application"
+      },
+      "development": {
+        "title": "Développement",
+        "description": "Code propre et maintenable suivant les meilleures pratiques"
+      },
+      "launchSupport": {
+        "title": "Lancement & Support",
+        "description": "Déploiement fluide et maintenance continue"
+      },
+      "strategyResearch": {
+        "title": "Stratégie & Recherche",
+        "description": "Analyse de marché et définition des personas utilisateurs"
+      },
+      "uiUxDesign": {
+        "title": "Design UI/UX",
+        "description": "Directives de design spécifiques à la plateforme"
+      },
+      "nativeDevelopment": {
+        "title": "Développement Natif",
+        "description": "Implémentation React Native ou Flutter"
+      },
+      "appStoreLaunch": {
+        "title": "Lancement App Store",
+        "description": "Soumission et optimisation pour les stores"
+      },
+      "requirementsAnalysis": {
+        "title": "Analyse des Besoins",
+        "description": "Comprendre votre flux de travail et vos besoins"
+      },
+      "architectureDesign": {
+        "title": "Conception Architecture",
+        "description": "Structure évolutive et maintenable"
+      },
+      "implementation": {
+        "title": "Implémentation",
+        "description": "Frameworks modernes comme Electron ou Tauri"
+      },
+      "deployment": {
+        "title": "Déploiement",
+        "description": "Mises à jour automatiques et configuration de distribution"
+      },
+      "researchDiscovery": {
+        "title": "Recherche & Découverte",
+        "description": "Entretiens utilisateurs et analyse concurrentielle"
+      },
+      "wireframing": {
+        "title": "Wireframing",
+        "description": "Maquettes basse fidélité et flux utilisateurs"
+      },
+      "visualDesign": {
+        "title": "Design Visuel",
+        "description": "Maquettes haute fidélité et prototypes"
+      },
+      "testingIteration": {
+        "title": "Tests & Itération",
+        "description": "Tests utilisateurs et raffinement"
+      },
+      "networkAssessment": {
+        "title": "Évaluation Réseau",
+        "description": "Évaluation de l'infrastructure actuelle"
+      },
+      "designPlanning": {
+        "title": "Conception & Planification",
+        "description": "Planification de la topologie et de la capacité"
+      },
+      "hardwareSoftwareDeployment": {
+        "title": "Déploiement",
+        "description": "Déploiement matériel et logiciel"
+      },
+      "monitoringSupport": {
+        "title": "Surveillance & Support",
+        "description": "Maintenance proactive et optimisation"
+      },
+      "securityAudit": {
+        "title": "Audit de Sécurité",
+        "description": "Évaluation complète des vulnérabilités"
+      },
+      "riskAnalysis": {
+        "title": "Analyse des Risques",
+        "description": "Identifier et prioriser les menaces"
+      },
+      "securityImplementation": {
+        "title": "Implémentation",
+        "description": "Déployer les contrôles et outils de sécurité"
+      },
+      "continuousMonitoring": {
+        "title": "Surveillance Continue",
+        "description": "Détection des menaces en temps réel"
+      },
+      "dataCollection": {
+        "title": "Collecte de Données",
+        "description": "Rassembler et nettoyer vos sources de données"
+      },
+      "analysisModeling": {
+        "title": "Analyse & Modélisation",
+        "description": "Construire et entraîner des modèles ML"
+      },
+      "aiImplementation": {
+        "title": "Implémentation",
+        "description": "Déployer des solutions IA en production"
+      },
+      "optimization": {
+        "title": "Optimisation",
+        "description": "Amélioration continue du modèle"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue sur votre espace",
+    "sentSms": "SMS Envoyés",
+    "apiKeysCount": "Clés API",
+    "consumption": "Consommation",
+    "invoicesCount": "Factures",
+    "thisMonth": "ce mois",
+    "smsAnalytics": "Analytics des SMS",
+    "distributionByType": "Répartition par Type",
+    "transactionalSms": "SMS Transactionnels",
+    "marketingSms": "SMS Marketing",
+    "deliveryRateMain": "Taux de livraison",
+    "failureRate": "Taux d'échec",
+    "last30DaysActivity": "Activité des 30 derniers jours",
+    "manageApiKeys": "Gérer les clés API",
+    "smsHistoryLink": "Historique SMS",
+    "billingLink": "Facturation",
+    "settingsLink": "Paramètres",
+    "recentSms": "SMS Récents",
+    "minutesAgo": "Il y a {count} minutes",
+    "sent": "Envoyé",
+    "viewAllHistory": "Voir tout l'historique",
+    "createdOn": "Créée le {date}",
+    "active": "Active",
+    "manageAllKeys": "Gérer toutes les clés",
+    "createNewKey": "Créer une nouvelle clé",
+    "smsHistory": {
+      "title": "Historique SMS",
+      "subtitle": "Voir tous vos SMS envoyés",
+      "date": "Date",
+      "recipient": "Destinataire",
+      "status": "Statut",
+      "message": "Message",
+      "sent": "Envoyé",
+      "delivered": "Livré",
+      "failed": "Échoué",
+      "pending": "En attente",
+      "noMessages": "Aucun message envoyé",
+      "noResults": "Aucun résultat trouvé",
+      "totalSms": "Total SMS",
+      "deliveryRate": "Taux de livraison",
+      "smsToday": "SMS aujourd'hui",
+      "failedCount": "Échoués",
+      "back": "Retour"
+    },
+    "billing": {
+      "title": "Facturation",
+      "subtitle": "Gérez vos factures et paiements",
+      "currentPlan": "Plan actuel",
+      "nextBilling": "Prochaine facturation",
+      "paymentMethod": "Méthode de paiement",
+      "invoices": "Factures",
+      "download": "Télécharger",
+      "status": "Statut",
+      "date": "Date",
+      "amount": "Montant",
+      "paid": "Payé",
+      "unpaid": "Non payé",
+      "overdue": "En retard",
+      "back": "Retour",
+      "id": "ID",
+      "expensesThisMonth": "Dépenses ce mois",
+      "paidInvoices": "Factures payées",
+      "pendingInvoice": "Facture en attente",
+      "overdueInvoices": "Factures en retard",
+      "professionalPlan": "Plan Professionnel",
+      "perMonth": "/ mois",
+      "nextBillingDate": "15 Avril 2024",
+      "nextBillingAmount": "50,000 FCFA",
+      "showing": "Affichage de 1 à 3 sur 12 factures",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "edit": "Modifier",
+      "expires": "Expire 12/25"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "unreadCount": "{count} notifications non lues",
+      "noUnread": "Aucune notification non lue",
+      "markAllAsRead": "Tout marquer comme lu",
+      "markAsRead": "Marquer comme lu",
+      "delete": "Supprimer",
+      "noNotifications": "Aucune notification"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "subtitle": "Gérez votre compte et préférences",
+      "profile": "Profil",
+      "email": "Email",
+      "phone": "Téléphone",
+      "company": "Entreprise",
+      "notifications": "Notifications",
+      "emailNotifications": "Notifications par email",
+      "emailNotificationsDesc": "Recevez des notifications par email",
+      "smsNotifications": "Notifications SMS",
+      "smsNotificationsDesc": "Recevez des notifications SMS",
+      "security": "Sécurité",
+      "changePassword": "Changer le mot de passe",
+      "twoFactor": "Authentification à deux facteurs",
+      "twoFactorDesc": "Sécurisez votre compte avec 2FA",
+      "preferences": "Préférences",
+      "language": "Langue",
+      "theme": "Thème",
+      "themeDesc": "Mode sombre / Mode clair",
+      "save": "Enregistrer",
+      "french": "Français",
+      "english": "English"
+    },
+    "apiKeys": {
+      "title": "Clés API",
+      "subtitle": "Gérez vos clés API pour l'envoi de SMS",
+      "createKey": "Créer une clé",
+      "createNewKey": "Créer une nouvelle clé API",
+      "keyName": "Nom de la clé",
+      "keyNamePlaceholder": "Ex: Production Key",
+      "create": "Créer",
+      "cancel": "Annuler",
+      "active": "Active",
+      "revoked": "Révoquée",
+      "createdAt": "Créée le:",
+      "lastUsed": "Dernière utilisation:",
+      "important": "Important:",
+      "securityWarning": "Ne partagez jamais vos clés API avec des tiers. Si vous pensez qu'une clé a été compromise, révoquez-la immédiatement.",
+      "back": "Retour"
+    },
+    "createApiKey": {
+      "title": "Créer une nouvelle clé API",
+      "subtitle": "Générez une nouvelle clé API pour accéder à nos services",
+      "name": "Nom de la clé",
+      "namePlaceholder": "Ex: Application Mobile",
+      "permissions": "Permissions",
+      "read": "Lecture",
+      "write": "Écriture",
+      "delete": "Suppression",
+      "expiry": "Date d'expiration",
+      "noExpiry": "Pas d'expiration",
+      "create": "Créer la clé",
+      "cancel": "Annuler",
+      "back": "Retour",
+      "success": "Clé API créée avec succès",
+      "error": "Erreur lors de la création de la clé"
+    }
+  },
+  "admin": {
+    "breadcrumb": {
+      "dashboard": "Dashboard",
+      "admin": "Admin",
+      "content": "Contenu",
+      "settings": "Paramètres"
+    },
+    "dashboard": {
+      "title": "Dashboard Admin",
+      "subtitle": "Gérez toutes les parties de votre site",
+      "quickActions": "Actions Rapides",
+      "recentActivity": "Activité Récente",
+      "stats": {
+        "totalArticles": "Total Articles",
+        "activeServices": "Services Actifs",
+        "sitePages": "Pages du Site",
+        "users": "Utilisateurs"
+      },
+      "actions": {
+        "manageServices": {
+          "title": "Gérer les Services",
+          "description": "Ajouter, modifier ou supprimer des services"
+        },
+        "manageBlog": {
+          "title": "Gérer le Blog",
+          "description": "Créer et modifier les articles de blog"
+        },
+        "manageDocs": {
+          "title": "Gérer la Documentation",
+          "description": "Modifier les sections de documentation"
+        },
+        "siteSettings": {
+          "title": "Paramètres du Site",
+          "description": "Configurer les paramètres généraux"
+        }
+      },
+      "activity": {
+        "newBlogPost": "Nouvel article de blog créé",
+        "serviceModified": "Service \"Cybersécurité\" modifié",
+        "settingsUpdated": "Paramètres du site mis à jour",
+        "hoursAgo": "Il y a {hours} heures",
+        "dayAgo": "Il y a {days} jour",
+        "daysAgo": "Il y a {days} jours"
+      }
+    },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "content": "Contenu",
+      "hero": "Hero",
+      "services": "Services",
+      "testimonials": "Témoignages",
+      "footer": "Footer",
+      "navigation": "Navigation",
+      "about": "À propos",
+      "contact": "Contact",
+      "smsApi": "API SMS",
+      "legal": "Légal",
+      "blog": "Blog",
+      "docs": "Documentation",
+      "media": "Médias",
+      "management": "Gestion",
+      "users": "Utilisateurs",
+      "smsSubscribers": "Abonnés SMS",
+      "security": "Sécur & Monitoring",
+      "securityIps": "IPs Suspectes",
+      "geoBlocking": "Geo-blocking",
+      "logs": "Logs & Métriques",
+      "apiDocs": "API Docs",
+      "settings": "Paramètres",
+      "general": "Général",
+      "languages": "Langues",
+      "theme": "Thème",
+      "seo": "SEO",
+      "social": "Réseaux sociaux"
+    },
+    "content": {
+      "services": {
+        "title": "Gérer les Services",
+        "subtitle": "Ajoutez, modifiez ou supprimez les services",
+        "addService": "Ajouter un Service",
+        "editService": "Modifier le Service",
+        "createService": "Créer un Service",
+        "icon": "Icône",
+        "titleLabel": "Titre",
+        "subtitleLabel": "Sous-titre",
+        "description": "Description",
+        "active": "Actif",
+        "inactive": "Inactif",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "hero": {
+        "title": "Gérer la Section Hero",
+        "subtitle": "Modifiez la section hero de la page d'accueil",
+        "sectionSettings": "Paramètres de la Section",
+        "titleLabel": "Titre",
+        "subtitleLabel": "Sous-titre",
+        "description": "Description",
+        "ctaText": "Texte du bouton CTA",
+        "ctaSecondaryText": "Texte du bouton secondaire",
+        "ctaLink": "Lien du bouton CTA",
+        "ctaSecondaryLink": "Lien du bouton secondaire",
+        "active": "Actif",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "footer": {
+        "title": "Gérer le Footer",
+        "subtitle": "Modifiez le footer du site",
+        "footerSettings": "Paramètres du Footer",
+        "description": "Description",
+        "quickLinks": "Liens Rapides",
+        "services": "Services",
+        "legal": "Légal",
+        "termsOfService": "Conditions d'utilisation",
+        "privacyPolicy": "Politique de confidentialité",
+        "rights": "Droits",
+        "active": "Actif",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "testimonials": {
+        "title": "Gérer les Témoignages",
+        "subtitle": "Ajoutez, modifiez ou supprimez les témoignages",
+        "addTestimonial": "Ajouter un Témoignage",
+        "editTestimonial": "Modifier le Témoignage",
+        "createTestimonial": "Créer un Témoignage",
+        "clientName": "Nom du client",
+        "company": "Entreprise",
+        "role": "Rôle",
+        "content": "Contenu",
+        "rating": "Note",
+        "order": "Ordre",
+        "active": "Actif",
+        "inactive": "Inactif",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce témoignage ?",
+        "saved": "Enregistré avec succès"
+      },
+      "navigation": {
+        "title": "Gérer la Navigation",
+        "subtitle": "Modifiez les liens de navigation du site",
+        "navItems": "Éléments de Navigation",
+        "addNewItem": "Ajouter un Nouvel Élément",
+        "label": "Label",
+        "href": "URL",
+        "active": "Actif",
+        "external": "Lien externe",
+        "add": "Ajouter",
+        "save": "Enregistrer",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+        "saved": "Enregistré avec succès"
+      },
+      "about": {
+        "title": "Gérer À Propos",
+        "subtitle": "Modifiez les informations de la page À propos",
+        "mainSection": "Section Principale",
+        "titleLabel": "Titre",
+        "subtitleLabel": "Sous-titre",
+        "description": "Description",
+        "missionVision": "Mission & Vision",
+        "mission": "Mission",
+        "vision": "Vision",
+        "values": "Valeurs",
+        "valueTitle": "Titre de la valeur",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "contact": {
+        "title": "Gérer Contact",
+        "subtitle": "Modifiez les informations de contact",
+        "mainInfo": "Informations Principales",
+        "titleLabel": "Titre",
+        "subtitleLabel": "Sous-titre",
+        "description": "Description",
+        "contactDetails": "Coordonnées",
+        "email": "Email",
+        "phone": "Téléphone",
+        "address": "Adresse",
+        "hours": "Horaires",
+        "socialMedia": "Réseaux Sociaux",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "faq": {
+        "title": "Gérer FAQ",
+        "subtitle": "Ajoutez, modifiez ou supprimez les questions fréquentes",
+        "addQuestion": "Ajouter une Question",
+        "editQuestion": "Modifier la Question",
+        "createQuestion": "Créer une Question",
+        "question": "Question",
+        "answer": "Réponse",
+        "category": "Catégorie",
+        "order": "Ordre",
+        "edit": "Modifier",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette question ?",
+        "saved": "Enregistré avec succès"
+      },
+      "sla": {
+        "title": "Gérer SLA",
+        "subtitle": "Modifiez les engagements de service",
+        "mainSection": "Section Principale",
+        "titleLabel": "Titre",
+        "subtitleLabel": "Sous-titre",
+        "description": "Description",
+        "responseTime": "Temps de Réponse",
+        "critical": "Critique",
+        "high": "Élevé",
+        "medium": "Moyen",
+        "low": "Faible",
+        "guarantees": "Garanties",
+        "guaranteeTitle": "Titre de la garantie",
+        "percentage": "Pourcentage",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "newsletter": {
+        "title": "Gérer Newsletter",
+        "subtitle": "Configurez la newsletter et gérez les abonnés",
+        "configuration": "Configuration",
+        "titleLabel": "Titre",
+        "description": "Description",
+        "placeholder": "Placeholder",
+        "buttonText": "Texte du bouton",
+        "subscribers": "Abonnés",
+        "subscribedOn": "Abonné le",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "cookies": {
+        "title": "Gérer Cookies",
+        "subtitle": "Configurez les paramètres des cookies",
+        "mainConfiguration": "Configuration Principale",
+        "titleLabel": "Titre",
+        "description": "Description",
+        "acceptAll": "Tout accepter",
+        "rejectAll": "Tout refuser",
+        "customize": "Personnaliser",
+        "categories": "Catégories",
+        "essential": "Cookies Essentiels",
+        "analytics": "Cookies Analytiques",
+        "marketing": "Cookies Marketing",
+        "categoryTitle": "Titre de la catégorie",
+        "categoryDescription": "Description de la catégorie",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "legal": {
+        "title": "Gérer Mentions Légales",
+        "subtitle": "Modifiez les conditions d'utilisation et la politique de confidentialité",
+        "termsOfService": "Conditions d'Utilisation",
+        "privacyPolicy": "Politique de Confidentialité",
+        "content": "Contenu",
+        "lastUpdated": "Dernière mise à jour",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "smsApi": {
+        "title": "Gérer API SMS",
+        "subtitle": "Configurez les paramètres de l'API SMS",
+        "mainSection": "Section Principale",
+        "titleLabel": "Titre",
+        "subtitleLabel": "Sous-titre",
+        "description": "Description",
+        "pricing": "Tarification",
+        "pricePerSMS": "Prix par SMS",
+        "currency": "Devise",
+        "features": "Fonctionnalités",
+        "featureTitle": "Titre de la fonctionnalité",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "partners": {
+        "title": "Gérer les Partenaires",
+        "subtitle": "Ajoutez, modifiez ou supprimez les partenaires",
+        "addPartner": "Ajouter un Partenaire",
+        "editPartner": "Modifier le Partenaire",
+        "createPartner": "Créer un Partenaire",
+        "name": "Nom",
+        "logo": "Logo (URL)",
+        "website": "Site Web",
+        "order": "Ordre",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce partenaire ?"
+      },
+      "media": {
+        "title": "Gérer les Médias",
+        "subtitle": "Uploadez et gérez vos images et fichiers",
+        "uploadFile": "Uploader un Fichier",
+        "dragDrop": "Glissez-déposez un fichier ici",
+        "or": "ou",
+        "upload": "Uploader",
+        "selectedFile": "Fichier sélectionné",
+        "uploaded": "Fichier uploadé avec succès",
+        "searchPlaceholder": "Rechercher des fichiers...",
+        "filter": "Filtrer",
+        "download": "Télécharger",
+        "noFiles": "Aucun fichier trouvé",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce fichier ?"
+      }
+    },
+    "settings": {
+      "general": {
+        "title": "Paramètres Généraux",
+        "subtitle": "Configurez les informations générales du site",
+        "settings": "Paramètres",
+        "generalInfo": "Informations Générales",
+        "siteName": "Nom du site",
+        "siteDescription": "Description du site",
+        "contactInfo": "Informations de Contact",
+        "email": "Email",
+        "phone": "Téléphone",
+        "address": "Adresse",
+        "socialMedia": "Réseaux Sociaux",
+        "seoSettings": "Paramètres SEO",
+        "metaTitle": "Meta Title",
+        "metaDescription": "Meta Description",
+        "keywords": "Mots-clés",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "languages": {
+        "title": "Gérer les Langues",
+        "subtitle": "Configurez les langues disponibles sur le site",
+        "availableLanguages": "Langues Disponibles",
+        "default": "Par défaut",
+        "enabled": "Activée",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "theme": {
+        "title": "Gérer le Thème",
+        "subtitle": "Personnalisez les couleurs du site",
+        "colors": "Couleurs",
+        "primaryColor": "Couleur Principale",
+        "secondaryColor": "Couleur Secondaire",
+        "accentColor": "Couleur d'Accent",
+        "backgroundColor": "Couleur de Fond",
+        "textColor": "Couleur du Texte",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "seo": {
+        "title": "Paramètres SEO",
+        "subtitle": "Optimisez le référencement de votre site",
+        "metaTitle": "Meta Title",
+        "metaDescription": "Meta Description",
+        "keywords": "Mots-clés",
+        "ogImage": "Image Open Graph",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      },
+      "social": {
+        "title": "Réseaux Sociaux",
+        "subtitle": "Configurez vos liens de réseaux sociaux",
+        "facebook": "Facebook",
+        "twitter": "Twitter",
+        "linkedin": "LinkedIn",
+        "instagram": "Instagram",
+        "youtube": "YouTube",
+        "save": "Enregistrer",
+        "saved": "Enregistré avec succès"
+      }
+    },
+    "blog": {
+      "title": "Gérer le Blog",
+      "subtitle": "Créez et modifiez les articles de blog",
+      "addPost": "Ajouter un Article",
+      "editPost": "Modifier l'Article",
+      "createPost": "Créer un Article",
+      "slug": "Slug",
+      "titleLabel": "Titre",
+      "excerpt": "Extrait",
+      "content": "Contenu",
+      "author": "Auteur",
+      "category": "Catégorie",
+      "tags": "Tags",
+      "status": "Statut",
+      "published": "Publié",
+      "draft": "Brouillon",
+      "publish": "Publier",
+      "unpublish": "Dépublier",
+      "searchPlaceholder": "Rechercher des articles...",
+      "filter": "Filtrer",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet article ?",
+      "saved": "Enregistré avec succès"
+    },
+    "docs": {
+      "title": "Gérer la Documentation",
+      "subtitle": "Créez et modifiez les sections de documentation",
+      "addSection": "Ajouter une Section",
+      "editSection": "Modifier la Section",
+      "createSection": "Créer une Section",
+      "slug": "Slug",
+      "titleLabel": "Titre",
+      "content": "Contenu",
+      "order": "Ordre",
+      "parent": "Parent",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette section ?",
+      "saved": "Enregistré avec succès"
+    },
+    "users": {
+      "title": "Gestion des Utilisateurs",
+      "subtitle": "Gérez les comptes utilisateurs et leurs permissions",
+      "totalUsers": "Total Utilisateurs",
+      "activeUsers": "Utilisateurs Actifs",
+      "bannedUsers": "Utilisateurs Bannis",
+      "blockedUsers": "Utilisateurs Bloqués",
+      "searchPlaceholder": "Rechercher par nom ou email...",
+      "allStatus": "Tous les statuts",
+      "statusActive": "Actif",
+      "statusInactive": "Inactif",
+      "statusDeactivated": "Désactivé",
+      "statusBanned": "Banni",
+      "statusBlocked": "Bloqué",
+      "usersList": "Liste des Utilisateurs",
+      "name": "Nom",
+      "contact": "Contact",
+      "role": "Rôle",
+      "status": "Statut",
+      "joined": "Inscription",
+      "actions": "Actions",
+      "verified": "Vérifié",
+      "notVerified": "Non vérifié",
+      "activate": "Activer",
+      "deactivate": "Désactiver",
+      "ban": "Bannir",
+      "unban": "Débannir",
+      "block": "Bloquer",
+      "unblock": "Débloquer",
+      "confirmBan": "Êtes-vous sûr de vouloir bannir cet utilisateur ?",
+      "confirmBlock": "Êtes-vous sûr de vouloir bloquer cet utilisateur ?"
+    },
+    "smsSubscribers": {
+      "title": "Abonnés SMS",
+      "subtitle": "Gérez les abonnés au service SMS API",
+      "totalSubscribers": "Total Abonnés",
+      "activeSubscribers": "Abonnés Actifs",
+      "totalMessages": "Messages Envoyés",
+      "totalRevenue": "Revenu Total",
+      "searchPlaceholder": "Rechercher par nom ou email...",
+      "allPlans": "Tous les plans",
+      "subscribersList": "Liste des Abonnés",
+      "subscriber": "Abonné",
+      "plan": "Plan",
+      "status": "Statut",
+      "usage": "Utilisation",
+      "balance": "Solde",
+      "actions": "Actions",
+      "statusActive": "Actif",
+      "statusSuspended": "Suspendu",
+      "statusCancelled": "Annulé",
+      "messages": "messages",
+      "suspend": "Suspendre",
+      "activate": "Activer",
+      "cancel": "Annuler",
+      "confirmSuspend": "Êtes-vous sûr de vouloir suspendre cet abonné ?",
+      "confirmCancel": "Êtes-vous sûr de vouloir annuler cet abonnement ?"
+    },
+    "security": {
+      "title": "Sécurité & IPs Suspectes",
+      "subtitle": "Surveillez et bloquez les IPs suspectes avec géolocalisation MaxMind",
+      "suspiciousIPs": "IPs Suspectes",
+      "blockedIPs": "IPs Bloquées",
+      "criticalThreats": "Menaces Critiques",
+      "totalAttempts": "Tentatives Totales",
+      "searchPlaceholder": "Rechercher par IP, pays ou ville...",
+      "allThreats": "Tous les niveaux",
+      "threatLow": "Faible",
+      "threatMedium": "Moyen",
+      "threatHigh": "Élevé",
+      "threatCritical": "Critique",
+      "ipList": "Liste des IPs",
+      "ipAddress": "Adresse IP",
+      "location": "Localisation",
+      "isp": "Fournisseur",
+      "threat": "Menace",
+      "attempts": "Tentatives",
+      "status": "Statut",
+      "actions": "Actions",
+      "statusMonitoring": "Surveillance",
+      "statusBlocked": "Bloquée",
+      "statusWhitelisted": "Liste blanche",
+      "block": "Bloquer",
+      "unblock": "Débloquer",
+      "whitelist": "Liste blanche",
+      "removeWhitelist": "Retirer",
+      "confirmBlock": "Êtes-vous sûr de vouloir bloquer cette IP ?"
+    },
+    "geoBlocking": {
+      "title": "Geo-blocking par Pays",
+      "subtitle": "Contrôlez l'accès selon les pays via MaxMind GeoIP",
+      "totalCountries": "Total Pays",
+      "blockedCountries": "Pays Bloqués",
+      "allowedCountries": "Pays Autorisés",
+      "totalRequests": "Requêtes Totales",
+      "searchPlaceholder": "Rechercher un pays...",
+      "allContinents": "Tous les continents",
+      "countries": "pays",
+      "blockAll": "Tout Bloquer",
+      "unblockAll": "Tout Débloquer",
+      "country": "Pays",
+      "code": "Code",
+      "requests": "Requêtes",
+      "threatScore": "Score Menace",
+      "access": "Accès",
+      "blocked": "Bloqué",
+      "allowed": "Autorisé",
+      "confirmBlockContinent": "Êtes-vous sûr de vouloir bloquer tous les pays de {continent} ?"
+    },
+    "logs": {
+      "title": "Logs & Métriques",
+      "subtitle": "Surveillez les logs système et les métriques de performance",
+      "metrics": "Métriques",
+      "logs": "Logs",
+      "cpuUsage": "Utilisation CPU",
+      "memoryUsage": "Utilisation Mémoire",
+      "diskUsage": "Utilisation Disque",
+      "apiRequests": "Requêtes API",
+      "activeUsers": "Utilisateurs Actifs",
+      "errorRate": "Taux d'Erreur",
+      "avgResponseTime": "Temps Réponse Moy.",
+      "smsSent": "SMS Envoyés",
+      "serverUptime": "Disponibilité Serveur",
+      "totalLogs": "Total Logs",
+      "errors": "Erreurs",
+      "warnings": "Avertissements",
+      "info": "Info",
+      "searchPlaceholder": "Rechercher dans les logs...",
+      "allLevels": "Tous les niveaux",
+      "export": "Exporter",
+      "recentLogs": "Logs Récents"
+    },
+    "apiDocs": {
+      "title": "Documentation API",
+      "subtitle": "Documentation interactive Swagger et endpoints API",
+      "swaggerUI": "Swagger UI",
+      "interactive": "Interactif",
+      "downloadSpec": "Télécharger Spec",
+      "apiKeys": "Clés API",
+      "manage": "Gérer",
+      "authentication": "Authentification",
+      "openFullscreen": "Ouvrir en plein écran",
+      "swaggerPlaceholder": "L'interface Swagger UI sera intégrée ici",
+      "viewSwagger": "Voir Swagger",
+      "endpoints": "Endpoints API",
+      "totalEndpoints": "Total Endpoints",
+      "apiVersion": "Version API",
+      "apiStatus": "Statut API",
+      "operational": "Opérationnel"
+    }
+  }
+}

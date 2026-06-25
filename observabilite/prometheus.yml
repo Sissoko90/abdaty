@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'abdaty-monitor'
+
+scrape_configs:
+  # Configuration pour le scraping de l'application Spring Boot
+  - job_name: 'abdaty-backend'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      # Backend conteneurisé (compose racine). Pour un backend lancé sur l'hôte,
+      # remplacer par 'host.docker.internal:8080'.
+      - targets: ['backend:8080']
+        labels:
+          application: 'abdaty-backend'
+          environment: 'production'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Configuration pour le scraping de Prometheus lui-même
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
