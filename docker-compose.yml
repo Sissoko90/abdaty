@@ -141,9 +141,11 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      # L'outil CLI (JVM) met > 5 s à démarrer sur un petit VPS partagé : délai large.
+      interval: 15s
+      timeout: 30s
+      retries: 10
+      start_period: 60s
     networks:
       - abdaty-network
 
