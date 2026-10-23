@@ -46,20 +46,41 @@ NEXTAUTH_URL=https://abdatytch.com
 NEXTAUTH_SECRET=<openssl rand -base64 32>
 ```
 
-### 5. nginx/Apache (port 81 ou 443) → conteneurs
-Reverse-proxy vers le frontend (`127.0.0.1:3000`) et le backend (`127.0.0.1:8080`).
-Exemple Apache (vhost 443) :
-```apache
-ProxyPreserveHost On
-ProxyPass        /api/     http://127.0.0.1:8080/api/
-ProxyPassReverse /api/     http://127.0.0.1:8080/api/
-ProxyPass        /uploads/ http://127.0.0.1:8080/uploads/
-ProxyPass        /ws/      ws://127.0.0.1:8080/ws/
-ProxyPassReverse /ws/      ws://127.0.0.1:8080/ws/
-ProxyPass        /         http://127.0.0.1:3000/
-ProxyPassReverse /         http://127.0.0.1:3000/
+### 5. nginx (443) → conteneurs
+Le VPS de production (72.61.145.76) est **partagé** avec d'autres applications : les
+ports hôte sont donc dédiés, fixés dans le `.env` racine (`FRONTEND_HOST_PORT=3010`,
+`BACKEND_HOST_PORT=8090`, PostgreSQL/Redis/Kafka sur 15432/16379/19092) et le
+déploiement ne démarre que `frontend backend` (+ dépendances).
+
+`/etc/nginx/sites-available/abdatytch.com` (HTTPS ajouté par
+`certbot --nginx -d abdatytch.com`) :
+```nginx
+# ⚠️ Seul /api/v1 va au backend : /api/auth, /api/contact, /api/sms sont des routes
+# du site Next.js (NextAuth). Router tout /api/ vers Spring casse la connexion.
+location ~ ^/(api/v1/|uploads/|v3/api-docs|api-docs|swagger-ui) {
+    proxy_pass http://127.0.0.1:8090;
+    proxy_hide_header WWW-Authenticate;   # pas de popup « Basic » sur les 401
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+location /ws/ {                           # notifications admin (WebSocket)
+    proxy_pass http://127.0.0.1:8090;
+    proxy_hide_header WWW-Authenticate;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 3600s;
+}
+location / {
+    proxy_pass http://127.0.0.1:3010;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
 ```
-`sudo a2enmod proxy proxy_http proxy_wstunnel && sudo systemctl reload apache2`
+Toujours `sudo nginx -t` avant `sudo systemctl reload nginx` (les autres sites du
+serveur dépendent de la même instance).
 
 ## Secrets GitHub Actions
 `VPS_IP`, `VPS_USER`, `SSH_PRIVATE_KEY` (+ variable `DEPLOY_PATH` si ≠ `/opt/backend/abdaty`).

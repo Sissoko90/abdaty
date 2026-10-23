@@ -47,7 +47,7 @@ export function StructuredData({ type, data }: StructuredDataProps) {
         '@type': 'ContactPoint',
         telephone: '+223XXXXXXXX',
         contactType: 'customer service',
-        email: 'contact@abdatytechnologie.com',
+        email: 'contact@abdatytch.com',
       },
       sameAs: [
         'https://www.facebook.com/abdatytechnologie',
