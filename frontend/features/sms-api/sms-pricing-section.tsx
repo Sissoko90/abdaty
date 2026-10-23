@@ -2,11 +2,8 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
-import { CheckCircle, ArrowRight, Smartphone, Briefcase, Building2 } from 'lucide-react';
+import { Check, ArrowRight, Smartphone, Briefcase, Building2 } from 'lucide-react';
 import { PlanModal } from './plan-modal';
 
 const pricingData = [
@@ -26,6 +23,7 @@ const features = [
 
 export function SMSPricingSection() {
   const t = useTranslations('smsApi.pricing');
+  const tPlans = useTranslations('smsApi.plans');
   const [selectedPlan, setSelectedPlan] = useState<typeof pricingData[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -35,101 +33,76 @@ export function SMSPricingSection() {
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{t('title')}</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-2 transition-colors duration-300">{t('subtitle')}</p>
-          <p className="text-lg text-gray-500 dark:text-gray-400 transition-colors duration-300">Envoyez vos SMS au Mali avec notre plateforme indépendante</p>
-        </motion.div>
+    <section className="bg-white py-20 dark:bg-white/[0.02] lg:py-28">
+      <div className="site-container">
+        <div className="mb-12">
+          <h2 className="mb-4 text-4xl font-bold text-ink dark:text-white md:text-5xl">{t('title')}</h2>
+          <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">{t('subtitle')}</p>
+        </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {pricingData.map((item, index) => (
-            <motion.div
-              key={item.plan}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className={`hover:shadow-xl transition-all duration-300 border-2 relative ${
-                item.popular ? 'border-primary-500 shadow-lg' : 'hover:border-primary-200'
-              }`}>
-                {item.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-gradient-to-r from-primary-500 to-primary-700 text-white">
-                      Populaire
-                    </Badge>
-                  </div>
+        <div className="mb-8 grid gap-5 md:grid-cols-3">
+          {pricingData.map((item) => {
+            const Icon = item.icon;
+            const featured = item.popular;
+            return (
+              <div
+                key={item.plan}
+                className={`relative flex flex-col rounded-2xl p-8 ${
+                  featured
+                    ? 'bogolan-texture bg-ink text-white ring-1 ring-ink dark:ring-white/10'
+                    : 'border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.03]'
+                }`}
+              >
+                {featured && (
+                  <span className="absolute right-6 top-6 rounded-full bg-ochre px-3 py-1 text-xs font-bold text-ink">
+                    {tPlans('popular')}
+                  </span>
                 )}
-                <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center">
-                    <item.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-xl">{item.plan}</CardTitle>
-                  <p className="text-sm text-gray-500 mt-2">{item.volume} SMS/mois</p>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <div className="mb-4">
-                    <span className="text-5xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">
-                      {item.price}
-                    </span>
-                    <span className="text-2xl font-semibold text-gray-600 dark:text-gray-400 ml-2 transition-colors duration-300">{item.currency}</span>
-                  </div>
-                  <p className="text-sm text-gray-500 mb-4">{t('perSMS')}</p>
-                  <Button 
-                    onClick={() => handlePlanClick(item)}
-                    className="w-full bg-gradient-to-r from-primary-500 to-primary-700 hover:opacity-90"
-                  >
-                    Voir les détails
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+                <div
+                  className={`mb-6 flex h-12 w-12 items-center justify-center rounded-xl ${
+                    featured ? 'bg-white/10 text-ochre' : 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400'
+                  }`}
+                >
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className={`mb-1 text-xl font-bold ${featured ? 'text-white' : 'text-ink dark:text-white'}`}>{item.plan}</h3>
+                <p className={`mb-6 text-sm ${featured ? 'text-gray-300' : 'text-gray-500 dark:text-gray-400'}`}>
+                  {item.volume} {t('perMonth')}
+                </p>
+                <div className="mb-1 flex items-baseline gap-2">
+                  <span className={`font-display text-5xl font-extrabold ${featured ? 'text-white' : 'text-ink dark:text-white'}`}>{item.price}</span>
+                  <span className={`text-lg font-semibold ${featured ? 'text-gray-300' : 'text-gray-500 dark:text-gray-400'}`}>{item.currency}</span>
+                </div>
+                <p className={`mb-8 text-sm ${featured ? 'text-gray-300' : 'text-gray-500 dark:text-gray-400'}`}>{t('perSMS')}</p>
+                <Button
+                  onClick={() => handlePlanClick(item)}
+                  variant={featured ? 'default' : 'outline'}
+                  className={`group mt-auto w-full ${featured ? '' : 'dark:border-white/15 dark:bg-transparent dark:text-white dark:hover:bg-white/10'}`}
+                >
+                  {t('details')}
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </div>
+            );
+          })}
         </div>
 
         {/* Plan Modal */}
-        <PlanModal 
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          plan={selectedPlan}
-        />
+        <PlanModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} plan={selectedPlan} />
 
-        {/* Features Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border-2 border-gray-100 dark:border-gray-700"
-        >
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center transition-colors duration-300">
-            Inclus dans tous les forfaits
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {features.map((feature, index) => (
-              <motion.div
-                key={`feature-${index}`}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="flex items-center gap-3"
-              >
-                <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                </div>
-                <span className="text-gray-700 dark:text-gray-300 transition-colors duration-300">{feature}</span>
-              </motion.div>
+        <div className="rounded-2xl border border-gray-200 bg-paper p-8 dark:border-white/10 dark:bg-white/[0.03]">
+          <h3 className="mb-6 text-xl font-bold text-ink dark:text-white">{t('included')}</h3>
+          <ul className="grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((feature) => (
+              <li key={feature} className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ochre/20">
+                  <Check className="h-3.5 w-3.5 text-ink dark:text-ochre" />
+                </span>
+                {feature}
+              </li>
             ))}
-          </div>
-        </motion.div>
+          </ul>
+        </div>
       </div>
     </section>
   );

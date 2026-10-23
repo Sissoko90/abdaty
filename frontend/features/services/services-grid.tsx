@@ -3,9 +3,7 @@
 import type { Route } from 'next';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowRight, ArrowUpRight, Check, MessageSquare } from 'lucide-react';
 import { usePublicList } from '@/hooks/use-public-content';
 import { resolveServiceIcon } from '@/lib/service-icons';
 
@@ -23,6 +21,9 @@ const fallbackServices = [
   { icon: 'Shield', key: 'security', slug: 'cybersecurity' },
   { icon: 'TrendingUp', key: 'data', slug: 'data-ai' },
 ];
+
+// Classes statiques (Tailwind ne détecte pas les classes construites dynamiquement).
+const LG_SPAN: Record<number, string> = { 1: 'lg:col-span-1', 2: 'lg:col-span-2', 3: 'lg:col-span-3' };
 
 export function ServicesGrid() {
   const t = useTranslations('services');
@@ -55,52 +56,60 @@ export function ServicesGrid() {
           slug: s.slug,
         }));
 
+  // La tuile « sur mesure » comble la dernière ligne de la grille (pas de trou).
+  const cells = services.length + 1;
+  const ctaSpanLg = 1 + ((3 - (cells % 3)) % 3);
+  const ctaSpanMd = cells % 2 === 1 ? 'md:col-span-2' : '';
+
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => {
+    <section className="py-20 lg:py-28">
+      <div className="site-container">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => {
             const Icon = resolveServiceIcon(service.icon);
             const href = `/${locale}/services${service.slug ? `/${service.slug}` : ''}`;
+            const features = service.features.filter(Boolean);
             return (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Link href={href as Route}>
-                  <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-200 group cursor-pointer">
-                    <CardHeader>
-                      <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <CardTitle className="text-2xl flex items-center justify-between">
-                        {service.title}
-                        <ArrowRight className="w-5 h-5 text-primary-600 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                      </CardTitle>
-                      <CardDescription className="text-base">{service.description}</CardDescription>
-                    </CardHeader>
-                    {service.features.length > 0 && (
-                      <CardContent>
-                        <ul className="space-y-3">
-                          {service.features.filter(Boolean).map((feature, i) => (
-                            <li key={i} className="flex items-start">
-                              <span className="text-primary-600 mr-3 mt-1">✓</span>
-                              <span className="text-gray-700 dark:text-gray-300 transition-colors duration-300">
-                                {feature}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    )}
-                  </Card>
-                </Link>
-              </motion.div>
+              <Link key={service.id} href={href as Route} className="group block">
+                <article className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary-300 group-hover:shadow-xl group-hover:shadow-primary-600/5 dark:border-white/10 dark:bg-white/[0.03] dark:group-hover:border-primary-500/40 sm:p-7">
+                  <div className="mb-6 flex items-start justify-between">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 transition-colors group-hover:bg-primary-600 group-hover:text-white dark:bg-primary-500/10 dark:text-primary-400">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-gray-300 transition-colors group-hover:text-primary-600 dark:text-gray-600" />
+                  </div>
+                  <h2 className="mb-3 text-2xl font-bold text-ink dark:text-white">{service.title}</h2>
+                  <p className="mb-6 leading-relaxed text-gray-600 dark:text-gray-400">{service.description}</p>
+                  {features.length > 0 && (
+                    <ul className="mt-auto space-y-2.5 border-t border-gray-100 pt-5 dark:border-white/10">
+                      {features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary-600 dark:text-primary-400" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </article>
+              </Link>
             );
           })}
+
+          <Link href={`/${locale}/contact`} className={`group block ${LG_SPAN[ctaSpanLg]} ${ctaSpanMd}`}>
+            <div className="bogolan-texture flex h-full min-h-[240px] flex-col justify-between gap-6 rounded-2xl bg-ink p-7 text-white">
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-ochre text-ink">
+                <MessageSquare className="h-6 w-6" />
+              </span>
+              <div>
+                <h2 className="mb-2 text-2xl font-bold">{t('customTitle')}</h2>
+                <p className="mb-6 max-w-md leading-relaxed text-gray-300">{t('customText')}</p>
+                <span className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors group-hover:bg-primary-700">
+                  {t('customCta')}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
     </section>

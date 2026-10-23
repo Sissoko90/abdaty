@@ -2,18 +2,18 @@
 
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { PromoBanner } from './promo-banner';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { ArrowRight } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useCounter } from '@/hooks/use-counter';
-import { AnimatedBlobRed } from '@/components/animated-blob-red';
-import { VibrantBg } from '@/components/vibrant-bg';
 import { usePublicSection } from '@/hooks/use-public-content';
+import { HeroVisual } from './hero-visual';
 
 export function HeroSection() {
   const t = useTranslations('hero');
   const locale = useLocale();
+  const reduce = useReducedMotion();
 
   // Contenu géré dans l'admin (section "hero"), avec repli sur l'i18n statique.
   const { cv } = usePublicSection('hero');
@@ -33,148 +33,97 @@ export function HeroSection() {
     })
     .slice(0, 4);
 
+  // Repli : compteurs animés si aucun chiffre n'est saisi dans l'admin.
   const projectsCount = useCounter(500);
-  const satisfactionCount = useCounter(99);
+  const clientsCount = useCounter(200);
   const experienceCount = useCounter(10);
+  const satisfactionCount = useCounter(99);
+  const fallbackStats = [
+    { ref: projectsCount.ref, value: `${projectsCount.count}+`, label: t('stats.projects') },
+    { ref: clientsCount.ref, value: `${clientsCount.count}+`, label: t('stats.clients') },
+    { ref: experienceCount.ref, value: `${experienceCount.count}+`, label: t('stats.experience') },
+    { ref: satisfactionCount.ref, value: `${satisfactionCount.count}%`, label: t('stats.satisfaction') },
+  ];
+  const stats = heroStats.length > 0 ? heroStats.map((s) => ({ ...s, ref: undefined })) : fallbackStats;
+
+  const fade = (delay: number) =>
+    reduce ? {} : { initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay } };
 
   return (
     <>
-      <PromoBanner />
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 transition-colors duration-300">
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="inline-flex items-center px-4 py-2 bg-primary-100 rounded-full mb-6">
-              <Sparkles className="w-4 h-4 text-primary-600 mr-2" />
-              <span className="text-sm font-medium text-primary-700">{cv('subtitle', t('subtitle'))}</span>
-            </div>
+      <section className="relative overflow-hidden pb-16 pt-28 sm:pt-32 lg:pb-24 lg:pt-36">
+        {/* Halo de couleur primaire + trame de points, discrets */}
+        <div className="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full bg-primary-400/20 blur-3xl dark:bg-primary-600/20" />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-[0.12]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgb(15 27 45 / 0.12) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+            maskImage: 'linear-gradient(to bottom, black, transparent 85%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black, transparent 85%)',
+          }}
+        />
 
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight transition-colors duration-300">
+        <div className="site-container relative grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-6">
+            <motion.div
+              {...fade(0)}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-200 bg-white px-3.5 py-1.5 text-sm font-medium text-primary-700 shadow-sm dark:border-primary-500/30 dark:bg-white/5 dark:text-primary-300"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ochre opacity-75 motion-reduce:hidden" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-ochre" />
+              </span>
+              {cv('subtitle', t('subtitle'))}
+            </motion.div>
+
+            <motion.h1
+              {...fade(0.05)}
+              className="mb-6 text-[2.75rem] font-extrabold leading-[1.04] text-ink dark:text-white sm:text-6xl lg:text-[4.25rem]"
+            >
               {cv('title', t('title'))}
-            </h1>
+            </motion.h1>
 
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed transition-colors duration-300">
+            <motion.p {...fade(0.1)} className="mb-9 max-w-xl text-lg leading-relaxed text-gray-600 dark:text-gray-300">
               {cv('description', t('description'))}
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href={`/${locale}/contact`}>
-                <Button size="lg" className="w-full sm:w-auto group">
-                  {cv('ctaText', t('cta'))}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+            <motion.div {...fade(0.15)} className="flex flex-col gap-3 sm:flex-row">
+              <Link href={`/${locale}/contact#contact-form`} className={cn(buttonVariants({ size: 'lg' }), 'group w-full sm:w-auto')}>
+                {cv('ctaText', t('cta'))}
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
-              <Link href={`/${locale}/services`}>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                  {cv('ctaSecondaryText', t('ctaSecondary'))}
-                </Button>
+              <Link
+                href={`/${locale}/services`}
+                className={cn(
+                  buttonVariants({ size: 'lg', variant: 'outline' }),
+                  'w-full border-gray-300 bg-white/70 sm:w-auto dark:border-white/15 dark:bg-white/5'
+                )}
+              >
+                {cv('ctaSecondaryText', t('ctaSecondary'))}
               </Link>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative"
-          >
-            {/* Illustration moderne avec statistiques */}
-            <div className="relative w-full h-[500px]">
-              {/* Blobs animés en arrière-plan */}
-              <div className="absolute inset-0">
-                <VibrantBg variant="default" />
-                <div className="absolute top-20 left-10 w-64 h-64 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-                <div className="absolute top-40 right-10 w-64 h-64 bg-primary-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-                <div className="absolute bottom-20 left-20 w-64 h-64 bg-primary-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
-                <AnimatedBlobRed className="top-10 right-20 w-96 h-96 opacity-40 animation-delay-1000" />
-                <AnimatedBlobRed className="bottom-10 left-10 w-80 h-80 opacity-30 animation-delay-3000" />
-              </div>
-
-              {/* Statistiques flottantes */}
-              <div className="relative h-full flex items-center justify-center">
-                <div className="grid grid-cols-2 gap-6 max-w-md">
-                  {heroStats.length > 0 ? (
-                    heroStats.map((s, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 + i * 0.1 }}
-                        className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100"
-                      >
-                        <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-2">
-                          {s.value}
-                        </div>
-                        <div className="text-sm text-gray-600">{s.label}</div>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <>
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4 }}
-                        className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100"
-                        ref={projectsCount.ref}
-                      >
-                        <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-2">
-                          {projectsCount.count}+
-                        </div>
-                        <div className="text-sm text-gray-600">{t('stats.projects')}</div>
-                      </motion.div>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
-                        className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100"
-                        ref={satisfactionCount.ref}
-                      >
-                        <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-2">
-                          {satisfactionCount.count}%
-                        </div>
-                        <div className="text-sm text-gray-600">{t('stats.satisfaction')}</div>
-                      </motion.div>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 }}
-                        className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100"
-                      >
-                        <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-2">
-                          24/7
-                        </div>
-                        <div className="text-sm text-gray-600">Support</div>
-                      </motion.div>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7 }}
-                        className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100"
-                        ref={experienceCount.ref}
-                      >
-                        <div className="text-4xl font-bold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent mb-2">
-                          {experienceCount.count}+
-                        </div>
-                        <div className="text-sm text-gray-600">{t('stats.experience')}</div>
-                      </motion.div>
-                    </>
-                  )}
+            <dl className="mt-12 grid grid-cols-2 gap-y-6 border-t border-gray-200 pt-8 sm:grid-cols-4 dark:border-white/10">
+              {stats.map((s, i) => (
+                <div
+                  key={i}
+                  ref={s.ref}
+                  className={`flex flex-col-reverse justify-end pr-4 ${i > 0 ? 'sm:border-l sm:border-gray-200 sm:pl-5 sm:dark:border-white/10' : ''}`}
+                >
+                  <dt className="text-sm text-gray-500 dark:text-gray-400">{s.label}</dt>
+                  <dd className="font-display text-3xl font-bold text-ink dark:text-white">{s.value}</dd>
                 </div>
-              </div>
-            </div>
-          </motion.div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="lg:col-span-6">
+            <HeroVisual />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <div className="bogolan-band" />
     </>
   );
 }

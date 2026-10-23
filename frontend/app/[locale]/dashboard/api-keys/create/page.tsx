@@ -1,114 +1,98 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Key, Check } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { ArrowLeft, Key, Check, Info } from 'lucide-react';
+
+const INPUT =
+  'h-12 w-full rounded-xl border border-gray-300 bg-white px-4 text-ink placeholder-gray-400 dark:border-white/15 dark:bg-white/5 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500';
+const LABEL = 'mb-2 block text-sm font-medium text-ink dark:text-gray-200';
 
 export default async function CreateApiKeyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations('dashboard.createApiKey');
 
+  const permissions = [
+    { id: 'read', label: t('read'), defaultChecked: true },
+    { id: 'write', label: t('write'), defaultChecked: false },
+    { id: 'delete', label: t('delete'), defaultChecked: false },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-950 dark:to-red-950 pt-20">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-2">
-            <Link href={`/${locale}/dashboard/api-keys`}>
-              <Button variant="outline" className="gap-2">
-                <ArrowLeft className="w-4 h-4" />
-                {t('back')}
-              </Button>
-            </Link>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-              {t('title')}
-            </h1>
+    <div className="max-w-2xl space-y-6">
+      <header>
+        <Link
+          href={`/${locale}/dashboard/api-keys`}
+          className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          {t('back')}
+        </Link>
+        <h1 className="font-display text-3xl font-bold text-ink dark:text-white">{t('title')}</h1>
+        <p className="mt-1 text-gray-600 dark:text-gray-400">{t('subtitle')}</p>
+      </header>
+
+      <section className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03] sm:p-8">
+        <h2 className="mb-6 flex items-center gap-3 font-display text-lg font-semibold text-ink dark:text-white">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+            <Key className="h-5 w-5" />
+          </span>
+          {t('detailsTitle')}
+        </h2>
+
+        <div className="space-y-6">
+          <div>
+            <label htmlFor="keyName" className={LABEL}>
+              {t('name')}
+            </label>
+            <input id="keyName" type="text" placeholder={t('namePlaceholder')} className={INPUT} />
           </div>
-          <p className="text-gray-600 dark:text-gray-400">
-            {t('subtitle')}
-          </p>
-        </div>
 
-        <Card className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 max-w-2xl mx-auto">
-          <CardHeader className="bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-900/10">
-            <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-              <Key className="w-5 h-5" />
-              Détails de la clé API
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6 pt-6">
-            {/* Name */}
-            <div>
-              <Label htmlFor="keyName" className="text-gray-900 dark:text-white">{t('name')}</Label>
-              <Input
-                id="keyName"
-                type="text"
-                placeholder={t('namePlaceholder')}
-                className="mt-1"
-              />
+          <fieldset>
+            <legend className={LABEL}>{t('permissions')}</legend>
+            <div className="space-y-2">
+              {permissions.map((p) => (
+                <label
+                  key={p.id}
+                  htmlFor={p.id}
+                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 px-4 py-3 text-sm text-ink transition-colors hover:border-primary-300 has-[:checked]:border-primary-300 has-[:checked]:bg-primary-50 dark:border-white/10 dark:text-gray-200 dark:has-[:checked]:border-primary-500/40 dark:has-[:checked]:bg-primary-500/10"
+                >
+                  <input
+                    type="checkbox"
+                    id={p.id}
+                    defaultChecked={p.defaultChecked}
+                    className="h-4 w-4 rounded border-gray-300 accent-primary-600"
+                  />
+                  {p.label}
+                </label>
+              ))}
             </div>
+          </fieldset>
 
-            {/* Permissions */}
-            <div>
-              <Label className="text-gray-900 dark:text-white mb-3 block">{t('permissions')}</Label>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                  <input type="checkbox" id="read" defaultChecked className="w-5 h-5 rounded dark:bg-gray-700 dark:border-gray-600" />
-                  <Label htmlFor="read" className="text-gray-900 dark:text-white cursor-pointer">
-                    {t('read')}
-                  </Label>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                  <input type="checkbox" id="write" className="w-5 h-5 rounded dark:bg-gray-700 dark:border-gray-600" />
-                  <Label htmlFor="write" className="text-gray-900 dark:text-white cursor-pointer">
-                    {t('write')}
-                  </Label>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                  <input type="checkbox" id="delete" className="w-5 h-5 rounded dark:bg-gray-700 dark:border-gray-600" />
-                  <Label htmlFor="delete" className="text-gray-900 dark:text-white cursor-pointer">
-                    {t('delete')}
-                  </Label>
-                </div>
-              </div>
-            </div>
+          <div>
+            <label htmlFor="expiry" className={LABEL}>
+              {t('expiry')}
+            </label>
+            <input id="expiry" type="date" className={INPUT} />
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{t('noExpiry')}</p>
+          </div>
 
-            {/* Expiry */}
-            <div>
-              <Label htmlFor="expiry" className="text-gray-900 dark:text-white">{t('expiry')}</Label>
-              <Input
-                id="expiry"
-                type="date"
-                className="mt-1"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                {t('noExpiry')}
-              </p>
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-4 pt-4">
-              <Button variant="outline" className="flex-1">
+          <div className="flex flex-col-reverse gap-3 border-t border-gray-100 pt-6 dark:border-white/10 sm:flex-row sm:justify-end">
+            <Link href={`/${locale}/dashboard/api-keys`}>
+              <Button variant="outline" size="lg" className="w-full sm:w-auto">
                 {t('cancel')}
               </Button>
-              <Button className="flex-1 gap-2">
-                <Check className="w-4 h-4" />
-                {t('create')}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </Link>
+            <Button size="lg" className="gap-2">
+              <Check className="h-4 w-4" />
+              {t('create')}
+            </Button>
+          </div>
+        </div>
+      </section>
 
-        {/* Info Box */}
-        <Card className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/10 border-blue-200 dark:border-blue-800 rounded-xl max-w-2xl mx-auto mt-6">
-          <CardContent className="pt-6">
-            <p className="text-sm text-blue-900 dark:text-blue-300">
-              <strong>Note :</strong> Votre clé API sera affichée une seule fois après sa création. Assurez-vous de la copier et de la stocker en lieu sûr.
-            </p>
-          </CardContent>
-        </Card>
+      <div className="flex items-start gap-3 rounded-2xl border border-ochre/40 bg-ochre/10 p-4 text-sm text-ink dark:text-gray-200">
+        <Info className="mt-0.5 h-5 w-5 shrink-0 text-ochre" />
+        <p>{t('oneTimeNote')}</p>
       </div>
     </div>
   );

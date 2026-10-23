@@ -1,5 +1,6 @@
 'use client';
 
+
 import type { Route } from 'next';
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -73,7 +74,8 @@ export function PromoBar() {
 
   return (
     <div
-      className="fixed top-16 inset-x-0 z-40 h-10 flex items-center justify-center px-10 text-sm font-medium text-white bg-gradient-to-r from-primary-600 to-primary-700 shadow-sm"
+      // top-[72px] : hauteur de la navbar.
+      className="fixed inset-x-0 top-[72px] z-40 flex h-10 items-center justify-center bg-ink px-10 text-sm font-medium text-white"
       style={bg ? { background: bg } : {}}
       role="region"
       aria-label="Bannière promotionnelle"
@@ -82,11 +84,11 @@ export function PromoBar() {
         {text}
         {href && ctaLabel && (
           isExternal ? (
-            <a href={href} target="_blank" rel="noopener noreferrer" className="ml-2 underline underline-offset-2 font-semibold hover:opacity-90">
+            <a href={href} target="_blank" rel="noopener noreferrer" className="ml-3 font-semibold text-ochre underline-offset-4 hover:underline">
               {ctaLabel}
             </a>
           ) : (
-            <Link href={href as Route} className="ml-2 underline underline-offset-2 font-semibold hover:opacity-90">
+            <Link href={href as Route} className="ml-3 font-semibold text-ochre underline-offset-4 hover:underline">
               {ctaLabel}
             </Link>
           )
@@ -99,7 +101,7 @@ export function PromoBar() {
           {active.map((s, i) => (
             <span
               key={s.id}
-              className={`h-1.5 w-1.5 rounded-full transition-colors ${i === index ? 'bg-white' : 'bg-white/40'}`}
+              className={`h-1.5 rounded-full transition-all ${i === index ? 'w-4 bg-ochre' : 'w-1.5 bg-white/40'}`}
             />
           ))}
         </div>
@@ -107,7 +109,7 @@ export function PromoBar() {
 
       <button
         onClick={close}
-        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-white/20 transition-colors"
+        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 transition-colors hover:bg-white/15"
         aria-label="Fermer"
       >
         <X className="w-4 h-4" />

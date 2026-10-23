@@ -1,223 +1,165 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Book, Code, Send, CheckCircle, XCircle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Code, Send, CheckCircle } from 'lucide-react';
+import { PageHero } from '@/components/page-hero';
+
+const sections = [
+  { id: 'introduction', label: 'Introduction' },
+  { id: 'authentication', label: 'Authentification' },
+  { id: 'send-sms', label: 'Envoyer un SMS' },
+  { id: 'responses', label: 'Réponses' },
+  { id: 'errors', label: "Codes d'erreur" },
+  { id: 'examples', label: 'Exemples de code' },
+];
+
+const params = [
+  { name: 'to', description: 'string - Numéro de téléphone (+223XXXXXXXX)' },
+  { name: 'message', description: 'string - Contenu du message (max 160 caractères)' },
+  { name: 'sender', description: "string (optionnel) - Nom de l'expéditeur (max 11 caractères)" },
+];
+
+const errors = [
+  { code: '400 Bad Request', description: 'Paramètres invalides ou manquants' },
+  { code: '401 Unauthorized', description: 'Clé API invalide ou manquante' },
+  { code: '402 Payment Required', description: 'Crédits insuffisants' },
+  { code: '429 Too Many Requests', description: 'Limite de taux dépassée' },
+  { code: '500 Internal Server Error', description: 'Erreur serveur' },
+];
+
+const h2 = 'mb-4 scroll-mt-28 text-3xl font-bold text-ink dark:text-white';
+const lead = 'mb-6 leading-relaxed text-gray-600 dark:text-gray-400';
+const card = 'rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]';
+
+/** Panneau de code (fond encre). */
+function CodeBlock({ title, children }: { title?: string; children: string }) {
+  return (
+    <div className="overflow-hidden rounded-2xl bg-ink ring-1 ring-white/10">
+      {title && <div className="border-b border-white/10 px-5 py-3 font-mono text-xs text-gray-400">{title}</div>}
+      <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed text-gray-200">
+        <code>{children}</code>
+      </pre>
+    </div>
+  );
+}
 
 export function SmsApiDocs() {
-
   return (
-    <div className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Hero */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-3xl flex items-center justify-center">
-            <Book className="w-10 h-10 text-white" />
-          </div>
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
-            Documentation API SMS
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-colors duration-300">
-            Guide complet pour intégrer notre API SMS dans vos applications
-          </p>
-        </motion.div>
+    <>
+      <PageHero title="Documentation API SMS" subtitle="Guide complet pour intégrer notre API SMS dans vos applications" />
 
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <aside className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardContent className="p-6">
-                <h3 className="font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Navigation</h3>
-                <nav className="space-y-2">
-                  {['introduction', 'authentication', 'send-sms', 'responses', 'errors', 'examples'].map((item) => (
+      <section className="py-16 lg:py-20">
+        <div className="site-container grid gap-10 lg:grid-cols-12">
+          {/* Sommaire */}
+          <aside className="lg:col-span-3">
+            <nav aria-label="Sommaire" className="sticky top-28 rounded-2xl border border-gray-200 bg-white p-3 dark:border-white/10 dark:bg-white/[0.03]">
+              <ul className="space-y-1">
+                {sections.map((s) => (
+                  <li key={s.id}>
                     <a
-                      key={item}
-                      href={`#${item}`}
-                      className="block py-2 px-3 text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                      href={`#${s.id}`}
+                      className="block rounded-xl px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-primary-50 hover:text-primary-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
                     >
-                      {item.charAt(0).toUpperCase() + item.slice(1).replace('-', ' ')}
+                      {s.label}
                     </a>
-                  ))}
-                </nav>
-              </CardContent>
-            </Card>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </aside>
 
-          {/* Content */}
-          <div className="lg:col-span-3 space-y-12">
-            {/* Introduction */}
+          {/* Contenu */}
+          <div className="min-w-0 max-w-3xl space-y-16 lg:col-span-9">
             <section id="introduction">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Introduction</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">
-                L'API SMS d'Abdaty Tech vous permet d'envoyer des messages SMS au Mali de manière simple et fiable. Notre API REST est facile à intégrer et offre une livraison rapide en moins de 3 secondes.
+              <h2 className={h2}>Introduction</h2>
+              <p className={lead}>
+                L&apos;API SMS d&apos;Abdaty Tech vous permet d&apos;envoyer des messages SMS au Mali de manière simple et fiable. Notre API REST est facile à intégrer et offre une livraison rapide en moins de 3 secondes.
               </p>
-              <Card className="bg-primary-50 border-primary-200 dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Code className="w-6 h-6 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">Base URL</h4>
-                      <code className="text-sm bg-white dark:bg-gray-900 px-3 py-1 rounded dark:text-gray-100 transition-colors duration-300">
-                        https://api.abdaty-tech.com/v1
-                      </code>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </section>
-
-            {/* Authentication */}
-            <section id="authentication">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Authentification</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">
-                Toutes les requêtes API nécessitent une clé API valide. Vous pouvez obtenir votre clé depuis votre tableau de bord.
-              </p>
-              <div className="bg-gray-900 rounded-lg p-6">
-                <pre className="text-gray-100 overflow-x-auto">
-                  <code>{`curl -X POST https://api.abdaty-tech.com/v1/sms/send \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json"`}</code>
-                </pre>
+              <div className={`${card} flex items-start gap-4`}>
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                  <Code className="h-6 w-6" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="mb-2 font-semibold text-ink dark:text-white">Base URL</h3>
+                  <code className="break-all rounded-lg bg-paper px-3 py-1.5 font-mono text-sm text-ink dark:bg-white/5 dark:text-gray-100">
+                    https://api.abdaty-tech.com/v1
+                  </code>
+                </div>
               </div>
             </section>
 
-            {/* Send SMS */}
-            <section id="send-sms">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Envoyer un SMS</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">
-                Endpoint pour envoyer un SMS unique ou en masse.
+            <section id="authentication">
+              <h2 className={h2}>Authentification</h2>
+              <p className={lead}>
+                Toutes les requêtes API nécessitent une clé API valide. Vous pouvez obtenir votre clé depuis votre tableau de bord.
               </p>
-              
-              <Card className="mb-6 dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white transition-colors duration-300">
-                    <Send className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                    POST /sms/send
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <h4 className="font-semibold mb-2 text-gray-900 dark:text-white transition-colors duration-300">Paramètres</h4>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex gap-2">
-                      <code className="text-sm bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded dark:text-gray-100 transition-colors duration-300">to</code>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">string - Numéro de téléphone (+223XXXXXXXX)</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <code className="text-sm bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded dark:text-gray-100 transition-colors duration-300">message</code>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">string - Contenu du message (max 160 caractères)</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <code className="text-sm bg-gray-100 dark:bg-gray-900 px-2 py-1 rounded dark:text-gray-100 transition-colors duration-300">sender</code>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">string (optionnel) - Nom de l'expéditeur (max 11 caractères)</span>
-                    </div>
-                  </div>
+              <CodeBlock>{`curl -X POST https://api.abdaty-tech.com/v1/sms/send \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -H "Content-Type: application/json"`}</CodeBlock>
+            </section>
 
-                  <h4 className="font-semibold mb-2 text-gray-900 dark:text-white transition-colors duration-300">Exemple de requête</h4>
-                  <div className="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 transition-colors duration-300">
-                    <pre className="text-gray-100 dark:text-gray-200 text-sm overflow-x-auto transition-colors duration-300">
-                      <code>{`{
+            <section id="send-sms">
+              <h2 className={h2}>Envoyer un SMS</h2>
+              <p className={lead}>Endpoint pour envoyer un SMS unique ou en masse.</p>
+              <div className={card}>
+                <div className="mb-6 flex items-center gap-3">
+                  <span className="rounded-md bg-emerald-100 px-2 py-1 font-mono text-xs font-bold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400">
+                    POST
+                  </span>
+                  <code className="font-mono font-semibold text-ink dark:text-white">/sms/send</code>
+                  <Send className="ml-auto h-5 w-5 text-primary-600 dark:text-primary-400" />
+                </div>
+                <h3 className="mb-3 font-semibold text-ink dark:text-white">Paramètres</h3>
+                <dl className="mb-6 divide-y divide-gray-100 rounded-xl border border-gray-100 dark:divide-white/10 dark:border-white/10">
+                  {params.map((p) => (
+                    <div key={p.name} className="grid gap-1 px-4 py-3 sm:grid-cols-[8rem_1fr] sm:gap-4">
+                      <dt>
+                        <code className="font-mono text-sm font-semibold text-primary-700 dark:text-primary-300">{p.name}</code>
+                      </dt>
+                      <dd className="text-sm text-gray-600 dark:text-gray-400">{p.description}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <h3 className="mb-3 font-semibold text-ink dark:text-white">Exemple de requête</h3>
+                <CodeBlock>{`{
   "to": "+223XXXXXXXX",
   "message": "Bonjour de Abdaty Tech!",
   "sender": "AbdatyTech"
-}`}</code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
+}`}</CodeBlock>
+              </div>
             </section>
 
-            {/* Responses */}
             <section id="responses">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Réponses</h2>
-              
-              <Card className="mb-4 dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white transition-colors duration-300">
-                    <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                    Succès (200)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-gray-900 rounded-lg p-4">
-                    <pre className="text-gray-100 text-sm overflow-x-auto">
-                      <code>{`{
+              <h2 className={h2}>Réponses</h2>
+              <p className="mb-4 flex items-center gap-2 font-semibold text-ink dark:text-white">
+                <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                Succès (200)
+              </p>
+              <CodeBlock>{`{
   "success": true,
   "messageId": "msg_abc123",
   "status": "sent",
   "to": "+223XXXXXXXX",
   "cost": 20,
   "currency": "FCFA"
-}`}</code>
-                    </pre>
-                  </div>
-                </CardContent>
-              </Card>
+}`}</CodeBlock>
             </section>
 
-            {/* Errors */}
             <section id="errors">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Codes d'erreur</h2>
-              
-              <Card>
-                <CardContent className="p-6">
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-1" />
-                      <div>
-                        <code className="text-sm font-semibold">400 Bad Request</code>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Paramètres invalides ou manquants</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-1" />
-                      <div>
-                        <code className="text-sm font-semibold">401 Unauthorized</code>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Clé API invalide ou manquante</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-1" />
-                      <div>
-                        <code className="text-sm font-semibold">402 Payment Required</code>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Crédits insuffisants</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-1" />
-                      <div>
-                        <code className="text-sm font-semibold">429 Too Many Requests</code>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Limite de taux dépassée</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-1" />
-                      <div>
-                        <code className="text-sm font-semibold">500 Internal Server Error</code>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Erreur serveur</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <h2 className={h2}>Codes d&apos;erreur</h2>
+              <ul className="divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.03]">
+                {errors.map((e) => (
+                  <li key={e.code} className="grid gap-1 px-5 py-4 sm:grid-cols-[14rem_1fr] sm:gap-4">
+                    <code className="font-mono text-sm font-semibold text-primary-700 dark:text-primary-300">{e.code}</code>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">{e.description}</span>
+                  </li>
+                ))}
+              </ul>
             </section>
 
-            {/* Examples */}
             <section id="examples">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Exemples de code</h2>
-              
+              <h2 className={h2}>Exemples de code</h2>
               <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Node.js</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="bg-gray-900 rounded-lg p-4">
-                      <pre className="text-gray-100 text-sm overflow-x-auto">
-                        <code>{`const axios = require('axios');
+                <CodeBlock title="Node.js">{`const axios = require('axios');
 
 const sendSMS = async () => {
   try {
@@ -241,20 +183,8 @@ const sendSMS = async () => {
   }
 };
 
-sendSMS();`}</code>
-                      </pre>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Python</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="bg-gray-900 rounded-lg p-4">
-                      <pre className="text-gray-100 text-sm overflow-x-auto">
-                        <code>{`import requests
+sendSMS();`}</CodeBlock>
+                <CodeBlock title="Python">{`import requests
 
 url = 'https://api.abdaty-tech.com/v1/sms/send'
 headers = {
@@ -268,16 +198,12 @@ data = {
 }
 
 response = requests.post(url, json=data, headers=headers)
-print(response.json())`}</code>
-                      </pre>
-                    </div>
-                  </CardContent>
-                </Card>
+print(response.json())`}</CodeBlock>
               </div>
             </section>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

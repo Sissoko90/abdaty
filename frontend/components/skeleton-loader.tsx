@@ -1,11 +1,12 @@
 'use client';
 
+
 import { motion } from 'framer-motion';
 
 export function SkeletonLoader({ className = '' }: { className?: string }) {
   return (
     <motion.div
-      className={`bg-gray-200 dark:bg-gray-700 rounded ${className}`}
+      className={`rounded-lg bg-gray-200 dark:bg-white/10 ${className}`}
       animate={{
         opacity: [0.4, 1, 0.4],
       }}
@@ -20,7 +21,7 @@ export function SkeletonLoader({ className = '' }: { className?: string }) {
 
 export function CardSkeleton() {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]">
       <SkeletonLoader className="h-4 w-3/4 mb-4" />
       <SkeletonLoader className="h-3 w-full mb-2" />
       <SkeletonLoader className="h-3 w-5/6 mb-4" />

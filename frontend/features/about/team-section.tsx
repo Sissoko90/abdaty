@@ -1,8 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
-import { motion } from 'framer-motion';
 import { Linkedin, Github, Mail } from 'lucide-react';
 import { usePublicList } from '@/hooks/use-public-content';
 import { mediaUrl } from '@/services/content.service';
@@ -21,6 +19,14 @@ interface Member {
 function hasPhoto(image: string): boolean {
   return !!image && (image.startsWith('/uploads') || image.startsWith('http'));
 }
+
+/** Un lien social n'est affiché que s'il pointe réellement quelque part. */
+function isRealLink(url: string): boolean {
+  return !!url && url !== '#';
+}
+
+// Couleurs des initiales en alternance (encre, ocre, primaire).
+const INITIAL_STYLES = ['bg-ink text-white', 'bg-ochre text-ink', 'bg-primary-600 text-white'];
 
 export function TeamSection() {
   const t = useTranslations('about.team');
@@ -45,76 +51,63 @@ export function TeamSection() {
           { name: 'Aminata Coulibaly', role: 'UI/UX Designer', bio: t('designer.bio'), email: 'aminata@abdaty-tech.com', image: '', linkedin: '#', github: '#' },
         ];
 
-  return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{t('title')}</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-colors duration-300">{t('subtitle')}</p>
-        </motion.div>
+  const socialCls =
+    'flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-600 transition-colors hover:bg-primary-600 hover:text-white dark:bg-white/5 dark:text-gray-300';
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+  return (
+    <section className="bg-white py-20 dark:bg-white/[0.02] lg:py-28">
+      <div className="site-container">
+        <div className="mb-12">
+          <h2 className="mb-4 text-4xl font-bold text-ink dark:text-white md:text-5xl">{t('title')}</h2>
+          <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">{t('subtitle')}</p>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member, index) => (
-            <motion.div
+            <article
               key={member.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.03]"
             >
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                <div className="relative overflow-hidden">
-                  {hasPhoto(member.image) ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={mediaUrl(member.image)} alt={member.name} className="w-full h-64 object-cover" />
-                  ) : (
-                    <div className="w-full h-64 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                      <div className="w-32 h-32 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-                        {member.name.split(' ').map((n) => n[0]).join('')}
-                      </div>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              {hasPhoto(member.image) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={mediaUrl(member.image)} alt={member.name} className="aspect-[4/3] w-full object-cover" />
+              ) : (
+                <div className="flex aspect-[4/3] w-full items-center justify-center bg-paper dark:bg-white/[0.04]">
+                  <span
+                    className={`flex h-24 w-24 items-center justify-center rounded-full font-display text-3xl font-bold ${INITIAL_STYLES[index % INITIAL_STYLES.length]}`}
+                  >
+                    {member.name
+                      .split(' ')
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((n) => n[0])
+                      .join('')}
+                  </span>
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1 transition-colors duration-300">{member.name}</h3>
-                  <p className="text-primary-600 font-medium mb-3">{member.role}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">{member.bio}</p>
-                  <div className="flex gap-3">
-                    <a
-                      href={member.linkedin || '#'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 bg-gray-100 hover:bg-primary-500 rounded-full flex items-center justify-center transition-colors group"
-                      aria-label="LinkedIn"
-                    >
-                      <Linkedin className="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-white transition-colors duration-300" />
+              )}
+              <div className="flex flex-1 flex-col p-6">
+                <h3 className="mb-1 text-xl font-bold text-ink dark:text-white">{member.name}</h3>
+                <p className="mb-3 text-sm font-semibold text-primary-600 dark:text-primary-400">{member.role}</p>
+                <p className="mb-5 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{member.bio}</p>
+                <div className="mt-auto flex gap-2">
+                  {isRealLink(member.linkedin) && (
+                    <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className={socialCls} aria-label={`LinkedIn ${member.name}`}>
+                      <Linkedin className="h-4 w-4" />
                     </a>
-                    <a
-                      href={member.github || '#'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-8 h-8 bg-gray-100 hover:bg-primary-500 rounded-full flex items-center justify-center transition-colors group"
-                      aria-label="GitHub"
-                    >
-                      <Github className="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-white transition-colors duration-300" />
+                  )}
+                  {isRealLink(member.github) && (
+                    <a href={member.github} target="_blank" rel="noopener noreferrer" className={socialCls} aria-label={`GitHub ${member.name}`}>
+                      <Github className="h-4 w-4" />
                     </a>
-                    <a
-                      href={`mailto:${member.email}`}
-                      className="w-8 h-8 bg-gray-100 hover:bg-primary-500 rounded-full flex items-center justify-center transition-colors group"
-                      aria-label="Email"
-                    >
-                      <Mail className="w-4 h-4 text-gray-600 dark:text-gray-400 group-hover:text-white transition-colors duration-300" />
+                  )}
+                  {member.email && (
+                    <a href={`mailto:${member.email}`} className={socialCls} aria-label={`Email ${member.name}`}>
+                      <Mail className="h-4 w-4" />
                     </a>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  )}
+                </div>
+              </div>
+            </article>
           ))}
         </div>
       </div>

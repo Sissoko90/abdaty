@@ -1,5 +1,6 @@
 'use client';
 
+
 import type { Route } from 'next';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -39,7 +40,11 @@ export function PromoCorner() {
 
   useEffect(() => {
     if (!key) return;
-    setDismissed(localStorage.getItem(key) === '1');
+    // Attend le choix cookies : la bannière occupe le même coin de l'écran.
+    const sync = () => setDismissed(localStorage.getItem(key) === '1' || !localStorage.getItem('cookieConsent'));
+    sync();
+    window.addEventListener('cookie-consent', sync);
+    return () => window.removeEventListener('cookie-consent', sync);
   }, [key]);
 
   if (!enabled || (!title && !text) || dismissed) return null;
@@ -53,10 +58,13 @@ export function PromoCorner() {
   const href = ctaHref ? (isExternal ? ctaHref : `/${locale}${ctaHref.startsWith('/') ? '' : '/'}${ctaHref}`) : '';
 
   return (
-    <div className="fixed bottom-4 left-4 z-40 w-72 max-w-[calc(100vw-2rem)] rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 animate-in fade-in slide-in-from-bottom-4">
+    <div className="fixed bottom-6 left-6 z-40 w-72 max-w-[calc(100vw-3rem)] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-ink/15 animate-in fade-in slide-in-from-bottom-4 dark:border-white/10 dark:bg-[#121c2e]">
+      {!image && <div className="bogolan-band" aria-hidden="true" />}
       <button
         onClick={close}
-        className="absolute right-2 top-2 z-10 p-1 rounded-full bg-black/40 text-white hover:bg-black/60 transition-colors"
+        className={`absolute right-2 z-10 rounded-full p-1 transition-colors ${
+          image ? 'top-2 bg-ink/60 text-white hover:bg-ink/80' : 'top-5 text-gray-500 hover:bg-gray-100 hover:text-ink dark:hover:bg-white/10 dark:hover:text-white'
+        }`}
         aria-label="Fermer"
       >
         <X className="w-4 h-4" />
@@ -67,24 +75,24 @@ export function PromoCorner() {
         <img src={image} alt={title || 'Promotion'} className="w-full h-28 object-cover" />
       )}
 
-      <div className="p-4">
-        {title && <p className="font-semibold text-gray-900 dark:text-white mb-1">{title}</p>}
-        {text && <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">{text}</p>}
+      <div className="p-5">
+        {title && <p className="mb-1 pr-6 font-display font-bold text-ink dark:text-white">{title}</p>}
+        {text && <p className="line-clamp-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">{text}</p>}
         {href && ctaLabel && (
-          <div className="mt-3">
+          <div className="mt-4">
             {isExternal ? (
               <a
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 transition-colors"
+                className="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
               >
                 {ctaLabel}
               </a>
             ) : (
               <Link
                 href={href as Route}
-                className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 transition-colors"
+                className="inline-flex items-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
               >
                 {ctaLabel}
               </Link>

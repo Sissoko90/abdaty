@@ -1,93 +1,66 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { FileCode, ExternalLink } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { PageHero } from '@/components/page-hero';
+
+const endpoints = [
+  { method: 'POST', path: '/v1/sms/send', label: 'Envoyer un SMS' },
+  { method: 'GET', path: '/v1/sms/status/:id', label: "Statut d'un SMS" },
+  { method: 'GET', path: '/v1/sms/balance', label: 'Solde du compte' },
+  { method: 'GET', path: '/v1/sms/history', label: 'Historique des SMS' },
+];
 
 export function SmsApiSwagger() {
   return (
-    <div className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Hero */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-3xl flex items-center justify-center">
-            <FileCode className="w-10 h-10 text-white" />
+    <>
+      <PageHero title="Swagger API Documentation" subtitle="Documentation interactive de l'API SMS avec Swagger UI" />
+
+      <section className="py-16 lg:py-20">
+        <div className="site-container grid gap-5 lg:grid-cols-12">
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 dark:border-white/10 dark:bg-white/[0.03] lg:col-span-5">
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+              <FileCode className="h-6 w-6" />
+            </div>
+            <h2 className="mb-3 text-2xl font-bold text-ink dark:text-white">Swagger UI</h2>
+            <p className="mb-8 leading-relaxed text-gray-600 dark:text-gray-400">
+              L&apos;interface Swagger UI interactive sera disponible ici. Elle vous permettra de tester directement les endpoints de l&apos;API SMS.
+            </p>
+
+            <h3 className="mb-3 font-semibold text-ink dark:text-white">Endpoints disponibles :</h3>
+            <ul className="mb-8 divide-y divide-gray-100 rounded-xl border border-gray-100 dark:divide-white/10 dark:border-white/10">
+              {endpoints.map((e) => (
+                <li key={e.path} className="flex flex-wrap items-center gap-3 px-4 py-3">
+                  <span
+                    className={`w-14 rounded-md py-1 text-center font-mono text-xs font-bold ${
+                      e.method === 'POST'
+                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400'
+                        : 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-400'
+                    }`}
+                  >
+                    {e.method}
+                  </span>
+                  <code className="font-mono text-sm text-ink dark:text-white">{e.path}</code>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">{e.label}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+              <Button size="lg">
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Voir la documentation complète
+              </Button>
+              <Button size="lg" variant="outline" className="dark:border-white/15 dark:bg-transparent dark:text-white dark:hover:bg-white/10">
+                Télécharger OpenAPI Spec
+              </Button>
+            </div>
           </div>
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
-            Swagger API Documentation
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-colors duration-300">
-            Documentation interactive de l'API SMS avec Swagger UI
-          </p>
-        </motion.div>
 
-        {/* Swagger UI Container */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card>
-            <CardContent className="p-8">
-              <div className="text-center py-20">
-                <FileCode className="w-24 h-24 mx-auto mb-6 text-gray-300" />
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
-                  Swagger UI
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto transition-colors duration-300">
-                  L'interface Swagger UI interactive sera disponible ici. Elle vous permettra de tester directement les endpoints de l'API SMS.
-                </p>
-                
-                <div className="space-y-4">
-                  <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 max-w-2xl mx-auto">
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">Endpoints disponibles :</h3>
-                    <ul className="text-left space-y-2 text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                      <li className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-mono">POST</span>
-                        <code className="text-sm">/v1/sms/send</code>
-                        <span className="text-sm">- Envoyer un SMS</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-mono">GET</span>
-                        <code className="text-sm">/v1/sms/status/:id</code>
-                        <span className="text-sm">- Statut d'un SMS</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-mono">GET</span>
-                        <code className="text-sm">/v1/sms/balance</code>
-                        <span className="text-sm">- Solde du compte</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-mono">GET</span>
-                        <code className="text-sm">/v1/sms/history</code>
-                        <span className="text-sm">- Historique des SMS</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="flex gap-4 justify-center">
-                    <Button size="lg">
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Voir la documentation complète
-                    </Button>
-                    <Button size="lg" variant="outline">
-                      Télécharger OpenAPI Spec
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* OpenAPI Spec Preview */}
-              <div className="mt-12 border-t pt-8">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Spécification OpenAPI 3.0</h3>
-                <div className="bg-gray-900 rounded-lg p-6">
-                  <pre className="text-gray-100 text-sm overflow-x-auto">
-                    <code>{`openapi: 3.0.0
+          <div className="min-w-0 overflow-hidden rounded-2xl bg-ink ring-1 ring-white/10 lg:col-span-7">
+            <div className="border-b border-white/10 px-5 py-3 font-mono text-xs text-gray-400">Spécification OpenAPI 3.0</div>
+            <pre className="max-h-[640px] overflow-auto p-5 font-mono text-[13px] leading-relaxed text-gray-200">
+              <code>{`openapi: 3.0.0
 info:
   title: Abdaty SMS API
   version: 1.0.0
@@ -137,13 +110,10 @@ components:
     bearerAuth:
       type: http
       scheme: bearer`}</code>
-                  </pre>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-    </div>
+            </pre>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

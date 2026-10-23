@@ -1,58 +1,68 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Home, Search } from 'lucide-react';
+import { Home, MessageSquare } from 'lucide-react';
+import { fontVariables } from '@/lib/fonts';
 
+/**
+ * 404 hors locale (pas de fournisseur i18n ici) : textes en français,
+ * même composition que la 404 localisée.
+ */
 export default function RootNotFound() {
+  const suggestions = [
+    { href: '/fr/services', label: 'Nos services' },
+    { href: '/fr/about', label: 'À propos' },
+    { href: '/fr/blog', label: 'Blog' },
+    { href: '/fr/sms-api', label: 'API SMS' },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-950 dark:to-red-950 flex items-center justify-center px-4 py-20 transition-colors duration-300">
-      <div className="text-center max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="mb-8 animate-in zoom-in duration-500 delay-100">
-          <h1 className="text-9xl font-bold text-primary-600 mb-4 animate-bounce">404</h1>
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300 animate-in slide-in-from-top-2 duration-500 delay-200">
-            Page non trouvée
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 transition-colors duration-300 animate-in fade-in duration-500 delay-300">
-            La page que vous recherchez n'existe pas ou a été déplacée.
-          </p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-in slide-in-from-bottom-2 duration-500 delay-400">
-          <Link href="/fr">
-            <Button size="lg" className="gap-2 hover:scale-105 transition-transform duration-200">
-              <Home className="w-5 h-5" />
-              Retour à l'accueil
-            </Button>
-          </Link>
-          
-          <Link href="/fr/contact">
-            <Button size="lg" variant="outline" className="gap-2 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300 hover:scale-105 transition-transform duration-200">
-              <Search className="w-5 h-5" />
-              Contactez-nous
-            </Button>
-          </Link>
-        </div>
-
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300 animate-in fade-in duration-500 delay-500">
-          <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">Vous cherchez peut-être :</p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Link href="/fr/services" className="text-primary-600 dark:text-primary-400 hover:underline transition-colors duration-300 hover:scale-110 transition-transform duration-200">
-              Nos Services
-            </Link>
-            <span className="text-gray-400 dark:text-gray-600">•</span>
-            <Link href="/fr/about" className="text-primary-600 dark:text-primary-400 hover:underline transition-colors duration-300 hover:scale-110 transition-transform duration-200">
-              À Propos
-            </Link>
-            <span className="text-gray-400 dark:text-gray-600">•</span>
-            <Link href="/fr/blog" className="text-primary-600 dark:text-primary-400 hover:underline transition-colors duration-300 hover:scale-110 transition-transform duration-200">
-              Blog
-            </Link>
-            <span className="text-gray-400 dark:text-gray-600">•</span>
-            <Link href="/fr/sms-api" className="text-primary-600 dark:text-primary-400 hover:underline transition-colors duration-300 hover:scale-110 transition-transform duration-200">
-              API SMS
-            </Link>
+    // Hors du layout localisé : on expose ici les polices du site.
+    <main className={`min-h-screen bg-paper font-sans ${fontVariables}`}>
+      <section className="py-20 lg:py-28">
+        <div className="site-container grid items-center gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <h1 className="mb-6 font-display text-5xl font-extrabold leading-[1.05] text-ink dark:text-white md:text-6xl">Page non trouvée</h1>
+            <p className="mb-9 max-w-xl text-lg leading-relaxed text-gray-600 dark:text-gray-300">
+              La page que vous recherchez n&apos;existe pas ou a été déplacée.
+            </p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link href="/fr">
+                <Button size="lg" className="w-full gap-2 sm:w-auto">
+                  <Home className="h-5 w-5" />
+                  Retour à l&apos;accueil
+                </Button>
+              </Link>
+              <Link href="/fr/contact">
+                <Button size="lg" variant="outline" className="w-full gap-2 border-gray-300 bg-white sm:w-auto">
+                  <MessageSquare className="h-5 w-5" />
+                  Contactez-nous
+                </Button>
+              </Link>
+            </div>
+            <div className="mt-12 border-t border-gray-200 pt-8">
+              <p className="mb-4 text-sm font-medium text-gray-600">Vous cherchez peut-être :</p>
+              <ul className="flex flex-wrap gap-2">
+                {suggestions.map((s) => (
+                  <li key={s.href}>
+                    <Link
+                      href={s.href as Parameters<typeof Link>[0]['href']}
+                      className="inline-block rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-primary-300 hover:text-primary-700"
+                    >
+                      {s.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="lg:col-span-5" aria-hidden="true">
+            <div className="bogolan-texture flex aspect-square items-center justify-center rounded-3xl bg-ink">
+              <span className="font-display text-[8rem] font-extrabold leading-none text-ochre sm:text-[10rem]">404</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+      <div className="bogolan-band" />
+    </main>
   );
 }

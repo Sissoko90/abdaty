@@ -1,12 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { MessageSquare, Send, User, Clock, ThumbsUp, Reply } from 'lucide-react';
+import { MessageSquare, Send, ThumbsUp, Reply } from 'lucide-react';
 
 interface Comment {
   id: string;
@@ -17,7 +14,17 @@ interface Comment {
   replies?: Comment[];
 }
 
+const INPUT_CLS =
+  'w-full rounded-xl border border-gray-300 bg-white px-4 text-ink placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/5 dark:text-white dark:placeholder-gray-400';
+
+/** Initiales d'un nom (« Jean Dupont » -> « JD »). */
+function initials(name: string): string {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase()).join('');
+}
+
 export function BlogComments() {
+  const t = useTranslations('blog.comments');
+  const locale = useLocale();
   const [comments, setComments] = useState<Comment[]>([
     {
       id: '1',
@@ -77,7 +84,7 @@ export function BlogComments() {
 
     const newReply: Comment = {
       id: `${parentId}-${Date.now()}`,
-      author: authorName || 'Anonyme',
+      author: authorName || t('anonymous'),
       content: replyContent,
       date: new Date().toISOString().split('T')[0],
       likes: 0,
@@ -108,152 +115,137 @@ export function BlogComments() {
     );
   };
 
+  const formatDate = (d: string) => {
+    const date = new Date(d);
+    return Number.isNaN(date.getTime()) ? d : date.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
   return (
-    <div className="max-w-4xl mx-auto mt-12">
-      <div className="flex items-center gap-3 mb-8">
-        <MessageSquare className="w-6 h-6 text-primary-600" />
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-          Commentaires ({comments.length})
-        </h2>
-      </div>
+    <section className="mx-auto mt-16 max-w-3xl">
+      <h2 className="mb-8 flex items-center gap-3 text-2xl font-bold text-ink dark:text-white">
+        <MessageSquare className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+        {t('title', { count: comments.length })}
+      </h2>
 
-      {/* New Comment Form */}
-      <Card className="mb-8 dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
-        <CardHeader>
-          <h3 className="font-semibold text-gray-900 dark:text-white transition-colors duration-300">
-            Laisser un commentaire
-          </h3>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="authorName">Nom</Label>
-            <Input
-              id="authorName"
-              value={authorName}
-              onChange={(e) => setAuthorName(e.target.value)}
-              placeholder="Votre nom"
-              className="dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-300"
-            />
-          </div>
-          <div>
-            <Label htmlFor="comment">Commentaire</Label>
-            <Textarea
-              id="comment"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Partagez vos pensées..."
-              rows={4}
-              className="dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-300"
-            />
-          </div>
-          <Button onClick={handleSubmitComment}>
-            <Send className="w-4 h-4 mr-2" />
-            Publier
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Nouveau commentaire */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmitComment();
+        }}
+        className="mb-10 space-y-4 rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]"
+      >
+        <h3 className="font-semibold text-ink dark:text-white">{t('leave')}</h3>
+        <div>
+          <label htmlFor="authorName" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            {t('name')}
+          </label>
+          <input
+            id="authorName"
+            value={authorName}
+            onChange={(e) => setAuthorName(e.target.value)}
+            placeholder={t('namePlaceholder')}
+            className={`h-12 ${INPUT_CLS}`}
+          />
+        </div>
+        <div>
+          <label htmlFor="comment" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            {t('comment')}
+          </label>
+          <textarea
+            id="comment"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder={t('commentPlaceholder')}
+            rows={4}
+            className={`py-3 ${INPUT_CLS}`}
+          />
+        </div>
+        <Button type="submit">
+          <Send className="mr-2 h-4 w-4" />
+          {t('publish')}
+        </Button>
+      </form>
 
-      {/* Comments List */}
-      <div className="space-y-6">
+      {/* Liste des commentaires */}
+      <ul className="divide-y divide-gray-200 dark:divide-white/10">
         {comments.map((comment) => (
-          <Card key={comment.id} className="dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center flex-shrink-0">
-                  <User className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="font-semibold text-gray-900 dark:text-white transition-colors duration-300">
-                      {comment.author}
-                    </span>
-                    <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                      <Clock className="w-3 h-3" />
-                      {comment.date}
-                    </div>
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4 transition-colors duration-300">
-                    {comment.content}
-                  </p>
-                  
-                  <div className="flex items-center gap-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleLike(comment.id)}
-                      className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
-                    >
-                      <ThumbsUp className="w-4 h-4 mr-1" />
-                      {comment.likes}
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setReplyingTo(comment.id)}
-                      className="dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
-                    >
-                      <Reply className="w-4 h-4 mr-1" />
-                      Répondre
-                    </Button>
-                  </div>
-
-                  {/* Reply Form */}
-                  {replyingTo === comment.id && (
-                    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-300">
-                      <Textarea
-                        value={replyContent}
-                        onChange={(e) => setReplyContent(e.target.value)}
-                        placeholder="Votre réponse..."
-                        rows={3}
-                        className="dark:bg-gray-600 dark:border-gray-500 dark:text-white mb-2 transition-colors duration-300"
-                      />
-                      <div className="flex gap-2">
-                        <Button size="sm" onClick={() => handleSubmitReply(comment.id)}>
-                          Répondre
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => setReplyingTo(null)}
-                          className="dark:bg-gray-600 dark:border-gray-500 dark:text-white dark:hover:bg-gray-500 transition-colors duration-300"
-                        >
-                          Annuler
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Replies */}
-                  {comment.replies && comment.replies.length > 0 && (
-                    <div className="mt-4 ml-8 space-y-4">
-                      {comment.replies.map((reply) => (
-                        <div key={reply.id} className="flex items-start gap-3">
-                          <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
-                            <User className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-sm text-gray-900 dark:text-white transition-colors duration-300">
-                                {reply.author}
-                              </span>
-                              <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">
-                                {reply.date}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-700 dark:text-gray-300 transition-colors duration-300">
-                              {reply.content}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+          <li key={comment.id} className="flex items-start gap-4 py-6 first:pt-0">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-600 text-sm font-bold text-white">
+              {initials(comment.author)}
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 flex flex-wrap items-baseline gap-x-3">
+                <span className="font-semibold text-ink dark:text-white">{comment.author}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">{formatDate(comment.date)}</span>
               </div>
-            </CardContent>
-          </Card>
+              <p className="mb-3 leading-relaxed text-gray-700 dark:text-gray-300">{comment.content}</p>
+
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => handleLike(comment.id)}
+                  aria-label={t('like')}
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary-600 dark:text-gray-400 dark:hover:bg-white/10"
+                >
+                  <ThumbsUp className="h-4 w-4" />
+                  {comment.likes}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setReplyingTo(comment.id)}
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-primary-600 dark:text-gray-400 dark:hover:bg-white/10"
+                >
+                  <Reply className="h-4 w-4" />
+                  {t('reply')}
+                </button>
+              </div>
+
+              {/* Formulaire de réponse */}
+              {replyingTo === comment.id && (
+                <div className="mt-4 space-y-3 rounded-2xl bg-paper p-4 ring-1 ring-gray-200 dark:ring-white/10">
+                  <textarea
+                    value={replyContent}
+                    onChange={(e) => setReplyContent(e.target.value)}
+                    placeholder={t('replyPlaceholder')}
+                    rows={3}
+                    aria-label={t('replyPlaceholder')}
+                    className={`py-3 ${INPUT_CLS}`}
+                  />
+                  <div className="flex gap-2">
+                    <Button size="sm" onClick={() => handleSubmitReply(comment.id)}>
+                      {t('reply')}
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => setReplyingTo(null)}>
+                      {t('cancel')}
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* Réponses */}
+              {comment.replies && comment.replies.length > 0 && (
+                <ul className="mt-5 space-y-5 border-l-2 border-ochre/60 pl-5">
+                  {comment.replies.map((reply) => (
+                    <li key={reply.id} className="flex items-start gap-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ochre text-xs font-bold text-ink">
+                        {initials(reply.author)}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="mb-1 flex flex-wrap items-baseline gap-x-2">
+                          <span className="text-sm font-semibold text-ink dark:text-white">{reply.author}</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{formatDate(reply.date)}</span>
+                        </div>
+                        <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">{reply.content}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+
 import { motion } from 'framer-motion';
 
 export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
@@ -12,7 +13,9 @@ export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   return (
     <div className="flex items-center justify-center">
       <motion.div
-        className={`${sizeClasses[size]} border-2 border-gray-300 border-t-primary-600 rounded-full`}
+        role="status"
+        aria-label="Chargement"
+        className={`${sizeClasses[size]} rounded-full border-2 border-gray-200 border-t-primary-600 dark:border-white/15 dark:border-t-primary-400`}
         animate={{ rotate: 360 }}
         transition={{
           duration: 1,

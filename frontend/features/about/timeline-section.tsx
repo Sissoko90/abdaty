@@ -1,8 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { motion } from 'framer-motion';
-import { Calendar } from 'lucide-react';
 import { usePublicList } from '@/hooks/use-public-content';
 
 export function TimelineSection() {
@@ -22,46 +20,35 @@ export function TimelineSection() {
         ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{t('title')}</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">{t('subtitle')}</p>
-        </motion.div>
-
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 to-primary-700" />
-
-          <div className="space-y-12">
-            {displayTimeline.map((item, index) => (
-              <motion.div
-                key={item.key}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="relative pl-20"
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-5 top-2 w-6 h-6 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                  <Calendar className="w-3 h-3 text-white" />
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border-2 border-gray-100 dark:border-gray-700 hover:border-primary-300 transition-all">
-                  <div className="text-2xl font-bold text-primary-600 mb-2">{item.year}</div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">{item.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300">{item.description}</p>
-                </div>
-              </motion.div>
-            ))}
+    <section className="py-20 lg:py-28">
+      <div className="site-container grid gap-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <div className="lg:sticky lg:top-28">
+            <h2 className="mb-4 text-4xl font-bold text-ink dark:text-white md:text-5xl">{t('title')}</h2>
+            <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">{t('subtitle')}</p>
           </div>
         </div>
+
+        <ol className="relative lg:col-span-8">
+          {/* Fil chronologique */}
+          <span aria-hidden="true" className="absolute bottom-2 left-[7px] top-2 w-0.5 bg-gray-200 dark:bg-white/10" />
+          {displayTimeline.map((item, index) => {
+            const last = index === displayTimeline.length - 1;
+            return (
+              <li key={item.key} className={`relative pl-10 ${last ? '' : 'pb-10'}`}>
+                <span
+                  aria-hidden="true"
+                  className={`absolute left-0 top-1.5 h-4 w-4 rounded-full ring-4 ring-paper ${last ? 'bg-primary-600' : 'bg-ochre'}`}
+                />
+                <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]">
+                  <p className="mb-1 font-display text-2xl font-bold text-primary-600 dark:text-primary-400">{item.year}</p>
+                  <h3 className="mb-2 text-xl font-bold text-ink dark:text-white">{item.title}</h3>
+                  <p className="leading-relaxed text-gray-600 dark:text-gray-400">{item.description}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

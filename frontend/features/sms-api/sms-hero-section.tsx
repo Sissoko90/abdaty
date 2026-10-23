@@ -1,147 +1,122 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { CheckCircle, Zap, MessageSquare, Shield, ArrowRight, Smartphone, MapPin, Book, Code } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
-import { AnimatedBlobRed } from '@/components/animated-blob-red';
-import { VibrantBg } from '@/components/vibrant-bg';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, ArrowRight, Book, Code } from 'lucide-react';
+
+/** Jetons colorés du terminal (encre + ocre + primaire). */
+const Str = ({ children }: { children: React.ReactNode }) => <span className="text-ochre">{children}</span>;
+const Key = ({ children }: { children: React.ReactNode }) => <span className="text-primary-300">{children}</span>;
+const Dim = ({ children }: { children: React.ReactNode }) => <span className="text-gray-500">{children}</span>;
 
 export function SMSHeroSection() {
   const t = useTranslations('smsApi');
   const locale = useLocale();
 
-  const features = [
-    { icon: CheckCircle, key: 'reliable', color: 'from-green-500 to-emerald-500' },
-    { icon: MessageSquare, key: 'mali', color: 'from-primary-500 to-primary-700' },
-    { icon: Zap, key: 'fast', color: 'from-yellow-500 to-orange-500' },
-    { icon: Shield, key: 'secure', color: 'from-blue-500 to-indigo-500' },
+  const features = ['reliable', 'mali', 'fast', 'secure'] as const;
+
+  // Chiffres déjà annoncés par le service (cf. features.*).
+  const stats = [
+    { value: '99,9 %', label: t('stats.uptime') },
+    { value: '< 3 s', label: t('stats.delivery') },
+    { value: '24/7', label: t('stats.support') },
+    { value: 'Mali', label: t('stats.coverage') },
   ];
 
   return (
-    <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-50 to-primary-50 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden transition-colors duration-300">
-      {/* Animated Background Blobs */}
-      <div className="absolute inset-0 overflow-hidden">
-        <VibrantBg variant="subtle" />
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-gradient-to-br from-primary-500 to-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-        <AnimatedBlobRed className="top-10 right-20 w-[500px] h-[500px] opacity-30 animation-delay-1000" />
-        <AnimatedBlobRed className="bottom-10 left-20 w-[400px] h-[400px] opacity-25 animation-delay-3000" />
-      </div>
+    <>
+      <section className="relative overflow-hidden pb-16 pt-32 lg:pb-20 lg:pt-40">
+        <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-primary-400/15 blur-3xl dark:bg-primary-600/15" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Left: Text Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full mb-6 shadow-sm">
-              <Smartphone className="w-4 h-4 text-primary-600" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">API SMS Professionnelle</span>
+        <div className="site-container relative grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-6">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-200 bg-white px-3.5 py-1.5 text-sm font-medium text-primary-700 shadow-sm dark:border-primary-500/30 dark:bg-white/5 dark:text-primary-300">
+              <span className="h-2 w-2 rounded-full bg-ochre" />
+              {t('hero.badge')}
             </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">
-              {t('title')}
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 mb-4 transition-colors duration-300">{t('subtitle')}</p>
-            <p className="text-lg text-gray-500 mb-8">{t('description')}</p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+            <h1 className="mb-5 text-5xl font-extrabold leading-[1.05] text-ink dark:text-white md:text-6xl">{t('title')}</h1>
+            <p className="mb-3 text-xl text-gray-700 dark:text-gray-200">{t('subtitle')}</p>
+            <p className="mb-8 max-w-xl leading-relaxed text-gray-600 dark:text-gray-400">{t('description')}</p>
+
+            <ul className="mb-9 grid gap-3 sm:grid-cols-2">
+              {features.map((key) => (
+                <li key={key} className="flex items-start gap-3 text-sm font-medium text-gray-800 dark:text-gray-200">
+                  <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary-600 dark:text-primary-400" />
+                  {t(`features.${key}`)}
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href={`/${locale}/contact`}>
-                <Button size="lg" className="w-full sm:w-auto group">
+                <Button size="lg" className="group w-full sm:w-auto">
                   {t('hero.cta')}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
               <Link href={`/${locale}/sms-api/docs`}>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2">
-                  <Book className="w-5 h-5" />
+                <Button size="lg" variant="outline" className="w-full gap-2 border-gray-300 bg-white/70 sm:w-auto dark:border-white/15 dark:bg-white/5">
+                  <Book className="h-5 w-5" />
                   {t('hero.ctaDocs')}
                 </Button>
               </Link>
               <Link href={`/${locale}/sms-api/swagger`}>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto gap-2">
-                  <Code className="w-5 h-5" />
+                <Button size="lg" variant="ghost" className="w-full gap-2 sm:w-auto">
+                  <Code className="h-5 w-5" />
                   {t('hero.ctaSwagger')}
                 </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Right: Stats */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-2 gap-4"
-          >
-            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 hover:border-primary-300 transition-all">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent mb-2">
-                  99.9%
+          {/* Terminal : requête d'envoi + réponse de l'API */}
+          <div className="lg:col-span-6">
+            <div className="overflow-hidden rounded-2xl bg-ink shadow-2xl shadow-ink/20 ring-1 ring-white/10">
+              <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
+                <div className="flex gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-primary-500" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-ochre" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium transition-colors duration-300">Disponibilité</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 hover:border-primary-300 transition-all">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent mb-2">
-                  &lt;3s
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium transition-colors duration-300">Livraison</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 hover:border-primary-300 transition-all">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent mb-2">
-                  24/7
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium transition-colors duration-300">Support</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 hover:border-primary-300 transition-all">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium transition-colors duration-300">Mali</div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                <span className="font-mono text-xs text-gray-400">POST /v1/sms/send</span>
+              </div>
+              <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed text-gray-200 sm:p-6" aria-label="curl">
+                <code>
+                  <Dim>$</Dim> curl -X POST <Str>https://api.abdaty-tech.com/v1/sms/send</Str> \{'\n'}
+                  {'  '}-H <Str>&quot;Authorization: Bearer YOUR_API_KEY&quot;</Str> \{'\n'}
+                  {'  '}-d <Str>&apos;{'{'}</Str>{'\n'}
+                  {'    '}<Key>&quot;to&quot;</Key>: <Str>&quot;+223XXXXXXXX&quot;</Str>,{'\n'}
+                  {'    '}<Key>&quot;message&quot;</Key>: <Str>&quot;Bonjour du Mali!&quot;</Str>,{'\n'}
+                  {'    '}<Key>&quot;from&quot;</Key>: <Str>&quot;AbdatyTech&quot;</Str>{'\n'}
+                  {'  '}<Str>{'}'}&apos;</Str>
+                </code>
+              </pre>
+              <div className="border-t border-white/10 bg-white/[0.03] px-5 py-4 sm:px-6">
+                <p className="mb-2 flex items-center gap-2 text-xs font-medium text-emerald-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  {t('hero.terminalResponse')}
+                </p>
+                <pre className="overflow-x-auto font-mono text-[13px] leading-relaxed text-gray-300">
+                  <code>
+                    {'{ '}<Key>&quot;success&quot;</Key>: <span className="text-emerald-400">true</span>, <Key>&quot;status&quot;</Key>: <Str>&quot;sent&quot;</Str>{' }'}
+                  </code>
+                </pre>
+              </div>
+              <dl className="grid grid-cols-4 divide-x divide-white/10 border-t border-white/10">
+                {stats.map((s) => (
+                  <div key={s.label} className="flex flex-col-reverse px-3 py-4 text-center">
+                    <dt className="text-[11px] text-gray-400">{s.label}</dt>
+                    <dd className="font-display text-lg font-bold text-white">{s.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
         </div>
-
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <motion.div
-                key={feature.key}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-              >
-                <Card className="text-center h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-200 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm group">
-                  <CardContent className="pt-6 pb-6">
-                    <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
-                      <Icon className="w-8 h-8 text-white" />
-                    </div>
-                    <p className="font-semibold text-gray-900 dark:text-white text-lg transition-colors duration-300">
-                      {t(`features.${feature.key}`)}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+      </section>
+      <div className="bogolan-band" />
+    </>
   );
 }

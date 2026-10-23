@@ -1,15 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
-import { Calendar, User, ArrowRight, Smartphone, Globe, Lock, Palette, TabletSmartphone, Brain, LucideIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import type { Route } from 'next';
+import { useTranslations, useLocale } from 'next-intl';
+import { Calendar, Clock, ArrowRight, Smartphone, Globe, Lock, Palette, TabletSmartphone, Brain, LucideIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { listPublishedPosts } from '@/services/content.service';
+import { listPublishedPosts, mediaUrl } from '@/services/content.service';
 import type { BlogPost } from '@/types/content';
+import { BlogCategories } from '@/features/blog/blog-categories';
 
 /**
  * Articles de démonstration (mock).
@@ -43,6 +41,7 @@ interface DisplayPost {
   date: string;
   author: string;
   icon: LucideIcon;
+  image?: string;
   readTime?: string;
 }
 
@@ -56,16 +55,67 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   AI: Brain,
 };
 
-function iconForCategory(category?: string): LucideIcon {
+export function iconForCategory(category?: string): LucideIcon {
   return (category && CATEGORY_ICONS[category]) || Globe;
 }
 
-const POSTS_PER_PAGE = 3;
+/** Un identifiant technique (UUID) n'est pas un nom d'auteur affichable. */
+export function displayAuthor(author?: string): string {
+  if (!author) return '';
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(author) ? '' : author;
+}
+
+/** Date lisible dans la langue courante (« 1 mai 2024 »). */
+export function formatPostDate(date: string, locale: string): string {
+  const d = new Date(date);
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+// Couvertures de repli (sans image) : encre, rouge primaire, ocre en alternance.
+const COVER_STYLES = [
+  { bg: 'bg-ink', tile: 'bg-ochre text-ink' },
+  { bg: 'bg-primary-600', tile: 'bg-white text-primary-600' },
+  { bg: 'bg-ochre', tile: 'bg-ink text-ochre' },
+];
+
+/** Couverture d'article : image si disponible, sinon motif bogolan + icône de catégorie. */
+export function PostCover({
+  image,
+  icon: Icon,
+  index = 0,
+  alt,
+  className = '',
+}: {
+  image?: string;
+  icon: LucideIcon;
+  index?: number;
+  alt: string;
+  className?: string;
+}) {
+  if (image) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- image CMS, dimensions inconnues
+      <img src={mediaUrl(image)} alt={alt} className={`h-full w-full object-cover ${className}`} />
+    );
+  }
+  const style = COVER_STYLES[index % COVER_STYLES.length];
+  return (
+    <div className={`bogolan-texture flex h-full w-full items-center justify-center ${style.bg} ${className}`} aria-hidden="true">
+      <span className={`flex h-16 w-16 items-center justify-center rounded-2xl ${style.tile}`}>
+        <Icon className="h-8 w-8" />
+      </span>
+    </div>
+  );
+}
+
+const POSTS_PER_PAGE = 7;
 
 export function BlogGrid() {
   const t = useTranslations('blog.posts');
+  const tBlog = useTranslations('blog');
   const locale = useLocale();
   const [currentPage, setCurrentPage] = useState(1);
+  const [category, setCategory] = useState<string | null>(null);
   const [backendPosts, setBackendPosts] = useState<BlogPost[] | null>(null);
 
   // Récupération des articles publiés depuis le backend (lecture publique).
@@ -94,8 +144,9 @@ export function BlogGrid() {
           excerpt: (locale === 'fr' ? p.excerptFr : p.excerptEn) ?? '',
           category: p.category ?? '',
           date: p.publishedAt ?? p.createdAt ?? '',
-          author: p.authorId ?? '',
+          author: displayAuthor(p.authorId),
           icon: iconForCategory(p.category),
+          image: p.featuredImage,
         }))
       : mockPosts.map((p) => ({
           key: String(p.id),
@@ -109,107 +160,153 @@ export function BlogGrid() {
           readTime: p.readTime,
         }));
 
-  const totalPages = Math.ceil(displayPosts.length / POSTS_PER_PAGE);
-  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-  const currentPosts = displayPosts.slice(startIndex, startIndex + POSTS_PER_PAGE);
+  // Catégories réellement présentes dans les articles (filtre côté client).
+  const categories = Array.from(new Set(displayPosts.map((p) => p.category).filter(Boolean)));
+  const filtered = category ? displayPosts.filter((p) => p.category === category) : displayPosts;
 
-  const goToPreviousPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-  const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / POSTS_PER_PAGE));
+  const page = Math.min(currentPage, totalPages);
+  const startIndex = (page - 1) * POSTS_PER_PAGE;
+  const currentPosts = filtered.slice(startIndex, startIndex + POSTS_PER_PAGE);
+  // L'article le plus récent est mis en avant sur la première page.
+  const [featured, ...others] = page === 1 ? currentPosts : [undefined, ...currentPosts];
+
+  const selectCategory = (value: string | null) => {
+    setCategory(value);
+    setCurrentPage(1);
+  };
+
+  const categoryLabel = (value: string) => {
+    const key = `categories.${value.toLowerCase()}`;
+    return tBlog.has(key) ? tBlog(key) : value;
+  };
+
+  const href = (post: DisplayPost) => `/${locale}/blog/${post.slug}` as Route;
+
+  const meta = (post: DisplayPost) => (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500 dark:text-gray-400">
+      {post.date && (
+        <span className="inline-flex items-center gap-1.5">
+          <Calendar className="h-4 w-4" />
+          {formatPostDate(post.date, locale)}
+        </span>
+      )}
+      {post.readTime && (
+        <span className="inline-flex items-center gap-1.5">
+          <Clock className="h-4 w-4" />
+          {tBlog('ui.readTime', { time: post.readTime })}
+        </span>
+      )}
+    </div>
+  );
+
+  const chip = (post: DisplayPost) =>
+    post.category ? (
+      <span className="rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-500/10 dark:text-primary-300">
+        {categoryLabel(post.category)}
+      </span>
+    ) : null;
 
   return (
-    <>
-      <div className="grid md:grid-cols-2 gap-8">
-        {currentPosts.map((post, index) => (
-          <motion.div
-            key={post.key}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Link href={`/${locale}/blog/${post.slug}`}>
-              <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-200 group cursor-pointer">
-                <div className="relative h-48 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                  <post.icon className="w-24 h-24 text-primary-600" />
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    {post.category && (
-                      <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
-                        {post.category}
-                      </span>
-                    )}
-                    {post.readTime && <span className="text-xs text-gray-500">{post.readTime}</span>}
+    <div>
+      {categories.length > 1 && (
+        <BlogCategories
+          categories={categories.map((c) => ({ value: c, label: categoryLabel(c) }))}
+          active={category}
+          onSelect={selectCategory}
+        />
+      )}
+
+      {featured && (
+        <Link href={href(featured)} className="group mb-8 block">
+          <article className="grid overflow-hidden rounded-3xl border border-gray-200 bg-white transition-shadow group-hover:shadow-xl group-hover:shadow-ink/5 dark:border-white/10 dark:bg-white/[0.03] lg:grid-cols-12">
+            <div className="aspect-[16/9] overflow-hidden lg:col-span-7 lg:aspect-auto lg:min-h-[360px]">
+              <PostCover image={featured.image} icon={featured.icon} index={0} alt={featured.title} className="transition-transform duration-500 group-hover:scale-[1.03]" />
+            </div>
+            <div className="flex flex-col p-8 lg:col-span-5 lg:p-10">
+              <div className="mb-5 flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-ochre px-3 py-1 text-xs font-semibold text-ink">{tBlog('ui.featured')}</span>
+                {chip(featured)}
+              </div>
+              <h2 className="mb-4 text-3xl font-bold leading-tight text-ink transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400 md:text-4xl">
+                {featured.title}
+              </h2>
+              <p className="mb-6 line-clamp-3 text-lg leading-relaxed text-gray-600 dark:text-gray-300">{featured.excerpt}</p>
+              <div className="mt-auto space-y-5">
+                {meta(featured)}
+                <span className="inline-flex items-center gap-2 font-semibold text-primary-600 dark:text-primary-400">
+                  {tBlog('ui.readMore')}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </div>
+            </div>
+          </article>
+        </Link>
+      )}
+
+      {others.length > 0 && (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {others.map((post, i) =>
+            post ? (
+              <Link key={post.key} href={href(post)} className="group block">
+                <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300 group-hover:-translate-y-1 group-hover:border-primary-300 group-hover:shadow-xl group-hover:shadow-primary-600/5 dark:border-white/10 dark:bg-white/[0.03] dark:group-hover:border-primary-500/40">
+                  <div className="aspect-[16/10] overflow-hidden">
+                    <PostCover image={post.image} icon={post.icon} index={i + 1} alt={post.title} className="transition-transform duration-500 group-hover:scale-[1.04]" />
                   </div>
-
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 transition-colors">
-                    {post.title}
-                  </h3>
-
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2 transition-colors duration-300">
-                    {post.excerpt}
-                  </p>
-
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <div className="flex items-center gap-4">
-                      {post.author && (
-                        <div className="flex items-center gap-1">
-                          <User className="w-4 h-4" />
-                          <span>{post.author}</span>
-                        </div>
-                      )}
-                      {post.date && (
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          <span>{new Date(post.date).toLocaleDateString()}</span>
-                        </div>
-                      )}
-                    </div>
-                    <ArrowRight className="w-5 h-5 text-primary-600 group-hover:translate-x-1 transition-transform" />
+                  <div className="flex flex-1 flex-col p-6">
+                    <div className="mb-3">{chip(post)}</div>
+                    <h3 className="mb-3 text-xl font-bold leading-snug text-ink transition-colors group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
+                      {post.title}
+                    </h3>
+                    <p className="mb-5 line-clamp-2 text-gray-600 dark:text-gray-400">{post.excerpt}</p>
+                    <div className="mt-auto">{meta(post)}</div>
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
-          </motion.div>
-        ))}
-      </div>
+                </article>
+              </Link>
+            ) : null
+          )}
+        </div>
+      )}
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-4 mt-12">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={goToPreviousPage}
-            disabled={currentPage === 1}
-            className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300"
+        <nav className="mt-14 flex items-center justify-center gap-2" aria-label="Pagination">
+          <button
+            type="button"
+            onClick={() => setCurrentPage(Math.max(page - 1, 1))}
+            disabled={page === 1}
+            aria-label={tBlog('ui.prevPage')}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 bg-white text-ink transition-colors hover:border-primary-500 hover:text-primary-600 disabled:pointer-events-none disabled:opacity-40 dark:border-white/15 dark:bg-transparent dark:text-white"
           >
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          <div className="flex items-center gap-2">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                variant={currentPage === page ? 'default' : 'outline'}
-                size="icon"
-                onClick={() => setCurrentPage(page)}
-                className={currentPage === page ? 'dark:bg-primary-600 dark:text-white' : 'dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700'}
-              >
-                {page}
-              </Button>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={goToNextPage}
-            disabled={currentPage === totalPages}
-            className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300"
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <button
+              key={p}
+              type="button"
+              onClick={() => setCurrentPage(p)}
+              aria-label={tBlog('ui.page', { page: p })}
+              aria-current={page === p ? 'page' : undefined}
+              className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
+                page === p
+                  ? 'bg-ink text-white dark:bg-white dark:text-ink'
+                  : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/10'
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={() => setCurrentPage(Math.min(page + 1, totalPages))}
+            disabled={page === totalPages}
+            aria-label={tBlog('ui.nextPage')}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-300 bg-white text-ink transition-colors hover:border-primary-500 hover:text-primary-600 disabled:pointer-events-none disabled:opacity-40 dark:border-white/15 dark:bg-transparent dark:text-white"
           >
-            <ChevronRight className="w-5 h-5" />
-          </Button>
-        </div>
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </nav>
       )}
-    </>
+    </div>
   );
 }

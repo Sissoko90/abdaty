@@ -1,10 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Check, Copy } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
+import { Braces, Check, Copy, Gauge, Webhook } from 'lucide-react';
 
 const codeExamples = {
   curl: `curl -X POST https://api.abdaty-tech.com/v1/sms/send \\
@@ -142,7 +140,14 @@ Future<void> sendSMS() async {
 
 type Language = keyof typeof codeExamples;
 
+const apiFeatures = [
+  { icon: Braces, title: 'API RESTful', description: 'Requêtes HTTP simples avec réponses JSON' },
+  { icon: Webhook, title: 'Webhooks', description: 'Notifications de statut de livraison en temps réel' },
+  { icon: Gauge, title: 'Limitation de débit', description: '1000 requêtes par minute incluses' },
+];
+
 export function CodeExamples() {
+  const t = useTranslations('smsApi.code');
   const [selectedLang, setSelectedLang] = useState<Language>('curl');
   const [copied, setCopied] = useState(false);
 
@@ -162,85 +167,58 @@ export function CodeExamples() {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Quick Integration</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">Get started in minutes with our simple REST API</p>
-        </motion.div>
+    <section className="py-20 lg:py-28">
+      <div className="site-container">
+        <div className="mb-12">
+          <h2 className="mb-4 text-4xl font-bold text-ink dark:text-white md:text-5xl">{t('title')}</h2>
+          <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">{t('subtitle')}</p>
+        </div>
 
-        <div className="grid lg:grid-cols-2 gap-6">
-          {/* API Example */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <Card className="overflow-hidden h-full">
-              <CardHeader className="bg-gray-50 dark:bg-gray-800 border-b">
-                <div className="flex items-center justify-between">
-                  <CardTitle>API Example</CardTitle>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={copyToClipboard}
-                    className="gap-2"
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4" />
-                        Copy
-                      </>
-                    )}
-                  </Button>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {languages.map((lang) => (
+        <div className="grid gap-5 lg:grid-cols-12">
+          {/* Requête : onglets de langage + copie */}
+          <div className="flex min-w-0 flex-col overflow-hidden rounded-2xl bg-ink ring-1 ring-white/10 lg:col-span-7">
+            <div className="flex items-center justify-between gap-3 border-b border-white/10 px-3 py-2">
+              <div role="tablist" aria-label={t('request')} className="hide-scrollbar flex gap-1 overflow-x-auto">
+                {languages.map((lang) => {
+                  const active = selectedLang === lang.key;
+                  return (
                     <button
                       key={lang.key}
+                      type="button"
+                      role="tab"
+                      aria-selected={active}
                       onClick={() => setSelectedLang(lang.key)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                        selectedLang === lang.key
-                          ? 'bg-primary-600 text-white'
-                          : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border'
+                      className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                        active ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white'
                       }`}
                     >
                       {lang.label}
                     </button>
-                  ))}
-                </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <pre className="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm leading-relaxed h-96">
-                  <code>{codeExamples[selectedLang]}</code>
-                </pre>
-              </CardContent>
-            </Card>
-          </motion.div>
+                  );
+                })}
+              </div>
+              <button
+                type="button"
+                onClick={copyToClipboard}
+                className="flex shrink-0 items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
+                <span aria-live="polite">{copied ? t('copied') : t('copy')}</span>
+              </button>
+            </div>
+            <pre className="h-96 overflow-auto p-6 font-mono text-[13px] leading-relaxed text-gray-200">
+              <code>{codeExamples[selectedLang]}</code>
+            </pre>
+          </div>
 
-          {/* Response Example */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <Card className="overflow-hidden h-full">
-              <CardHeader className="bg-green-50 border-b border-green-200">
-                <CardTitle className="text-green-900">Response (200 OK)</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <pre className="bg-gray-900 text-gray-100 p-6 overflow-x-auto text-sm leading-relaxed h-96 flex items-center">
-                  <code>{`{
+          {/* Réponse */}
+          <div className="flex min-w-0 flex-col overflow-hidden rounded-2xl bg-ink ring-1 ring-white/10 lg:col-span-5">
+            <div className="flex items-center gap-2 border-b border-white/10 px-5 py-3.5 text-sm font-medium text-emerald-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              {t('response')}
+            </div>
+            <pre className="flex-1 overflow-auto p-6 font-mono text-[13px] leading-relaxed text-gray-200">
+              <code>{`{
   "success": true,
   "message_id": "msg_abc123xyz",
   "status": "sent",
@@ -248,42 +226,19 @@ export function CodeExamples() {
   "credits_used": 1,
   "timestamp": "2024-05-07T12:00:00Z"
 }`}</code>
-                </pre>
-              </CardContent>
-            </Card>
-          </motion.div>
+            </pre>
+          </div>
         </div>
 
-        {/* API Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mt-12">
-          {[
-            {
-              title: 'API RESTful',
-              description: 'Requêtes HTTP simples avec réponses JSON',
-            },
-            {
-              title: 'Webhooks',
-              description: 'Notifications de statut de livraison en temps réel',
-            },
-            {
-              title: 'Limitation de débit',
-              description: '1000 requêtes par minute incluses',
-            },
-          ].map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2 transition-colors duration-300">{feature.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300">{feature.description}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
+        <div className="mt-5 grid gap-5 md:grid-cols-3">
+          {apiFeatures.map(({ icon: Icon, title, description }) => (
+            <div key={title} className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                <Icon className="h-6 w-6" />
+              </div>
+              <h3 className="mb-1 text-lg font-bold text-ink dark:text-white">{title}</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+            </div>
           ))}
         </div>
       </div>

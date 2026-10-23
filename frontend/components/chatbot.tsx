@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -58,13 +59,15 @@ export function Chatbot() {
     setIsTyping(false);
   };
 
-  const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
+  // `override` : texte d'une question rapide (setInputValue n'est pas encore appliqué à ce moment-là).
+  const handleSendMessage = async (override?: string) => {
+    const text = override ?? inputValue;
+    if (!text.trim()) return;
 
     // Ajouter le message de l'utilisateur
     const userMessage: Message = {
       id: Date.now().toString(),
-      text: inputValue,
+      text,
       sender: 'user',
       timestamp: new Date(),
     };
@@ -74,7 +77,7 @@ export function Chatbot() {
 
     // Simuler une réponse du bot (à remplacer par une vraie API)
     setTimeout(() => {
-      const response = getBotResponse(inputValue.toLowerCase());
+      const response = getBotResponse(text.toLowerCase());
       addBotMessage(response);
     }, 1000);
   };
@@ -171,9 +174,9 @@ export function Chatbot() {
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Ouvrir le chat"
-            className="w-12 h-12 rounded-full bg-primary-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:bg-primary-700 flex items-center justify-center border-2 border-white"
+            className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-600 shadow-xl shadow-primary-600/30 ring-2 ring-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-700 dark:ring-white/20"
           >
-            <MessageSquare className="w-6 h-6 text-white" />
+            <MessageSquare className="h-6 w-6 text-white" />
           </button>
         </div>
       )}
@@ -187,31 +190,35 @@ export function Chatbot() {
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
             className="fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)]"
           >
-            <Card className="shadow-2xl overflow-hidden">
+            <Card className="overflow-hidden rounded-2xl border-gray-200 shadow-2xl shadow-ink/20 dark:border-white/10 dark:bg-[#121c2e]">
               {/* Header */}
-              <div className="bg-gradient-to-r from-primary-500 to-primary-700 p-4 flex items-center justify-between">
+              <div className="bogolan-texture flex items-center justify-between bg-ink p-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center p-1">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1">
                     {/* eslint-disable-next-line @next/next/no-img-element -- logo dynamique (CMS), ratio inconnu, non LCP */}
                     <img src={logo} alt="Abdaty" className="w-full h-full object-contain" />
                   </div>
                   <div>
-                    <h3 className="text-white font-bold">{t('title')}</h3>
-                    <p className="text-primary-100 text-xs">{t('status')}</p>
+                    <h3 className="font-display font-bold text-white">{t('title')}</h3>
+                    <p className="flex items-center gap-1.5 text-xs text-gray-300">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                      {t('status')}
+                    </p>
                   </div>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsOpen(false)}
-                  className="text-white hover:bg-white/20"
+                  className="text-white hover:bg-white/15 hover:text-white"
+                  aria-label="Fermer le chat"
                 >
                   <X className="w-5 h-5" />
                 </Button>
               </div>
 
               {/* Messages */}
-              <div className="h-96 overflow-y-auto p-4 bg-gray-50 dark:bg-gray-900">
+              <div className="h-96 overflow-y-auto bg-paper p-4 dark:bg-[#0b1322]">
                 {messages.map((message) => (
                   <motion.div
                     key={message.id}
@@ -220,10 +227,10 @@ export function Chatbot() {
                     className={`mb-4 flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div className={`flex gap-2 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${
                         message.sender === 'user'
-                          ? 'bg-primary-500'
-                          : 'bg-white dark:bg-gray-800'
+                          ? 'bg-ink dark:bg-white/10'
+                          : 'bg-white ring-1 ring-gray-200 dark:ring-white/10'
                       }`}>
                         {message.sender === 'user' ? (
                           <User className="w-4 h-4 text-white" />
@@ -233,10 +240,10 @@ export function Chatbot() {
                         )}
                       </div>
                       <div
-                        className={`p-3 rounded-2xl ${
+                        className={`rounded-2xl px-4 py-3 ${
                           message.sender === 'user'
-                            ? 'bg-primary-500 text-white'
-                            : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700'
+                            ? 'rounded-br-md bg-primary-600 text-white'
+                            : 'rounded-bl-md border border-gray-200 bg-white text-ink dark:border-white/10 dark:bg-white/5 dark:text-white'
                         }`}
                       >
                         <p className="text-sm whitespace-pre-line">{message.text}</p>
@@ -251,11 +258,11 @@ export function Chatbot() {
                     animate={{ opacity: 1 }}
                     className="flex gap-2 mb-4"
                   >
-                    <div className="w-8 h-8 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white ring-1 ring-gray-200 dark:ring-white/10">
                       {/* eslint-disable-next-line @next/next/no-img-element -- logo dynamique (CMS), ratio inconnu, non LCP */}
                       <img src={logo} alt="Abdaty" className="w-6 h-6 object-contain" />
                     </div>
-                    <div className="bg-white dark:bg-gray-800 p-3 rounded-2xl border border-gray-200 dark:border-gray-700">
+                    <div className="rounded-2xl rounded-bl-md border border-gray-200 bg-white px-4 py-3 dark:border-white/10 dark:bg-white/5">
                       <div className="flex gap-1">
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce animation-delay-200" />
@@ -270,17 +277,16 @@ export function Chatbot() {
 
               {/* Quick Questions */}
               {messages.length === 1 && (
-                <div className="p-4 bg-white dark:bg-gray-800 border-t dark:border-gray-700">
-                  <p className="text-xs text-gray-500 mb-2">{t('quickQuestionsTitle')}</p>
+                <div className="border-t border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-[#121c2e]">
+                  <p className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">{t('quickQuestionsTitle')}</p>
                   <div className="flex flex-wrap gap-2">
                     {quickQuestions.map((q) => (
                       <button
                         key={q.key}
                         onClick={() => {
-                          setInputValue(q.text);
-                          handleSendMessage();
+                          handleSendMessage(q.text);
                         }}
-                        className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-primary-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 hover:text-primary-600 rounded-full transition-colors"
+                        className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:border-primary-300 hover:text-primary-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-300 dark:hover:text-primary-300"
                       >
                         {q.text}
                       </button>
@@ -290,19 +296,21 @@ export function Chatbot() {
               )}
 
               {/* Input */}
-              <div className="p-4 bg-white dark:bg-gray-800 border-t dark:border-gray-700">
+              <div className="border-t border-gray-200 bg-white p-3 dark:border-white/10 dark:bg-[#121c2e]">
                 <div className="flex gap-2">
                   <Input
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                     placeholder={t('placeholder')}
-                    className="flex-1"
+                    aria-label={t('placeholder')}
+                    className="h-11 flex-1 rounded-xl border-gray-300 bg-white text-ink dark:border-white/15 dark:bg-white/5 dark:text-white"
                   />
                   <Button
-                    onClick={handleSendMessage}
-                    size="sm"
-                    className="bg-gradient-to-r from-primary-500 to-primary-700"
+                    onClick={() => handleSendMessage()}
+                    size="icon"
+                    className="h-11 w-11 rounded-xl"
+                    aria-label="Envoyer"
                   >
                     <Send className="w-4 h-4" />
                   </Button>

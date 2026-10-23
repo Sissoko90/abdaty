@@ -16,64 +16,62 @@ export default function Error({
   const t = useTranslations('error');
   const locale = useLocale();
 
+  const suggestions = [
+    { href: `/${locale}/contact`, label: t('contact') },
+    { href: `/${locale}/faq`, label: t('faq') },
+    { href: `/${locale}/services`, label: t('services') },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-950 dark:to-red-950 flex items-center justify-center px-4 py-20 transition-colors duration-300">
-      <div className="text-center max-w-2xl mx-auto">
-        <div className="mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="w-24 h-24 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
-              <AlertTriangle className="w-12 h-12 text-red-600 dark:text-red-400" />
+    <main>
+      <section className="pb-20 pt-32 lg:pb-28 lg:pt-40">
+        <div className="site-container grid items-center gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400">
+              <AlertTriangle className="h-7 w-7" />
+            </span>
+            <h1 className="mb-6 text-5xl font-extrabold leading-[1.05] text-ink dark:text-white md:text-6xl">{t('title')}</h1>
+            <p className="mb-6 max-w-xl text-lg leading-relaxed text-gray-600 dark:text-gray-300">{t('description')}</p>
+            {error.message && (
+              <p className="mb-8 max-w-xl break-words rounded-xl border border-gray-200 bg-white px-4 py-3 font-mono text-sm text-gray-600 dark:border-white/10 dark:bg-white/5 dark:text-gray-400">
+                {error.message}
+              </p>
+            )}
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Button onClick={reset} size="lg" className="w-full gap-2 sm:w-auto">
+                <RefreshCw className="h-5 w-5" />
+                {t('retry')}
+              </Button>
+              <Link href={`/${locale}`}>
+                <Button size="lg" variant="outline" className="w-full gap-2 border-gray-300 bg-white sm:w-auto dark:border-white/15 dark:bg-white/5 dark:text-white">
+                  <Home className="h-5 w-5" />
+                  {t('backHome')}
+                </Button>
+              </Link>
+            </div>
+            <div className="mt-12 border-t border-gray-200 pt-8 dark:border-white/10">
+              <p className="mb-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('suggestions')}</p>
+              <ul className="flex flex-wrap gap-2">
+                {suggestions.map((s) => (
+                  <li key={s.href}>
+                    <Link
+                      href={s.href as Parameters<typeof Link>[0]['href']}
+                      className="inline-block rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-primary-300 hover:text-primary-700 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:text-primary-300"
+                    >
+                      {s.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-          <h1 className="text-9xl font-bold text-red-600 dark:text-red-500 mb-4">500</h1>
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">
-            {t('title')}
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 transition-colors duration-300">
-            {t('description')}
-          </p>
-          {error.message && (
-            <p className="text-sm text-gray-500 dark:text-gray-500 mb-4 font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded transition-colors duration-300">
-              {error.message}
-            </p>
-          )}
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button
-            onClick={reset}
-            size="lg"
-            className="gap-2"
-          >
-            <RefreshCw className="w-5 h-5" />
-            {t('retry')}
-          </Button>
-          
-          <Link href={`/${locale}`}>
-            <Button size="lg" variant="outline" className="gap-2 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300">
-              <Home className="w-5 h-5" />
-              {t('backHome')}
-            </Button>
-          </Link>
-        </div>
-
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
-          <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">{t('suggestions')}</p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Link href={`/${locale}/contact`} className="text-primary-600 dark:text-primary-400 hover:underline transition-colors duration-300">
-              {t('contact')}
-            </Link>
-            <span className="text-gray-400 dark:text-gray-600">•</span>
-            <Link href={`/${locale}/faq`} className="text-primary-600 dark:text-primary-400 hover:underline transition-colors duration-300">
-              {t('faq')}
-            </Link>
-            <span className="text-gray-400 dark:text-gray-600">•</span>
-            <Link href={`/${locale}/services`} className="text-primary-600 dark:text-primary-400 hover:underline transition-colors duration-300">
-              {t('services')}
-            </Link>
+          <div className="lg:col-span-5" aria-hidden="true">
+            <div className="bogolan-texture flex aspect-square items-center justify-center rounded-3xl bg-ink">
+              <span className="font-display text-[8rem] font-extrabold leading-none text-ochre sm:text-[10rem]">500</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

@@ -1,94 +1,58 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
-import { Mail, Phone, MessageCircle } from 'lucide-react';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Mail, Phone, MessageCircle, ArrowRight } from 'lucide-react';
+import { useContactDetails } from '@/hooks/use-contact-details';
 
 export function FAQContact() {
   const t = useTranslations('faq.contact');
   const locale = useLocale();
+  const contact = useContactDetails();
 
   const contactMethods = [
-    {
-      icon: Mail,
-      titleKey: 'email',
-      value: 'contact@abdatytch.com',
-      link: 'mailto:contact@abdatytch.com',
-      color: 'from-blue-500 to-indigo-500',
-    },
-    {
-      icon: Phone,
-      titleKey: 'phone',
-      value: '+223 76 71 41 42',
-      link: 'tel:+223 76 71 41 42',
-      color: 'from-green-500 to-emerald-500',
-    },
-    {
-      icon: MessageCircle,
-      titleKey: 'chat',
-      value: t('chatDescription'),
-      link: '#',
-      color: 'from-primary-500 to-primary-700',
-    },
+    { icon: Mail, titleKey: 'email', value: contact.email, link: contact.emailHref },
+    { icon: Phone, titleKey: 'phone', value: contact.phone, link: contact.phoneHref },
+    // Le chat ouvre la page contact (le widget de discussion reste accessible en bas de page).
+    { icon: MessageCircle, titleKey: 'chat', value: t('chatDescription'), link: `/${locale}/contact` },
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{t('title')}</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">{t('subtitle')}</p>
-        </motion.div>
+    <section className="pb-20 lg:pb-28">
+      <div className="site-container">
+        <div className="bogolan-texture grid gap-10 rounded-3xl bg-ink p-8 text-white dark:ring-1 dark:ring-white/10 sm:p-12 lg:grid-cols-12 lg:p-14">
+          <div className="lg:col-span-5">
+            <h2 className="mb-4 text-4xl font-bold">{t('title')}</h2>
+            <p className="mb-8 text-lg leading-relaxed text-gray-300">{t('subtitle')}</p>
+            <Link href={`/${locale}/contact`}>
+              <Button size="lg" className="group">
+                {t('fullContactForm')}
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+          </div>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {contactMethods.map((method, index) => (
-            <motion.div
-              key={method.titleKey}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className="h-full hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-br ${method.color} rounded-2xl flex items-center justify-center`}>
-                    <method.icon className="w-8 h-8 text-white" />
+          <ul className="grid gap-3 lg:col-span-7">
+            {contactMethods.map((method) => (
+              <li key={method.titleKey}>
+                <a
+                  href={method.link}
+                  className="group flex items-center gap-4 rounded-2xl bg-white/5 p-5 ring-1 ring-white/10 transition-colors hover:bg-white/10"
+                >
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ochre text-ink">
+                    <method.icon className="h-6 w-6" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold">{t(method.titleKey)}</p>
+                    <p className="break-words text-sm text-gray-300">{method.value}</p>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">{t(method.titleKey)}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">{method.value}</p>
-                  <a
-                    href={method.link}
-                    className="text-primary-600 hover:text-primary-700 font-medium"
-                  >
-                    {t('contactUs')}
-                  </a>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+                  <ArrowRight className="h-5 w-5 shrink-0 text-gray-400 transition-transform group-hover:translate-x-1 group-hover:text-ochre" />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <Link href={`/${locale}/contact`}>
-            <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-700">
-              {t('fullContactForm')}
-            </Button>
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

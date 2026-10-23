@@ -1,9 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Lock, Award, CheckCircle, type LucideIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { usePublicList } from '@/hooks/use-public-content';
 
 const ICONS: Record<string, LucideIcon> = { Shield, Lock, Award, CheckCircle };
@@ -24,76 +22,50 @@ export function CertificationsSection() {
         ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{t('title')}</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto transition-colors duration-300">{t('subtitle')}</p>
-        </motion.div>
+    <section className="bg-white py-20 dark:bg-white/[0.02] lg:py-28">
+      <div className="site-container">
+        <div className="mb-12">
+          <h2 className="mb-4 text-4xl font-bold text-ink dark:text-white md:text-5xl">{t('title')}</h2>
+          <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">{t('subtitle')}</p>
+        </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {certifications.map((cert, index) => {
             const Icon = cert.Icon;
             return (
-              <motion.div
-                key={cert.badge}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+              <article
+                key={`${cert.badge}-${index}`}
+                className="h-full rounded-2xl border border-gray-200 bg-paper p-6 dark:border-white/10 dark:bg-white/[0.03]"
               >
-                <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-200">
-                  <CardContent className="p-6">
-                    <div className="relative mb-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                        {cert.badge}
-                      </div>
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">{cert.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">{cert.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                <div className="mb-5 flex items-start justify-between gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  {cert.badge && (
+                    <span className="rounded-full bg-ochre/20 px-3 py-1 text-xs font-bold text-ink dark:text-ochre">{cert.badge}</span>
+                  )}
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-ink dark:text-white">{cert.title}</h3>
+                <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">{cert.description}</p>
+              </article>
             );
           })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-12 text-center"
-        >
-          <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold mb-4">{t('cta.title')}</h3>
-              <p className="text-primary-100 mb-6">{t('cta.description')}</p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="text-sm">{t('cta.audit')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="text-sm">{t('cta.compliance')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="text-sm">{t('cta.security')}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        <div className="bogolan-texture mt-10 grid gap-8 rounded-3xl bg-ink p-8 text-white dark:ring-1 dark:ring-white/10 sm:p-10 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-7">
+            <h3 className="mb-3 text-2xl font-bold">{t('cta.title')}</h3>
+            <p className="leading-relaxed text-gray-300">{t('cta.description')}</p>
+          </div>
+          <ul className="space-y-3 lg:col-span-5 lg:border-l lg:border-white/10 lg:pl-10">
+            {[t('cta.audit'), t('cta.compliance'), t('cta.security')].map((item) => (
+              <li key={item} className="flex items-center gap-3 text-sm">
+                <CheckCircle className="h-5 w-5 shrink-0 text-ochre" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );

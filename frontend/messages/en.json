@@ -6,7 +6,9 @@
     "legal": "Legal",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "contact": "Contact",
+    "followUs": "Follow us"
   },
   "cookies": {
     "title": "We use cookies",
@@ -166,7 +168,10 @@
     "contact": "Contact",
     "login": "Login",
     "dashboard": "Dashboard",
-    "logout": "Logout"
+    "logout": "Logout",
+    "startProject": "Start a project",
+    "ourSolutions": "Our digital solutions",
+    "menu": "Open menu"
   },
   "hero": {
     "title": "Digital Solutions for Your Business",
@@ -179,6 +184,14 @@
       "clients": "Happy Clients",
       "experience": "Years Experience",
       "satisfaction": "Client Satisfaction"
+    },
+    "visual": {
+      "url": "your-business.ml",
+      "siteTitle": "Order online, delivered to your door",
+      "smsSender": "ABDATY",
+      "smsText": "Hi Awa, your order #1042 is ready. Pick it up from 2pm in Hamdallaye.",
+      "delivered": "Delivered in 2.1 s",
+      "today": "Today"
     }
   },
   "services": {
@@ -419,7 +432,12 @@
         "Big Data processing",
         "Data visualization"
       ]
-    }
+    },
+    "viewAll": "See all services",
+    "learnMore": "Learn more",
+    "customTitle": "Need something custom?",
+    "customText": "Tell us about your project and we will suggest the right solution with a first estimate.",
+    "customCta": "Let's talk"
   },
   "auth": {
     "login": {
@@ -590,7 +608,8 @@
         "content": "For any questions regarding this Privacy Policy, or to exercise your rights over your personal data, please contact us through our",
         "link": "contact page"
       }
-    }
+    },
+    "onThisPage": "On this page"
   },
   "smsApi": {
     "title": "SMS API Service",
@@ -599,7 +618,9 @@
     "hero": {
       "cta": "Get Started",
       "ctaDocs": "Documentation",
-      "ctaSwagger": "Swagger API"
+      "ctaSwagger": "Swagger API",
+      "badge": "Professional SMS API",
+      "terminalResponse": "API response"
     },
     "plans": {
       "title": "Choose Your Plan",
@@ -635,7 +656,10 @@
     "pricing": {
       "title": "Transparent Pricing",
       "subtitle": "Pay only for what you use",
-      "perSMS": "per SMS"
+      "perSMS": "per SMS",
+      "included": "Included in every plan",
+      "details": "See details",
+      "perMonth": "SMS/month"
     },
     "documentation": {
       "title": "API Documentation",
@@ -646,6 +670,20 @@
     "integration": {
       "title": "Quick Integration",
       "description": "Get started in minutes with our simple REST API"
+    },
+    "stats": {
+      "uptime": "Uptime",
+      "delivery": "Delivery",
+      "support": "Support",
+      "coverage": "Coverage"
+    },
+    "code": {
+      "title": "Integrate in a few lines",
+      "subtitle": "One HTTP request, one JSON response. Pick your language and copy the example.",
+      "request": "Request",
+      "response": "Response (200 OK)",
+      "copy": "Copy",
+      "copied": "Copied!"
     }
   },
   "about": {
@@ -825,7 +863,12 @@
   "cta": {
     "title": "Ready to Start Your Project?",
     "description": "Let's discuss how we can help you achieve your digital goals with our expert solutions.",
-    "button": "Start a Project"
+    "button": "Start a Project",
+    "call": "Call us",
+    "reach": "Reach us directly",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address"
   },
   "testimonials": {
     "title": "What Our Clients Say",
@@ -835,7 +878,9 @@
       "projects": "Projects Delivered",
       "satisfaction": "Satisfaction Rate",
       "support": "Support Available"
-    }
+    },
+    "prev": "Previous testimonial",
+    "next": "Next testimonial"
   },
   "faq": {
     "hero": {
@@ -1006,7 +1051,7 @@
         "description": "Welcome to Abdaty Tech documentation. Here you'll find everything you need to integrate our services into your applications.",
         "note": {
           "title": "Need help?",
-          "text": "Our support team is available 24/7 to assist you. Contact us at support@abdaty-tech.com"
+          "text": "Our support team is available 24/7 to assist you. Contact us at contact@abdatytch.com"
         }
       },
       "installation": {
@@ -1021,6 +1066,11 @@
         "title": "Authentication",
         "description": "All API requests require a valid API key. You can get your key from your dashboard."
       }
+    },
+    "ui": {
+      "jumpTo": "Jump to",
+      "copy": "Copy",
+      "copied": "Copied"
     }
   },
   "blog": {
@@ -1064,6 +1114,35 @@
         "title": "Data & AI: Introduction to Machine Learning",
         "excerpt": "Understand the basics of machine learning and how to apply it to your projects."
       }
+    },
+    "ui": {
+      "filterLabel": "Filter by category",
+      "featured": "Featured",
+      "readMore": "Read article",
+      "readTime": "{time} read",
+      "backToBlog": "Back to blog",
+      "writtenBy": "Written by",
+      "morePosts": "See more articles",
+      "notFoundTitle": "Article not found",
+      "notFoundText": "This article does not exist or is no longer published.",
+      "loading": "Loading article…",
+      "prevPage": "Previous page",
+      "nextPage": "Next page",
+      "page": "Page {page}"
+    },
+    "comments": {
+      "title": "Comments ({count})",
+      "leave": "Leave a comment",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "comment": "Comment",
+      "commentPlaceholder": "Share your thoughts…",
+      "publish": "Publish",
+      "reply": "Reply",
+      "replyPlaceholder": "Your reply…",
+      "cancel": "Cancel",
+      "anonymous": "Anonymous",
+      "like": "Like"
     }
   },
   "serviceDetails": {
@@ -1379,7 +1458,12 @@
       "deliveryRate": "Delivery rate",
       "smsToday": "SMS today",
       "failedCount": "Failed",
-      "back": "Back"
+      "back": "Back",
+      "allStatuses": "All statuses",
+      "searchPlaceholder": "Search a number or message",
+      "showing": "Showing 1 to 4 of 1,234 results",
+      "previous": "Previous",
+      "next": "Next"
     },
     "billing": {
       "title": "Billing",
@@ -1459,7 +1543,15 @@
       "lastUsed": "Last used:",
       "important": "Important:",
       "securityWarning": "Never share your API keys with third parties. If you think a key has been compromised, revoke it immediately.",
-      "back": "Back"
+      "back": "Back",
+      "emptyTitle": "You don't have an API key yet",
+      "emptyText": "Create a key to send SMS from your application.",
+      "loading": "Loading keys…",
+      "signInRequired": "Sign in to manage your API keys.",
+      "show": "Show key",
+      "hide": "Hide key",
+      "copy": "Copy key",
+      "revoke": "Revoke key"
     },
     "createApiKey": {
       "title": "Create new API key",
@@ -1476,8 +1568,17 @@
       "cancel": "Cancel",
       "back": "Back",
       "success": "API key created successfully",
-      "error": "Error creating API key"
-    }
+      "error": "Error creating API key",
+      "detailsTitle": "API key details",
+      "oneTimeNote": "Your API key is shown only once after it is created. Copy it and keep it somewhere safe."
+    },
+    "nav": {
+      "label": "Client area navigation",
+      "overview": "Overview",
+      "notifications": "Notifications"
+    },
+    "revoked": "Revoked",
+    "noApiKeys": "No API keys yet."
   },
   "admin": {
     "breadcrumb": {
@@ -2193,5 +2294,9 @@
       "save": "Save",
       "confirmDelete": "Are you sure you want to delete this partner?"
     }
+  },
+  "partners": {
+    "title": "They trust us",
+    "subtitle": "Companies and institutions that trust us with their projects."
   }
 }

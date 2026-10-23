@@ -1,44 +1,24 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { usePublicSection, usePublicList } from '@/hooks/use-public-content';
+import { useContactDetails } from '@/hooks/use-contact-details';
 import { resolveSocialIcon, socialLabel } from '@/lib/social-icons';
-
-const contactDetails = [
-  {
-    icon: Mail,
-    key: 'email',
-    value: 'contact@abdatytch.com',
-    link: 'mailto:contact@abdatytch.com',
-  },
-  {
-    icon: Phone,
-    key: 'phone',
-    value: '+223 76 71 41 42',
-    link: 'tel:+22376714142',
-  },
-  {
-    icon: MapPin,
-    key: 'address',
-    value: 'Hamdallaye, Bamako Mali',
-    link: null,
-  },
-  {
-    icon: Clock,
-    key: 'hours',
-    value: null,
-    link: null,
-  },
-];
 
 export function ContactInfo() {
   const t = useTranslations('contact.info');
 
   // Coordonnées gérées dans l'admin (section "contact"), avec repli.
   const { cv } = usePublicSection('contact');
+  const contact = useContactDetails();
+
+  const contactDetails = [
+    { icon: Mail, key: 'email', value: contact.email, link: contact.emailHref },
+    { icon: Phone, key: 'phone', value: contact.phone, link: contact.phoneHref },
+    { icon: MapPin, key: 'address', value: contact.address, link: null },
+    { icon: Clock, key: 'hours', value: cv('hours', t('hoursValue')), link: null },
+  ];
 
   // Réseaux sociaux (section "socials", actifs uniquement) — partagés avec le footer.
   const socialItems = usePublicList('socials');
@@ -47,65 +27,41 @@ export function ContactInfo() {
     .map((s) => ({ platform: s.platform as string, url: s.url as string, label: (s.label as string) || '' }));
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.6 }}
-      className="space-y-6"
-    >
+    <div className="space-y-8">
       <div>
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{cv('title', t('title'))}</h2>
-        <p className="text-gray-600 dark:text-gray-300 mb-8 transition-colors duration-300">
-          {cv('description', t('description'))}
-        </p>
+        <h2 className="mb-3 text-3xl font-bold text-ink dark:text-white">{cv('title', t('title'))}</h2>
+        <p className="leading-relaxed text-gray-600 dark:text-gray-300">{cv('description', t('description'))}</p>
       </div>
 
-      <div className="space-y-4">
-        {contactDetails.map((detail, index) => {
+      <ul className="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.03]">
+        {contactDetails.map((detail) => {
           const Icon = detail.icon;
-          const fallbackValue = detail.value || (detail.key === 'hours' ? t('hoursValue') : '');
-          const displayValue = cv(detail.key, fallbackValue);
-          const content = (
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6 text-primary-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1 transition-colors duration-300">{t(detail.key)}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300">{displayValue}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-
           return (
-            <motion.div
-              key={detail.key}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              {detail.link ? (
-                <a href={detail.link} className="block">
-                  {content}
-                </a>
-              ) : (
-                content
-              )}
-            </motion.div>
+            <li key={detail.key} className="flex items-start gap-4 p-5">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                <Icon className="h-5 w-5" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm text-gray-500 dark:text-gray-400">{t(detail.key)}</p>
+                {detail.link ? (
+                  <a href={detail.link} className="break-words font-semibold text-ink hover:text-primary-600 dark:text-white dark:hover:text-primary-400">
+                    {detail.value}
+                  </a>
+                ) : (
+                  <p className="font-semibold text-ink dark:text-white">{detail.value}</p>
+                )}
+              </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
 
       {socials.length > 0 && (
         <div>
-          <h3 className="font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
+          <h3 className="mb-3 text-base font-semibold text-ink dark:text-white">
             {t.has('followUs') ? t('followUs') : 'Suivez-nous'}
           </h3>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {socials.map((s, i) => {
               const Icon = resolveSocialIcon(s.platform);
               return (
@@ -116,9 +72,9 @@ export function ContactInfo() {
                   rel="noopener noreferrer"
                   aria-label={s.label || socialLabel(s.platform)}
                   title={s.label || socialLabel(s.platform)}
-                  className="w-11 h-11 rounded-lg bg-primary-100 dark:bg-gray-800 flex items-center justify-center text-primary-600 dark:text-primary-400 hover:bg-primary-600 hover:text-white transition-colors"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-colors hover:border-primary-600 hover:bg-primary-600 hover:text-white dark:border-white/10 dark:bg-white/5 dark:text-gray-300"
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="h-5 w-5" />
                 </a>
               );
             })}
@@ -126,18 +82,14 @@ export function ContactInfo() {
         </div>
       )}
 
-      <Card className="bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0">
-        <CardContent className="p-8">
-          <h3 className="text-2xl font-bold mb-4">{t('cta.title')}</h3>
-          <p className="text-primary-100 mb-6">
-            {t('cta.description')}
-          </p>
-          <div className="flex items-center gap-2 text-primary-100">
-            <Clock className="w-5 h-5" />
-            <span>{t('cta.responseTime')}</span>
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
+      <div className="bogolan-texture rounded-2xl bg-ink p-8 text-white dark:ring-1 dark:ring-white/10">
+        <h3 className="mb-3 text-2xl font-bold">{t('cta.title')}</h3>
+        <p className="mb-6 leading-relaxed text-gray-300">{t('cta.description')}</p>
+        <p className="flex items-center gap-2 text-sm font-semibold text-ochre">
+          <Clock className="h-5 w-5" />
+          {t('cta.responseTime')}
+        </p>
+      </div>
+    </div>
   );
 }

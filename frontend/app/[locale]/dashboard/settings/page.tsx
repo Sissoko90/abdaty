@@ -2,12 +2,56 @@
 
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { User, Bell, Shield, Globe, Palette } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { Switch } from '@/components/ui/switch';
+import { User, Bell, Shield, Globe, KeyRound, type LucideIcon } from 'lucide-react';
 import { useState } from 'react';
+
+const CARD = 'rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]';
+const INPUT =
+  'h-12 w-full rounded-xl border border-gray-300 bg-white px-4 text-ink dark:border-white/15 dark:bg-white/5 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500';
+const LABEL = 'mb-2 block text-sm font-medium text-ink dark:text-gray-200';
+
+/** Carte de réglages avec en-tête iconé. */
+function SettingsCard({ icon: Icon, title, children }: { icon: LucideIcon; title: string; children: React.ReactNode }) {
+  return (
+    <section className={CARD}>
+      <h2 className="mb-6 flex items-center gap-3 font-display text-lg font-semibold text-ink dark:text-white">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+          <Icon className="h-5 w-5" />
+        </span>
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+/** Ligne libellé + description + interrupteur. */
+function ToggleRow({
+  id,
+  label,
+  description,
+  checked,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  description: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 py-4">
+      <div>
+        <label htmlFor={id} className="block text-sm font-medium text-ink dark:text-gray-200">
+          {label}
+        </label>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{description}</p>
+      </div>
+      <Switch id={id} checked={checked} onCheckedChange={onChange} />
+    </div>
+  );
+}
 
 export default function SettingsPage() {
   const t = useTranslations('dashboard.settings');
@@ -18,163 +62,84 @@ export default function SettingsPage() {
   const [language, setLanguage] = useState('fr');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-950 dark:to-red-950 pt-20">
-      <div className="container mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb
-          items={[
-            { label: 'Dashboard', href: '/dashboard' },
-            { label: t('title') },
-          ]}
-        />
-
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-            {t('title')}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            {t('subtitle')}
-          </p>
+    <div className="space-y-8">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="font-display text-3xl font-bold text-ink dark:text-white">{t('title')}</h1>
+          <p className="mt-1 text-gray-600 dark:text-gray-400">{t('subtitle')}</p>
         </div>
+        <Button className="hidden sm:inline-flex">{t('save')}</Button>
+      </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Profile Section */}
-          <Card className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/10">
-              <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                <User className="w-5 h-5" />
-                {t('profile')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <div>
-                <Label htmlFor="email" className="text-gray-900 dark:text-white">{t('email')}</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  defaultValue="user@example.com"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="phone" className="text-gray-900 dark:text-white">{t('phone')}</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  defaultValue="+223 76 71 41 42"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="company" className="text-gray-900 dark:text-white">{t('company')}</Label>
-                <Input
-                  id="company"
-                  type="text"
-                  defaultValue="Abdaty Technologie"
-                  className="mt-1"
-                />
-              </div>
-            </CardContent>
-          </Card>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <SettingsCard icon={User} title={t('profile')}>
+          <div className="space-y-5">
+            <div>
+              <label htmlFor="email" className={LABEL}>{t('email')}</label>
+              <input id="email" type="email" defaultValue="user@example.com" className={INPUT} />
+            </div>
+            <div>
+              <label htmlFor="phone" className={LABEL}>{t('phone')}</label>
+              <input id="phone" type="tel" defaultValue="+223 76 71 41 42" className={INPUT} />
+            </div>
+            <div>
+              <label htmlFor="company" className={LABEL}>{t('company')}</label>
+              <input id="company" type="text" defaultValue="Abdaty Technologie" className={INPUT} />
+            </div>
+          </div>
+        </SettingsCard>
 
-          {/* Notifications Section */}
-          <Card className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-            <CardHeader className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-900/10">
-              <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                <Bell className="w-5 h-5" />
-                {t('notifications')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div>
-                  <Label className="text-gray-900 dark:text-white">{t('emailNotifications')}</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {t('emailNotificationsDesc')}
-                  </p>
-                </div>
-                <input type="checkbox" checked={emailNotifications} onChange={(e) => setEmailNotifications(e.target.checked)} className="w-5 h-5 rounded dark:bg-gray-700 dark:border-gray-600" />
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div>
-                  <Label className="text-gray-900 dark:text-white">{t('smsNotifications')}</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {t('smsNotificationsDesc')}
-                  </p>
-                </div>
-                <input type="checkbox" checked={smsNotifications} onChange={(e) => setSmsNotifications(e.target.checked)} className="w-5 h-5 rounded dark:bg-gray-700 dark:border-gray-600" />
-              </div>
-            </CardContent>
-          </Card>
+        <SettingsCard icon={Bell} title={t('notifications')}>
+          <div className="divide-y divide-gray-100 dark:divide-white/10">
+            <ToggleRow
+              id="emailNotifications"
+              label={t('emailNotifications')}
+              description={t('emailNotificationsDesc')}
+              checked={emailNotifications}
+              onChange={setEmailNotifications}
+            />
+            <ToggleRow
+              id="smsNotifications"
+              label={t('smsNotifications')}
+              description={t('smsNotificationsDesc')}
+              checked={smsNotifications}
+              onChange={setSmsNotifications}
+            />
+          </div>
+        </SettingsCard>
 
-          {/* Security Section */}
-          <Card className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-            <CardHeader className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-900/10">
-              <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                <Shield className="w-5 h-5" />
-                {t('security')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <Button variant="outline" className="w-full justify-start gap-2">
-                {t('changePassword')}
-              </Button>
-              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div>
-                  <Label className="text-gray-900 dark:text-white">{t('twoFactor')}</Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {t('twoFactorDesc')}
-                  </p>
-                </div>
-                <input type="checkbox" checked={twoFactor} onChange={(e) => setTwoFactor(e.target.checked)} className="w-5 h-5 rounded dark:bg-gray-700 dark:border-gray-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Preferences Section */}
-          <Card className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-            <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-900/10">
-              <CardTitle className="text-gray-900 dark:text-white flex items-center gap-2">
-                <Globe className="w-5 h-5" />
-                {t('preferences')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <div>
-                <Label htmlFor="language" className="text-gray-900 dark:text-white">{t('language')}</Label>
-                <select
-                  id="language"
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                >
-                  <option value="fr">{t('french')}</option>
-                  <option value="en">{t('english')}</option>
-                </select>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <div>
-                  <Label className="text-gray-900 dark:text-white flex items-center gap-2">
-                    <Palette className="w-4 h-4" />
-                    {t('theme')}
-                  </Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {t('themeDesc')}
-                  </p>
-                </div>
-                <input type="checkbox" checked={darkMode} onChange={(e) => setDarkMode(e.target.checked)} className="w-5 h-5 rounded dark:bg-gray-700 dark:border-gray-600" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Save Button */}
-        <div className="mt-8 flex justify-end">
-          <Button size="lg" className="gap-2">
-            {t('save')}
+        <SettingsCard icon={Shield} title={t('security')}>
+          <Button variant="outline" className="w-full justify-start gap-2 dark:border-white/15 dark:bg-white/5">
+            <KeyRound className="h-4 w-4" />
+            {t('changePassword')}
           </Button>
-        </div>
+          <div className="mt-2 divide-y divide-gray-100 dark:divide-white/10">
+            <ToggleRow
+              id="twoFactor"
+              label={t('twoFactor')}
+              description={t('twoFactorDesc')}
+              checked={twoFactor}
+              onChange={setTwoFactor}
+            />
+          </div>
+        </SettingsCard>
+
+        <SettingsCard icon={Globe} title={t('preferences')}>
+          <div>
+            <label htmlFor="language" className={LABEL}>{t('language')}</label>
+            <select id="language" className={INPUT} value={language} onChange={(e) => setLanguage(e.target.value)}>
+              <option value="fr">{t('french')}</option>
+              <option value="en">{t('english')}</option>
+            </select>
+          </div>
+          <div className="mt-2 divide-y divide-gray-100 dark:divide-white/10">
+            <ToggleRow id="darkMode" label={t('theme')} description={t('themeDesc')} checked={darkMode} onChange={setDarkMode} />
+          </div>
+        </SettingsCard>
+      </div>
+
+      <div className="flex justify-end border-t border-gray-200 pt-6 dark:border-white/10">
+        <Button size="lg">{t('save')}</Button>
       </div>
     </div>
   );

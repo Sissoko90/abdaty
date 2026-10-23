@@ -17,15 +17,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default function ContactPage() {
   return (
     <>
-      <main>
-        <ContactHero />
-        <div className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-          <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
+      <ContactHero />
+      <section className="py-20 lg:py-28">
+        <div className="site-container grid items-start gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-7">
             <ContactForm />
+          </div>
+          <div className="lg:col-span-5">
             <ContactInfo />
           </div>
         </div>
-      </main>
+      </section>
     </>
   );
 }

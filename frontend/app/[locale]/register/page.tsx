@@ -6,11 +6,13 @@ import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { apiFetch, ApiRequestError } from '@/lib/api';
+import { useBranding } from '@/hooks/use-branding';
+
+const INPUT =
+  'h-12 w-full rounded-xl border border-gray-300 bg-white pl-11 pr-4 text-ink placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/5 dark:text-white';
+const LABEL = 'mb-2 block text-sm font-medium text-ink dark:text-gray-200';
 
 export default function RegisterPage() {
   const t = useTranslations('auth.register');
@@ -73,117 +75,104 @@ export default function RegisterPage() {
     }
   };
 
+  const fields = [
+    { id: 'name', type: 'text', icon: User, label: t('name'), placeholder: t('namePlaceholder'), value: name, set: setName, auto: 'name' },
+    { id: 'email', type: 'email', icon: Mail, label: t('email'), placeholder: t('emailPlaceholder'), value: email, set: setEmail, auto: 'email' },
+    { id: 'password', type: 'password', icon: Lock, label: t('password'), placeholder: t('passwordPlaceholder'), value: password, set: setPassword, auto: 'new-password' },
+    { id: 'confirmPassword', type: 'password', icon: Lock, label: t('confirmPassword'), placeholder: t('confirmPasswordPlaceholder'), value: confirmPassword, set: setConfirmPassword, auto: 'new-password' },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <main className="flex items-center justify-center min-h-[calc(100vh-80px)] py-20 px-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-3xl font-bold text-center">{t('title')}</CardTitle>
-            <CardDescription className="text-center">{t('description')}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {error && (
-                <div
-                  role="alert"
-                  className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300"
-                >
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  <span>{error}</span>
-                </div>
-              )}
-              {success && (
-                <div
-                  role="status"
-                  className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300"
-                >
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>{success}</span>
-                </div>
-              )}
-              <div className="space-y-2">
-                <Label htmlFor="name">{t('name')}</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder={t('namePlaceholder')}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">{t('email')}</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder={t('emailPlaceholder')}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">{t('password')}</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder={t('passwordPlaceholder')}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">{t('confirmPassword')}</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder={t('confirmPasswordPlaceholder')}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="flex items-center text-sm">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" className="rounded" required />
-                  <span>{t('agreeTerms')} </span>
-                  <Link href={`/${locale}/terms-of-service`} className="text-primary-600 hover:underline">
-                    {t('termsLink')}
-                  </Link>
-                </label>
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? t('loading') : t('submit')}
-                {!isLoading && <ArrowRight className="ml-2 w-4 h-4" />}
-              </Button>
-            </form>
-            <div className="mt-6 text-center text-sm">
-              <span className="text-gray-600">{t('haveAccount')} </span>
-              <Link href={`/${locale}/login`} className="text-primary-600 hover:underline font-medium">
-                {t('login')}
-              </Link>
+    <AuthShell title={t('title')} description={t('description')}>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {error && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300"
+          >
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+        {success && (
+          <div
+            role="status"
+            className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-900 dark:bg-green-950/40 dark:text-green-300"
+          >
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            <span>{success}</span>
+          </div>
+        )}
+        {fields.map(({ id, type, icon: Icon, label, placeholder, value, set, auto }) => (
+          <div key={id}>
+            <label htmlFor={id} className={LABEL}>{label}</label>
+            <div className="relative">
+              <Icon className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <input
+                id={id}
+                type={type}
+                autoComplete={auto}
+                placeholder={placeholder}
+                value={value}
+                onChange={(e) => set(e.target.value)}
+                className={INPUT}
+                required
+              />
             </div>
-          </CardContent>
-        </Card>
-      </main>
-    </div>
+          </div>
+        ))}
+        <label className="flex cursor-pointer items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <input type="checkbox" className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-primary-600" required />
+          <span>
+            {t('agreeTerms')}{' '}
+            <Link href={`/${locale}/terms-of-service`} className="font-medium text-primary-600 hover:underline dark:text-primary-400">
+              {t('termsLink')}
+            </Link>
+          </span>
+        </label>
+        <Button type="submit" size="lg" className="w-full" disabled={isLoading}>
+          {isLoading ? t('loading') : t('submit')}
+          {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
+        </Button>
+      </form>
+      <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+        {t('haveAccount')}{' '}
+        <Link href={`/${locale}/login`} className="font-semibold text-primary-600 hover:underline dark:text-primary-400">
+          {t('login')}
+        </Link>
+      </p>
+    </AuthShell>
+  );
+}
+
+/** Mise en page des écrans d'authentification : formulaire + panneau de marque (desktop). */
+function AuthShell({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
+  const tHero = useTranslations('hero');
+  const tFooter = useTranslations('footer');
+  const { logo } = useBranding();
+
+  return (
+    <main className="pb-16 pt-28 lg:pb-24 lg:pt-32">
+      <div className="site-container">
+        <div className="grid overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-ink/5 dark:border-white/10 dark:bg-white/[0.03] lg:grid-cols-2">
+          <div className="flex items-center justify-center p-8 sm:p-12 lg:p-16">
+            <div className="w-full max-w-md">
+              <h1 className="mb-2 text-4xl font-bold text-ink dark:text-white">{title}</h1>
+              <p className="mb-8 text-gray-600 dark:text-gray-400">{description}</p>
+              {children}
+            </div>
+          </div>
+          <div className="bogolan-texture relative hidden flex-col justify-between overflow-hidden bg-ink p-12 text-white lg:flex">
+            {/* eslint-disable-next-line @next/next/no-img-element -- logo dynamique (CMS), ratio inconnu, non LCP */}
+            <img src={logo} alt="Abdaty Tech" className="relative h-12 w-12 rounded-xl bg-white p-1.5" />
+            <div className="relative">
+              <p className="mb-4 font-display text-4xl font-bold leading-tight">{tHero('subtitle')}</p>
+              <p className="max-w-sm text-lg text-gray-300">{tFooter('description')}</p>
+            </div>
+            <div className="bogolan-band relative -mx-12 -mb-12" />
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

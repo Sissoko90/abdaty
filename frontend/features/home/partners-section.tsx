@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { usePublicList } from '@/hooks/use-public-content';
 import { mediaUrl } from '@/services/content.service';
 
@@ -25,7 +25,12 @@ function resolveLogo(logo: string): string {
   return logo.startsWith('/uploads') || logo.startsWith('http') ? mediaUrl(logo) : logo;
 }
 
+// Fondu sur les bords du défilement, compatible avec n'importe quel fond (clair/sombre).
+const EDGE_FADE = 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)';
+
 export function PartnersSection() {
+  const t = useTranslations('partners');
+
   // Partenaires gérés dans l'admin (section "partners"), avec repli.
   const backend = usePublicList('partners');
   const partners: Partner[] =
@@ -33,48 +38,42 @@ export function PartnersSection() {
       ? backend.map((p) => ({ name: (p.name as string) || '', logo: (p.logo as string) || '', website: p.website as string }))
       : defaultPartners;
 
-  const renderLogo = (partner: Partner, key: string) => (
+  // Assez de logos pour remplir les grands écrans, puis duplication pour la boucle.
+  const row = partners.length < 6 ? [...partners, ...partners] : partners;
+
+  const renderLogo = (partner: Partner, key: string, hidden = false) => (
     <div
       key={key}
-      className="flex-shrink-0 w-32 h-32 mx-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex items-center justify-center hover:scale-110 transition-transform duration-300 p-4"
+      aria-hidden={hidden || undefined}
+      className="mx-3 flex h-20 w-40 flex-shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/90"
     >
       {partner.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={resolveLogo(partner.logo)} alt={partner.name} className="object-contain max-w-full max-h-full" />
+        <img
+          src={resolveLogo(partner.logo)}
+          alt={hidden ? '' : partner.name}
+          className="max-h-full max-w-full object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+        />
       ) : (
-        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center">{partner.name}</span>
+        <span className="text-center text-sm font-semibold text-gray-700">{partner.name}</span>
       )}
     </div>
   );
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 border-y dark:border-gray-800 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
-            Ils nous font confiance
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
-            Plus de 200 entreprises et institutions partenaires
-          </p>
-        </motion.div>
+    <section className="border-b border-gray-200 bg-white py-12 dark:border-white/10 dark:bg-white/[0.02]">
+      <div className="site-container flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
+        <div className="lg:w-64 lg:shrink-0">
+          <h2 className="mb-1 text-xl font-bold text-ink dark:text-white">{t('title')}</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{t('subtitle')}</p>
+        </div>
 
-        {/* Défilement automatique des partenaires */}
-        <div className="relative overflow-hidden">
-          <div className="flex animate-scroll">
-            {partners.map((partner, index) => renderLogo(partner, `p-${index}`))}
+        <div className="relative min-w-0 flex-1 overflow-hidden" style={{ maskImage: EDGE_FADE, WebkitMaskImage: EDGE_FADE }}>
+          <div className="flex w-max animate-scroll motion-reduce:animate-none">
+            {row.map((partner, index) => renderLogo(partner, `p-${index}`))}
             {/* Duplication pour une boucle fluide */}
-            {partners.map((partner, index) => renderLogo(partner, `dup-${index}`))}
+            {row.map((partner, index) => renderLogo(partner, `dup-${index}`, true))}
           </div>
-
-          {/* Dégradés latéraux */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-gray-900 to-transparent pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-gray-900 to-transparent pointer-events-none" />
         </div>
       </div>
     </section>

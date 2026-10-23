@@ -4,7 +4,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   return (
     <>
-      <main>
+      <main className="min-h-screen">
         <BlogPostContent slug={slug} />
       </main>
     </>

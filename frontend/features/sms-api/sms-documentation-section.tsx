@@ -3,9 +3,7 @@
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Code } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowRight, Book } from 'lucide-react';
 
 export function SMSDocumentationSection() {
   const t = useTranslations('smsApi');
@@ -15,69 +13,40 @@ export function SMSDocumentationSection() {
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "to": "+243123456789",
+    "to": "+223XXXXXXXX",
     "message": "Hello from Abdaty Technologie!",
     "from": "AbdatyTech"
   }'`;
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{t('integration.title')}</h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">{t('integration.description')}</p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <Card className="dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
-              <CardHeader>
-                <CardTitle className="flex items-center text-gray-900 dark:text-white transition-colors duration-300">
-                  <Code className="w-5 h-5 mr-2 text-primary-600 dark:text-primary-400" />
-                  {t('integration.title')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm dark:bg-gray-950 dark:text-gray-200 transition-colors duration-300">
-                  <code>{codeExample}</code>
-                </pre>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <Card className="h-full flex flex-col justify-center dark:bg-gray-800 dark:border-gray-700 transition-colors duration-300">
-              <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white transition-colors duration-300">{t('documentation.title')}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300">{t('documentation.subtitle')}</p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href={`/${locale}/sms-api/docs`} className="flex-1">
-                    <Button className="w-full dark:bg-primary-600 dark:hover:bg-primary-700 transition-colors duration-300">{t('documentation.viewDocs')}</Button>
-                  </Link>
-                  <Link href={`/${locale}/sms-api/swagger`} className="flex-1">
-                    <Button variant="outline" className="w-full dark:border-gray-600 dark:hover:bg-gray-700 dark:text-white transition-colors duration-300">
-                      {t('documentation.tryNow')}
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+    <section className="py-20 lg:py-28">
+      <div className="site-container">
+        <div className="grid items-center gap-10 rounded-3xl border border-gray-200 bg-white p-8 dark:border-white/10 dark:bg-white/[0.03] sm:p-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+              <Book className="h-6 w-6" />
+            </div>
+            <h2 className="mb-4 text-3xl font-bold text-ink dark:text-white md:text-4xl">{t('documentation.title')}</h2>
+            <p className="mb-8 text-lg text-gray-600 dark:text-gray-300">{t('documentation.subtitle')}</p>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link href={`/${locale}/sms-api/docs`}>
+                <Button size="lg" className="group w-full sm:w-auto">
+                  {t('documentation.viewDocs')}
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link href={`/${locale}/sms-api/swagger`}>
+                <Button size="lg" variant="outline" className="w-full sm:w-auto dark:border-white/15 dark:bg-transparent dark:text-white dark:hover:bg-white/10">
+                  {t('documentation.tryNow')}
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="min-w-0 lg:col-span-7">
+            <pre className="overflow-x-auto rounded-2xl bg-ink p-6 font-mono text-[13px] leading-relaxed text-gray-200 ring-1 ring-white/10">
+              <code>{codeExample}</code>
+            </pre>
+          </div>
         </div>
       </div>
     </section>

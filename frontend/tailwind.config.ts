@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+/** Couleur pilotée par une variable CSS hex, compatible avec l'opacité Tailwind. */
+const withAlpha = (cssVar: string) =>
+  `color-mix(in srgb, var(${cssVar}) calc(<alpha-value> * 100%), transparent)`;
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -17,7 +21,15 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
+      },
       colors: {
+        // Hex (et non var()) pour que les modificateurs d'opacité (bg-ochre/20) fonctionnent.
+        ink: "#0f1b2d",
+        ochre: "#f2a93b",
+        paper: "var(--paper)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -28,17 +40,19 @@ const config: Config = {
           foreground: "hsl(var(--primary-foreground))",
           // Palette pilotée par variables CSS (couleur primaire configurable
           // depuis l'admin et appliquée partout — vitrine + panel admin).
-          50: "var(--primary-50)",
-          100: "var(--primary-100)",
-          200: "var(--primary-200)",
-          300: "var(--primary-300)",
-          400: "var(--primary-400)",
-          500: "var(--primary-500)",
-          600: "var(--primary-600)",
-          700: "var(--primary-700)",
-          800: "var(--primary-800)",
-          900: "var(--primary-900)",
-          950: "var(--primary-950)",
+          // color-mix + <alpha-value> : les modificateurs d'opacité (bg-primary-500/10)
+          // fonctionnent malgré les variables hexadécimales.
+          50: withAlpha("--primary-50"),
+          100: withAlpha("--primary-100"),
+          200: withAlpha("--primary-200"),
+          300: withAlpha("--primary-300"),
+          400: withAlpha("--primary-400"),
+          500: withAlpha("--primary-500"),
+          600: withAlpha("--primary-600"),
+          700: withAlpha("--primary-700"),
+          800: withAlpha("--primary-800"),
+          900: withAlpha("--primary-900"),
+          950: withAlpha("--primary-950"),
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

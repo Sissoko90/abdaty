@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { motion } from 'framer-motion';
 import { Users, Briefcase, Award, Globe, type LucideIcon } from 'lucide-react';
 import { usePublicList } from '@/hooks/use-public-content';
 
@@ -23,29 +22,25 @@ export function StatsSection() {
         ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-500 to-primary-700">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section className="bogolan-texture bg-ink py-16 text-white lg:py-20">
+      <div className="site-container">
+        <dl className="grid grid-cols-2 gap-y-10 lg:grid-cols-4">
           {displayStats.map((stat, index) => {
             const Icon = stat.Icon;
             return (
-              <motion.div
+              <div
                 key={stat.key}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
+                className={`flex flex-col-reverse justify-end gap-2 px-2 sm:px-6 ${index > 0 ? 'lg:border-l lg:border-white/10' : ''} ${index % 2 === 1 ? 'border-l border-white/10 lg:border-l' : ''}`}
               >
-                <div className="w-16 h-16 mx-auto mb-4 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <Icon className="w-8 h-8 text-white" />
-                </div>
-                <div className="text-5xl font-bold text-white mb-2">{stat.value}</div>
-                <div className="text-primary-100 font-medium">{stat.label}</div>
-              </motion.div>
+                <dt className="flex items-center gap-2 text-sm text-gray-300">
+                  <Icon className="h-4 w-4 shrink-0 text-ochre" />
+                  {stat.label}
+                </dt>
+                <dd className="font-display text-4xl font-bold sm:text-5xl">{stat.value}</dd>
+              </div>
             );
           })}
-        </div>
+        </dl>
       </div>
     </section>
   );

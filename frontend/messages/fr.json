@@ -6,7 +6,9 @@
     "legal": "Légal",
     "termsOfService": "Conditions d'utilisation",
     "privacyPolicy": "Politique de confidentialité",
-    "rights": "Tous droits réservés."
+    "rights": "Tous droits réservés.",
+    "contact": "Contact",
+    "followUs": "Suivez-nous"
   },
   "cookies": {
     "title": "Nous utilisons des cookies",
@@ -166,7 +168,10 @@
     "contact": "Contact",
     "login": "Connexion",
     "dashboard": "Tableau de bord",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "startProject": "Démarrer un projet",
+    "ourSolutions": "Nos solutions digitales",
+    "menu": "Ouvrir le menu"
   },
   "hero": {
     "title": "Solutions Digitales pour Votre Entreprise",
@@ -179,6 +184,14 @@
       "clients": "Clients Satisfaits",
       "experience": "Ans d'Expérience",
       "satisfaction": "Satisfaction Client"
+    },
+    "visual": {
+      "url": "votre-entreprise.ml",
+      "siteTitle": "Commandez en ligne, livré chez vous",
+      "smsSender": "ABDATY",
+      "smsText": "Bonjour Awa, votre commande n°1042 est prête. Retrait possible dès 14h à Hamdallaye.",
+      "delivered": "Livré en 2,1 s",
+      "today": "Aujourd'hui"
     }
   },
   "testimonials": {
@@ -189,7 +202,9 @@
       "projects": "Projets Livrés",
       "satisfaction": "Taux de Satisfaction",
       "support": "Support Disponible"
-    }
+    },
+    "prev": "Témoignage précédent",
+    "next": "Témoignage suivant"
   },
   "services": {
     "title": "Nos Services",
@@ -429,7 +444,12 @@
         "Traitement du Big Data",
         "Visualisation de données"
       ]
-    }
+    },
+    "viewAll": "Voir tous les services",
+    "learnMore": "En savoir plus",
+    "customTitle": "Un besoin sur mesure ?",
+    "customText": "Décrivez votre projet, nous vous proposons la solution adaptée et une première estimation.",
+    "customCta": "Parlons-en"
   },
   "auth": {
     "login": {
@@ -600,7 +620,8 @@
         "content": "Pour toute question relative à cette Politique de Confidentialité, ou pour exercer vos droits sur vos données personnelles, veuillez nous contacter via notre",
         "link": "page de contact"
       }
-    }
+    },
+    "onThisPage": "Sur cette page"
   },
   "smsApi": {
     "title": "Service API SMS",
@@ -609,7 +630,9 @@
     "hero": {
       "cta": "Commencer Maintenant",
       "ctaDocs": "Documentation",
-      "ctaSwagger": "Swagger API"
+      "ctaSwagger": "Swagger API",
+      "badge": "API SMS professionnelle",
+      "terminalResponse": "Réponse de l'API"
     },
     "plans": {
       "title": "Choisissez Votre Plan",
@@ -645,7 +668,10 @@
     "pricing": {
       "title": "Tarification Transparente",
       "subtitle": "Payez uniquement ce que vous utilisez",
-      "perSMS": "par SMS"
+      "perSMS": "par SMS",
+      "included": "Inclus dans tous les forfaits",
+      "details": "Voir les détails",
+      "perMonth": "SMS/mois"
     },
     "documentation": {
       "title": "Documentation API",
@@ -656,6 +682,20 @@
     "integration": {
       "title": "Intégration Rapide",
       "description": "Commencez en quelques minutes avec notre API REST simple"
+    },
+    "stats": {
+      "uptime": "Disponibilité",
+      "delivery": "Livraison",
+      "support": "Support",
+      "coverage": "Couverture"
+    },
+    "code": {
+      "title": "Intégrez en quelques lignes",
+      "subtitle": "Une requête HTTP, une réponse JSON. Choisissez votre langage et copiez l'exemple.",
+      "request": "Requête",
+      "response": "Réponse (200 OK)",
+      "copy": "Copier",
+      "copied": "Copié !"
     }
   },
   "about": {
@@ -835,7 +875,12 @@
   "cta": {
     "title": "Prêt à Transformer Votre Entreprise ?",
     "description": "Discutons de la façon dont nous pouvons vous aider à atteindre vos objectifs digitaux avec nos solutions expertes.",
-    "button": "Contactez-nous"
+    "button": "Contactez-nous",
+    "call": "Appeler",
+    "reach": "Joignez-nous directement",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "address": "Adresse"
   },
   "faq": {
     "hero": {
@@ -1006,7 +1051,7 @@
         "description": "Bienvenue dans la documentation Abdaty Tech. Vous trouverez ici tout ce dont vous avez besoin pour intégrer nos services dans vos applications.",
         "note": {
           "title": "Besoin d'aide ?",
-          "text": "Notre équipe support est disponible 24/7 pour vous aider. Contactez-nous à support@abdaty-tech.com"
+          "text": "Notre équipe support est disponible 24/7 pour vous aider. Contactez-nous à contact@abdatytch.com"
         }
       },
       "installation": {
@@ -1021,6 +1066,11 @@
         "title": "Authentification",
         "description": "Toutes les requêtes API nécessitent une clé API valide. Vous pouvez obtenir votre clé depuis votre tableau de bord."
       }
+    },
+    "ui": {
+      "jumpTo": "Aller directement à",
+      "copy": "Copier",
+      "copied": "Copié"
     }
   },
   "blog": {
@@ -1064,6 +1114,35 @@
         "title": "Data & IA : Introduction au Machine Learning",
         "excerpt": "Comprendre les bases du machine learning et comment l'appliquer à vos projets."
       }
+    },
+    "ui": {
+      "filterLabel": "Filtrer par catégorie",
+      "featured": "À la une",
+      "readMore": "Lire l'article",
+      "readTime": "{time} de lecture",
+      "backToBlog": "Retour au blog",
+      "writtenBy": "Écrit par",
+      "morePosts": "Voir plus d'articles",
+      "notFoundTitle": "Article introuvable",
+      "notFoundText": "Cet article n'existe pas ou n'est plus publié.",
+      "loading": "Chargement de l'article…",
+      "prevPage": "Page précédente",
+      "nextPage": "Page suivante",
+      "page": "Page {page}"
+    },
+    "comments": {
+      "title": "Commentaires ({count})",
+      "leave": "Laisser un commentaire",
+      "name": "Nom",
+      "namePlaceholder": "Votre nom",
+      "comment": "Commentaire",
+      "commentPlaceholder": "Partagez votre avis…",
+      "publish": "Publier",
+      "reply": "Répondre",
+      "replyPlaceholder": "Votre réponse…",
+      "cancel": "Annuler",
+      "anonymous": "Anonyme",
+      "like": "J'aime"
     }
   },
   "serviceDetails": {
@@ -1379,7 +1458,12 @@
       "deliveryRate": "Taux de livraison",
       "smsToday": "SMS aujourd'hui",
       "failedCount": "Échoués",
-      "back": "Retour"
+      "back": "Retour",
+      "allStatuses": "Tous les statuts",
+      "searchPlaceholder": "Rechercher un numéro ou un message",
+      "showing": "Affichage de 1 à 4 sur 1 234 résultats",
+      "previous": "Précédent",
+      "next": "Suivant"
     },
     "billing": {
       "title": "Facturation",
@@ -1459,7 +1543,15 @@
       "lastUsed": "Dernière utilisation:",
       "important": "Important:",
       "securityWarning": "Ne partagez jamais vos clés API avec des tiers. Si vous pensez qu'une clé a été compromise, révoquez-la immédiatement.",
-      "back": "Retour"
+      "back": "Retour",
+      "emptyTitle": "Vous n'avez pas encore de clé API",
+      "emptyText": "Créez une clé pour envoyer des SMS depuis votre application.",
+      "loading": "Chargement des clés…",
+      "signInRequired": "Connectez-vous pour gérer vos clés API.",
+      "show": "Afficher la clé",
+      "hide": "Masquer la clé",
+      "copy": "Copier la clé",
+      "revoke": "Révoquer la clé"
     },
     "createApiKey": {
       "title": "Créer une nouvelle clé API",
@@ -1476,8 +1568,17 @@
       "cancel": "Annuler",
       "back": "Retour",
       "success": "Clé API créée avec succès",
-      "error": "Erreur lors de la création de la clé"
-    }
+      "error": "Erreur lors de la création de la clé",
+      "detailsTitle": "Détails de la clé API",
+      "oneTimeNote": "Votre clé API ne sera affichée qu'une seule fois après sa création. Copiez-la et conservez-la en lieu sûr."
+    },
+    "nav": {
+      "label": "Navigation de l'espace client",
+      "overview": "Vue d'ensemble",
+      "notifications": "Notifications"
+    },
+    "revoked": "Révoquée",
+    "noApiKeys": "Aucune clé API pour le moment."
   },
   "admin": {
     "breadcrumb": {
@@ -2041,5 +2142,9 @@
       "apiStatus": "Statut API",
       "operational": "Opérationnel"
     }
+  },
+  "partners": {
+    "title": "Ils nous font confiance",
+    "subtitle": "Entreprises et institutions qui nous confient leurs projets."
   }
 }

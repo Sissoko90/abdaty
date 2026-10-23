@@ -37,7 +37,11 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 0 72% 51%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+    /* Identité Abdaty : encre marine, fond « craie », ocre du Sahel. */
+    --ink: #0f1b2d;
+    --paper: #f6f7fa;
+    --ochre: #f2a93b;
   }
 
   .dark {
@@ -60,6 +64,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 0 72% 51%;
+    --paper: #0b1322;
   }
 }
 
@@ -68,7 +73,46 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Conteneur commun : contenu de 80rem (comme les sections « px-8 + max-w-7xl »
+     des pages intérieures) pour que tous les bords s'alignent d'une page à l'autre. */
+  .site-container {
+    @apply mx-auto w-full max-w-[84rem] px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Bande de motifs inspirés du bogolan (zigzag, points, croix). */
+  .bogolan-band {
+    height: 14px;
+    background-color: var(--ink);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14' viewBox='0 0 56 14'%3E%3Cpath d='M0 11 L7 3 L14 11 L21 3 L28 11' fill='none' stroke='%23f2a93b' stroke-width='2'/%3E%3Ccircle cx='35' cy='7' r='2' fill='%23ffffff'/%3E%3Cpath d='M44 3 L52 11 M52 3 L44 11' stroke='%23ffffff' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-position: center;
+  }
+
+  /* Motif bogolan en filigrane pour les fonds sombres. */
+  .bogolan-texture {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.07' stroke-width='2'%3E%3Cpath d='M0 20 L12 8 L24 20 L36 8 L48 20'/%3E%3Cpath d='M60 60 L72 72 M72 60 L60 72'/%3E%3Crect x='56' y='8' width='16' height='16'/%3E%3Cpath d='M48 68 L36 80 L24 68 L12 80 L0 68'/%3E%3C/g%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='84' cy='40' r='2.5'/%3E%3Ccircle cx='12' cy='44' r='2.5'/%3E%3Ccircle cx='84' cy='88' r='2.5'/%3E%3C/g%3E%3C/svg%3E");
   }
 }
 

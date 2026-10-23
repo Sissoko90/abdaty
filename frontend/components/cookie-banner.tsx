@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
@@ -43,6 +44,8 @@ export function CookieBanner() {
   /** Persiste le choix : localStorage + enregistrement en base (analytics admin). */
   const persistConsent = (prefs: { necessary: boolean; analytics: boolean; marketing: boolean }) => {
     localStorage.setItem('cookieConsent', JSON.stringify(prefs));
+    // Prévient la carte promo (même coin de l'écran) qu'elle peut s'afficher.
+    window.dispatchEvent(new Event('cookie-consent'));
     recordCookieConsent({
       visitorId: getVisitorId(),
       analytics: prefs.analytics,
@@ -79,117 +82,98 @@ export function CookieBanner() {
 
   if (!isVisible) return null;
 
+  const options: { key: keyof typeof preferences; label: string; description: string }[] = [
+    { key: 'necessary', label: t('necessary'), description: t('necessaryDescription') },
+    { key: 'analytics', label: t('analytics'), description: t('analyticsDescription') },
+    { key: 'marketing', label: t('marketing'), description: t('marketingDescription') },
+  ];
+
+  const secondaryBtn =
+    'border-gray-300 bg-white text-ink hover:bg-gray-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10';
+
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 100 }}
+        role="dialog"
+        aria-labelledby="cookie-banner-title"
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 100 }}
-        transition={{ duration: 0.5 }}
-        className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 shadow-2xl transition-colors duration-300"
+        exit={{ opacity: 0, y: 24 }}
+        transition={{ duration: 0.3 }}
+        className="fixed inset-x-4 bottom-4 z-50 rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl shadow-ink/15 dark:border-white/10 dark:bg-[#121c2e] sm:inset-x-auto sm:left-6 sm:bottom-6 sm:w-full sm:max-w-md"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div className="flex items-start gap-4 flex-1">
-              <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors duration-300">
-                <Cookie className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 transition-colors duration-300">{t('title')}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 transition-colors duration-300">{t('description')}</p>
-                {!showSettings && (
-                  <Link href={`/${locale}/privacy-policy`} className="text-primary-600 dark:text-primary-400 hover:underline text-sm transition-colors duration-300">
-                    {t('learnMore')}
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowSettings(!showSettings)}
-                className="flex items-center gap-2 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300"
-              >
-                <Settings className="w-4 h-4" />
-                {t('settings')}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRejectAll}
-                className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300"
-              >
-                {t('rejectAll')}
-              </Button>
-              <Button
-                size="sm"
-                onClick={handleAcceptAll}
-              >
-                {t('acceptAll')}
-              </Button>
-            </div>
+        <div className="flex items-start gap-4">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ochre/20 text-ink dark:text-ochre">
+            <Cookie className="h-5 w-5" />
+          </span>
+          <div className="min-w-0">
+            <h3 id="cookie-banner-title" className="mb-1 font-display text-base font-bold text-ink dark:text-white">
+              {t('title')}
+            </h3>
+            <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+              {t('description')}{' '}
+              <Link href={`/${locale}/privacy-policy`} className="font-medium text-primary-600 hover:underline dark:text-primary-400">
+                {t('learnMore')}
+              </Link>
+            </p>
           </div>
+        </div>
 
-          {showSettings && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300"
-            >
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="flex items-start gap-3">
+        {showSettings && (
+          <motion.ul
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-5 space-y-2 overflow-hidden"
+          >
+            {options.map(({ key, label, description }) => (
+              <li key={key}>
+                <label
+                  className={`flex items-start gap-3 rounded-xl border border-gray-200 p-3 dark:border-white/10 ${
+                    key === 'necessary' ? 'cursor-not-allowed opacity-80' : 'cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5'
+                  }`}
+                >
                   <input
                     type="checkbox"
-                    checked={preferences.necessary}
-                    disabled
-                    className="mt-1 w-4 h-4 rounded dark:bg-gray-700 dark:border-gray-600 transition-colors duration-300"
+                    checked={preferences[key]}
+                    disabled={key === 'necessary'}
+                    onChange={() => togglePreference(key)}
+                    className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-primary-600"
                   />
-                  <div>
-                    <label className="font-medium text-gray-900 dark:text-white transition-colors duration-300">{t('necessary')}</label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">{t('necessaryDescription')}</p>
-                  </div>
-                </div>
+                  <span>
+                    <span className="block text-sm font-semibold text-ink dark:text-white">{label}</span>
+                    <span className="block text-xs leading-relaxed text-gray-600 dark:text-gray-400">{description}</span>
+                  </span>
+                </label>
+              </li>
+            ))}
+            <li className="pt-1">
+              <Button variant="outline" size="sm" onClick={handleAcceptSelected} className={`w-full ${secondaryBtn}`}>
+                {t('acceptSelected')}
+              </Button>
+            </li>
+          </motion.ul>
+        )}
 
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={preferences.analytics}
-                    onChange={() => togglePreference('analytics')}
-                    className="mt-1 w-4 h-4 rounded dark:bg-gray-700 dark:border-gray-600 transition-colors duration-300"
-                  />
-                  <div>
-                    <label className="font-medium text-gray-900 dark:text-white transition-colors duration-300">{t('analytics')}</label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">{t('analyticsDescription')}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={preferences.marketing}
-                    onChange={() => togglePreference('marketing')}
-                    className="mt-1 w-4 h-4 rounded dark:bg-gray-700 dark:border-gray-600 transition-colors duration-300"
-                  />
-                  <div>
-                    <label className="font-medium text-gray-900 dark:text-white transition-colors duration-300">{t('marketing')}</label>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">{t('marketingDescription')}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 mt-6">
-                <Button variant="outline" size="sm" onClick={handleRejectAll} className="dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 transition-colors duration-300">
-                  {t('rejectAll')}
-                </Button>
-                <Button size="sm" onClick={handleAcceptSelected}>
-                  {t('acceptSelected')}
-                </Button>
-              </div>
-            </motion.div>
-          )}
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowSettings(!showSettings)}
+            aria-expanded={showSettings}
+            className="gap-2 px-2 text-gray-600 hover:text-ink dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+          >
+            <Settings className="h-4 w-4" />
+            {t('settings')}
+          </Button>
+          <div className="ml-auto flex gap-2">
+            <Button variant="outline" size="sm" onClick={handleRejectAll} className={secondaryBtn}>
+              {t('rejectAll')}
+            </Button>
+            <Button size="sm" onClick={handleAcceptAll}>
+              {t('acceptAll')}
+            </Button>
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

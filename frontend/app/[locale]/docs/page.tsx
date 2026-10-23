@@ -7,16 +7,16 @@ export default function DocsPage() {
     <>
       <main>
         <DocsHero />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-4 gap-8">
-            <aside className="lg:col-span-1">
+        <section className="py-16 lg:py-20">
+          <div className="site-container grid gap-10 lg:grid-cols-12">
+            <aside className="lg:col-span-3">
               <DocsSidebar />
             </aside>
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-9">
               <DocsContent />
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </>
   );

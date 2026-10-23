@@ -11,6 +11,7 @@ import { MainLayoutWrapper } from '@/components/main-layout-wrapper';
 import { BrandingStyle } from '@/components/branding-style';
 import { SITE_URL, SITE_NAME } from '@/lib/site';
 import { getSectionContent } from '@/services/content.service';
+import { fontVariables } from '@/lib/fonts';
 import '@/app/globals.css';
 
 /** Valeurs SEO par défaut (repli si la section "seo" est vide / backend indisponible). */
@@ -113,7 +114,8 @@ export default async function LocaleLayout({
   }
 
   return (
-    <html lang={locale} className="scroll-smooth">
+    // suppressHydrationWarning : le script de thème ajoute « dark » avant l'hydratation.
+    <html lang={locale} className={`scroll-smooth ${fontVariables}`} suppressHydrationWarning>
       <head>
         <script
           suppressHydrationWarning
@@ -137,7 +139,7 @@ export default async function LocaleLayout({
         <StructuredData type="WebSite" />
         <StructuredData type="LocalBusiness" />
       </head>
-      <body className="bg-gradient-to-br from-primary-50 via-white to-primary-50 dark:from-gray-900 dark:via-gray-950 dark:to-primary-950 text-foreground transition-colors duration-300">
+      <body className="bg-paper text-foreground transition-colors duration-300">
         <NextIntlClientProvider messages={messages}>
           <BrandingStyle />
           <SkipLink />

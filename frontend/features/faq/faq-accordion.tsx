@@ -1,14 +1,12 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
-import { motion } from 'framer-motion';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Card } from '@/components/ui/card';
 import { usePublicSection } from '@/hooks/use-public-content';
 import { JsonLd, buildFaqSchema } from '@/components/structured-data';
 
@@ -31,6 +29,11 @@ const DEFAULT_CATEGORIES = [
   { key: 'technical', questions: ['technologies', 'security', 'hosting', 'maintenance'] },
 ];
 const KNOWN_CATEGORIES = ['general', 'services', 'pricing', 'technical', 'contact'];
+
+/** Identifiant d'ancre stable pour une catégorie (« Tarifs & paiement » -> « faq-tarifs-paiement »). */
+function anchorId(key: string): string {
+  return `faq-${key.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+}
 
 export function FAQAccordion() {
   const t = useTranslations('faq');
@@ -88,38 +91,53 @@ export function FAQAccordion() {
   );
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <section className="py-20 lg:py-28">
       <JsonLd id="faq" schema={faqSchema} />
-      <div className="max-w-4xl mx-auto">
-        {displayCategories.map((category, categoryIndex) => (
-          <motion.div
-            key={category.key}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: categoryIndex * 0.1 }}
-            className="mb-12"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">
-              {category.title}
-            </h2>
+      <div className="site-container grid gap-12 lg:grid-cols-12">
+        {/* Sommaire des catégories (desktop) */}
+        {displayCategories.length > 1 && (
+          <nav aria-label={t('hero.title')} className="hidden lg:col-span-3 lg:block">
+            <ul className="sticky top-28 space-y-1 border-l border-gray-200 dark:border-white/10">
+              {displayCategories.map((category) => (
+                <li key={category.key}>
+                  <a
+                    href={`#${anchorId(category.key)}`}
+                    className="-ml-px flex items-center justify-between border-l-2 border-transparent py-2 pl-4 text-sm font-medium text-gray-600 transition-colors hover:border-primary-600 hover:text-ink dark:text-gray-400 dark:hover:text-white"
+                  >
+                    {category.title}
+                    <span className="ml-3 rounded-full bg-gray-100 px-2 py-0.5 text-xs tabular-nums text-gray-500 dark:bg-white/5 dark:text-gray-400">
+                      {category.items.length}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
-            <Card className="p-6">
-              <Accordion type="single" collapsible className="w-full">
+        <div className={`space-y-14 ${displayCategories.length > 1 ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
+          {displayCategories.map((category) => (
+            <div key={category.key} id={anchorId(category.key)} className="scroll-mt-28">
+              <h2 className="mb-6 text-3xl font-bold text-ink dark:text-white">{category.title}</h2>
+              <Accordion
+                type="single"
+                collapsible
+                className="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white px-6 dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.03]"
+              >
                 {category.items.map((qa) => (
-                  <AccordionItem key={qa.id} value={qa.id}>
-                    <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 dark:text-white hover:text-primary-600 transition-colors duration-300">
+                  <AccordionItem key={qa.id} value={qa.id} className="border-b-0">
+                    <AccordionTrigger className="py-5 text-left text-lg font-semibold text-ink hover:text-primary-600 hover:no-underline dark:text-white dark:hover:text-primary-400">
                       {qa.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-600 dark:text-gray-400 transition-colors duration-300">
+                    <AccordionContent className="pb-5 text-base leading-relaxed text-gray-600 dark:text-gray-400">
                       {qa.answer}
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
-            </Card>
-          </motion.div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

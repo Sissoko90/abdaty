@@ -1,15 +1,13 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
+import type { Route } from 'next';
+import { useTranslations, useLocale } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { Code, Smartphone, Monitor, Palette, Network, Shield, Zap, Target, TrendingUp, ArrowRight, Sparkles, Layers, Users } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Code, Smartphone, Monitor, Palette, Network, Shield, Zap, Target, TrendingUp, ArrowRight, Sparkles, Layers, Users, Check } from 'lucide-react';
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
-import { AnimatedBlobRed } from '@/components/animated-blob-red';
 import { usePublicList } from '@/hooks/use-public-content';
 import { resolveServiceIcon } from '@/lib/service-icons';
+import { ProcessSteps } from './process-steps';
 
 /** Icônes utilisables dans les sous-sections riches gérées en base (avantages…). */
 const DETAIL_ICON_MAP: Record<string, typeof Code> = {
@@ -302,9 +300,264 @@ interface ServiceDetailProps {
   slug: string;
 }
 
+type DetailIcon = typeof Code;
+
+/** En-tête de la page détail : même rythme que PageHero + carte chiffres en encre. */
+function DetailHero({
+  icon: Icon,
+  title,
+  subtitle,
+  description,
+  stats,
+  locale,
+  primaryLabel,
+  secondaryLabel,
+  secondaryHref,
+}: {
+  icon: DetailIcon;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  stats: { value: string; label: string }[];
+  locale: string;
+  primaryLabel: string;
+  secondaryLabel: string;
+  secondaryHref: string;
+}) {
+  return (
+    <>
+      <section className="relative overflow-hidden bg-white pb-16 pt-32 dark:bg-white/[0.02] lg:pb-20 lg:pt-40">
+        <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-primary-400/15 blur-3xl dark:bg-primary-600/15" />
+        <div className="site-container relative grid items-center gap-12 lg:grid-cols-12">
+          <div className={stats.length > 0 ? 'lg:col-span-7' : 'lg:col-span-9'}>
+            <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-sm shadow-primary-600/25">
+              <Icon className="h-7 w-7" />
+            </span>
+            <h1 className="mb-5 text-5xl font-extrabold leading-[1.05] text-ink dark:text-white md:text-6xl">{title}</h1>
+            {subtitle && <p className="mb-4 text-xl font-medium text-primary-600 dark:text-primary-400">{subtitle}</p>}
+            {description && <p className="mb-9 max-w-2xl text-lg leading-relaxed text-gray-600 dark:text-gray-300">{description}</p>}
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link href={`/${locale}/contact`}>
+                <Button size="lg" className="group w-full sm:w-auto">
+                  {primaryLabel}
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link href={secondaryHref as Route}>
+                <Button size="lg" variant="outline" className="w-full border-gray-300 bg-white/70 sm:w-auto dark:border-white/15 dark:bg-white/5">
+                  {secondaryLabel}
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {stats.length > 0 && (
+            <dl className="bogolan-texture grid grid-cols-2 gap-px overflow-hidden rounded-3xl bg-white/10 ring-1 ring-ink lg:col-span-5 dark:ring-white/10">
+              {stats.slice(0, 4).map((stat, i) => (
+                <div key={`${stat.label}-${i}`} className="flex flex-col-reverse justify-end bg-ink p-6 sm:p-8">
+                  <dt className="mt-1 text-sm text-gray-400">{stat.label}</dt>
+                  <dd className="font-display text-3xl font-bold text-ochre sm:text-4xl">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+        </div>
+      </section>
+      <div className="bogolan-band" />
+    </>
+  );
+}
+
+/** En-tête de section aligné à gauche (même style que le reste du site). */
+function SectionHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+  return (
+    <div className="mb-12">
+      <h2 className="mb-4 text-4xl font-bold text-ink dark:text-white md:text-5xl">{title}</h2>
+      {subtitle && <p className="max-w-2xl text-lg text-gray-600 dark:text-gray-300">{subtitle}</p>}
+    </div>
+  );
+}
+
+/** Avantages : le premier est mis en avant (encre + bogolan), les autres en cartes. */
+function BenefitsSection({
+  title,
+  subtitle,
+  benefits,
+}: {
+  title: string;
+  subtitle?: string;
+  benefits: { icon: DetailIcon; title: string; description: string }[];
+}) {
+  if (benefits.length === 0) return null;
+  return (
+    <section className="py-20 lg:py-28">
+      <div className="site-container">
+        <SectionHeader title={title} subtitle={subtitle} />
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {benefits.map((benefit, index) => {
+            const BenefitIcon = benefit.icon;
+            const featured = index === 0;
+            return (
+              <div
+                key={`${benefit.title}-${index}`}
+                className={
+                  featured
+                    ? 'bogolan-texture rounded-2xl bg-ink p-6 text-white ring-1 ring-ink dark:ring-white/10'
+                    : 'rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]'
+                }
+              >
+                <span
+                  className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl ${
+                    featured ? 'bg-ochre text-ink' : 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400'
+                  }`}
+                >
+                  <BenefitIcon className="h-6 w-6" />
+                </span>
+                <h3 className={`mb-2 text-lg font-bold ${featured ? 'text-white' : 'text-ink dark:text-white'}`}>{benefit.title}</h3>
+                {benefit.description && (
+                  <p className={`text-sm leading-relaxed ${featured ? 'text-gray-300' : 'text-gray-600 dark:text-gray-400'}`}>{benefit.description}</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Points forts simples (features) quand aucun avantage riche n'est saisi. */
+function FeaturesSection({ title, features }: { title: string; features: string[] }) {
+  if (features.length === 0) return null;
+  return (
+    <section className="py-20 lg:py-28">
+      <div className="site-container">
+        <SectionHeader title={title} />
+        <ul className="grid gap-4 md:grid-cols-2">
+          {features.map((feature, index) => (
+            <li
+              key={index}
+              className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.03]"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                <Check className="h-5 w-5" />
+              </span>
+              <p className="pt-1 text-gray-700 dark:text-gray-300">{feature}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function StepsSection({
+  title,
+  subtitle,
+  steps,
+}: {
+  title: string;
+  subtitle?: string;
+  steps: { icon?: DetailIcon; title: string; description: string }[];
+}) {
+  if (steps.length === 0) return null;
+  return (
+    <section className="bg-white py-20 dark:bg-white/[0.02] lg:py-28">
+      <div className="site-container">
+        <SectionHeader title={title} subtitle={subtitle} />
+        <ProcessSteps steps={steps} />
+      </div>
+    </section>
+  );
+}
+
+function TechSection({
+  title,
+  subtitle,
+  technologies,
+}: {
+  title: string;
+  subtitle?: string;
+  technologies: { name: string; category?: string }[];
+}) {
+  if (technologies.length === 0) return null;
+  return (
+    <section className="py-20 lg:py-28">
+      <div className="site-container">
+        <SectionHeader title={title} subtitle={subtitle} />
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {technologies.map((tech, index) => (
+            <li
+              key={`${tech.name}-${index}`}
+              className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3.5 dark:border-white/10 dark:bg-white/[0.03]"
+            >
+              <span className="flex items-center gap-3 font-semibold text-ink dark:text-white">
+                <span className="h-2 w-2 shrink-0 rounded-full bg-primary-500" />
+                {tech.name}
+              </span>
+              {tech.category && (
+                <span className="shrink-0 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600 dark:bg-white/5 dark:text-gray-400">
+                  {tech.category}
+                </span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/** Bandeau final : encre + bogolan, comme l'appel à l'action de l'accueil. */
+function FinalCta({
+  title,
+  description,
+  primaryLabel,
+  secondaryLabel,
+  locale,
+}: {
+  title: string;
+  description: string;
+  primaryLabel: string;
+  secondaryLabel: string;
+  locale: string;
+}) {
+  return (
+    <section className="bg-white py-20 dark:bg-white/[0.02] lg:py-28">
+      <div className="site-container">
+        <div className="bogolan-texture relative flex flex-col gap-8 overflow-hidden rounded-3xl bg-ink p-8 text-white sm:p-12 lg:flex-row lg:items-center lg:justify-between lg:p-16">
+          <div className="pointer-events-none absolute -bottom-32 -left-24 h-80 w-80 rounded-full bg-primary-600/40 blur-3xl" />
+          <div className="relative max-w-2xl">
+            <h2 className="mb-4 text-4xl font-bold leading-tight md:text-5xl">{title}</h2>
+            <p className="text-lg leading-relaxed text-gray-300">{description}</p>
+          </div>
+          <div className="relative flex shrink-0 flex-col gap-3 sm:flex-row">
+            <Link href={`/${locale}/contact`}>
+              <Button size="lg" className="group w-full sm:w-auto">
+                {primaryLabel}
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+            <Link href={`/${locale}/services`}>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full border-white/25 bg-transparent text-white hover:bg-white/10 hover:text-white sm:w-auto"
+              >
+                {secondaryLabel}
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ServiceDetailEnhanced({ slug }: ServiceDetailProps) {
   const t = useTranslations('services');
   const tServiceDetails = useTranslations('serviceDetails');
+  const tNotFound = useTranslations('notFound');
   const locale = useLocale();
 
   const service = serviceData[slug];
@@ -315,17 +568,27 @@ export function ServiceDetailEnhanced({ slug }: ServiceDetailProps) {
   const dbServices = usePublicList('services');
   const dbService = dbServices.find((s) => s.slug === slug);
 
+  const finalCta = (
+    <FinalCta
+      title={tServiceDetails('common.readyToTransform')}
+      description={tServiceDetails('common.letsDiscuss')}
+      primaryLabel={tServiceDetails('common.getFreeConsultation')}
+      secondaryLabel={tServiceDetails('common.viewAllServices')}
+      locale={locale}
+    />
+  );
+
   // Aucun template statique ET aucun service en base → vraiment introuvable.
   if (!service && !dbService) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">Service not found</h1>
+      <section className="flex min-h-[70vh] items-center pb-20 pt-32">
+        <div className="site-container">
+          <h1 className="mb-6 text-5xl font-extrabold text-ink dark:text-white">{tNotFound('title')}</h1>
           <Link href={`/${locale}/services`}>
-            <Button>{tServiceDetails('common.viewAllServices')}</Button>
+            <Button size="lg">{tServiceDetails('common.viewAllServices')}</Button>
           </Link>
         </div>
-      </div>
+      </section>
     );
   }
 
@@ -339,185 +602,32 @@ export function ServiceDetailEnhanced({ slug }: ServiceDetailProps) {
     const dbBenefits: { icon: string; title: string; description: string }[] = Array.isArray(dbService.benefits) ? dbService.benefits : [];
     const dbProcess: { title: string; description: string }[] = Array.isArray(dbService.process) ? dbService.process : [];
     const dbTech: { name: string; category: string }[] = Array.isArray(dbService.technologies) ? dbService.technologies : [];
+    const whyTitle = `${tServiceDetails('common.whyChoose')} ${dbService.title}`;
     return (
-      <div className="pt-20 pb-20">
-        <section className="px-4 sm:px-6 lg:px-8 py-24 bg-gradient-to-br from-primary-50 to-primary-50 dark:from-gray-900 dark:to-gray-950 relative overflow-hidden transition-colors duration-300">
-          <div className="absolute inset-0 overflow-hidden">
-            <AnimatedBlobRed className="top-10 right-20 w-96 h-96 opacity-30 animation-delay-1000" />
-            <AnimatedBlobRed className="bottom-10 left-20 w-80 h-80 opacity-25 animation-delay-3000" />
-          </div>
-          <div className="max-w-5xl mx-auto relative z-10 text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-6">
-              <DbIcon className="w-10 h-10 text-white" />
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">
-              {dbService.title}
-            </h1>
-            {dbService.subtitle && (
-              <p className="text-2xl text-primary-600 dark:text-primary-400 mb-4 font-medium">{dbService.subtitle}</p>
-            )}
-            {dbService.description && (
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto transition-colors duration-300">
-                {dbService.description}
-              </p>
-            )}
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link href={`/${locale}/contact`}>
-                <Button size="lg" className="bg-gradient-to-r from-primary-500 to-primary-700 hover:opacity-90">
-                  {tServiceDetails('common.getStarted')}
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href={`/${locale}/services`}>
-                <Button size="lg" variant="outline">{tServiceDetails('common.viewAllServices')}</Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Statistiques (gérées en base) */}
-        {dbStats.length > 0 && (
-          <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {dbStats.map((stat, i) => (
-                <Card key={i} className="bg-white/80 dark:bg-gray-800/80 border-2 hover:border-primary-300 transition-all hover:shadow-xl">
-                  <CardContent className="p-6 text-center">
-                    <div className="text-4xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent mb-2">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">{stat.label}</div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Avantages (gérés en base) — sinon repli sur les features simples */}
+      <>
+        <DetailHero
+          icon={DbIcon}
+          title={dbService.title}
+          subtitle={dbService.subtitle}
+          description={dbService.description}
+          stats={dbStats}
+          locale={locale}
+          primaryLabel={tServiceDetails('common.getStarted')}
+          secondaryLabel={tServiceDetails('common.viewAllServices')}
+          secondaryHref={`/${locale}/services`}
+        />
         {dbBenefits.length > 0 ? (
-          <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-12 text-center transition-colors duration-300">
-                {tServiceDetails('common.whyChoose')} {dbService.title}
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {dbBenefits.map((b, i) => {
-                  const BIcon = detailIcon(b.icon);
-                  return (
-                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                      <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-200 group">
-                        <CardContent className="p-6">
-                          <div className="w-14 h-14 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                            <BIcon className="w-7 h-7 text-white" />
-                          </div>
-                          <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{b.title}</h3>
-                          <p className="text-gray-600 dark:text-gray-400 text-sm">{b.description}</p>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        ) : features.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-12 text-center transition-colors duration-300">
-                {tServiceDetails('common.whyChoose')} {dbService.title}
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-200">
-                      <CardContent className="p-6 flex items-start gap-4">
-                        <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Sparkles className="w-5 h-5 text-white" />
-                        </div>
-                        <p className="text-gray-700 dark:text-gray-300 text-lg transition-colors duration-300">{feature}</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
+          <BenefitsSection
+            title={whyTitle}
+            benefits={dbBenefits.map((b) => ({ icon: detailIcon(b.icon), title: b.title, description: b.description }))}
+          />
+        ) : (
+          <FeaturesSection title={whyTitle} features={features} />
         )}
-
-        {/* Processus (géré en base) */}
-        {dbProcess.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-12 text-center transition-colors duration-300">
-                {tServiceDetails('common.ourProcess')}
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {dbProcess.map((step, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}>
-                    <Card className="h-full bg-white dark:bg-gray-800 hover:shadow-xl transition-all">
-                      <CardContent className="p-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg mb-4">
-                          {i + 1}
-                        </div>
-                        <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{step.title}</h3>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm">{step.description}</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Technologies (gérées en base) */}
-        {dbTech.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-12 text-center transition-colors duration-300">
-                {tServiceDetails('common.technologiesWeMaster')}
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {dbTech.map((tech, i) => (
-                  <Card key={i} className="overflow-hidden hover:shadow-lg transition-all border-2 hover:border-primary-200">
-                    <CardContent className="p-0">
-                      <div className="bg-primary-600 h-2"></div>
-                      <div className="p-4 flex items-center justify-between">
-                        <h3 className="font-bold text-gray-900 dark:text-white">{tech.name}</h3>
-                        {tech.category && (
-                          <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-600 dark:text-gray-400">
-                            {tech.category}
-                          </span>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-500 to-primary-700 relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <Sparkles className="w-16 h-16 text-white mx-auto mb-6" />
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{tServiceDetails('common.getStarted')}</h2>
-            <Link href={`/${locale}/contact`}>
-              <Button size="lg" variant="secondary" className="group">
-                {tServiceDetails('common.getStarted')}
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </div>
-        </section>
-      </div>
+        <StepsSection title={tServiceDetails('common.ourProcess')} steps={dbProcess} />
+        <TechSection title={tServiceDetails('common.technologiesWeMaster')} technologies={dbTech} />
+        {finalCta}
+      </>
     );
   }
 
@@ -612,262 +722,37 @@ export function ServiceDetailEnhanced({ slug }: ServiceDetailProps) {
       ? (dbService.technologies as { name: string; category: string }[]).map((t) => ({
           name: t.name,
           category: t.category,
-          color: 'bg-primary-600',
         }))
       : service.technologies;
 
   return (
-    <div className="pt-20 pb-20">
-      {/* Hero Section with Illustration */}
-      <section className={`px-4 sm:px-6 lg:px-8 py-24 bg-gradient-to-br ${service.gradient} dark:from-gray-900 dark:to-gray-950 relative overflow-hidden transition-colors duration-300`}>
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className={`absolute top-20 left-10 w-72 h-72 bg-gradient-to-br ${service.color} rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob`}></div>
-          <div className={`absolute top-40 right-10 w-72 h-72 bg-gradient-to-br ${service.color} rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000`}></div>
-          <div className={`absolute -bottom-8 left-1/2 w-72 h-72 bg-gradient-to-br ${service.color} rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000`}></div>
-          <AnimatedBlobRed className="top-10 right-20 w-96 h-96 opacity-30 animation-delay-1000" />
-          <AnimatedBlobRed className="bottom-10 left-20 w-80 h-80 opacity-25 animation-delay-3000" />
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className={`w-20 h-20 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center shadow-lg`}>
-                  <Icon className="w-10 h-10 text-white" />
-                </div>
-                <div className="text-6xl">{service.illustration}</div>
-              </div>
-              
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 transition-colors duration-300">
-                {heroTitle}
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed transition-colors duration-300">
-                {heroDescription}
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                <Link href={`/${locale}/contact`}>
-                  <Button size="lg" className={`bg-gradient-to-r ${service.color} hover:opacity-90`}>
-                    {tServiceDetails('common.getStarted')}
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link href={`/${locale}/contact`}>
-                  <Button size="lg" variant="outline">
-                    {tServiceDetails('common.scheduleCall')}
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Stats Grid */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-2 gap-4"
-            >
-              {translatedStats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                >
-                  <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 hover:border-primary-300 transition-all hover:shadow-xl">
-                    <CardContent className="p-6 text-center">
-                      <div className={`text-4xl font-bold bg-gradient-to-r ${service.color} bg-clip-text text-transparent mb-2`}>
-                        {stat.value}
-                      </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400 font-medium transition-colors duration-300">{stat.label}</div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits Section with Icons */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{tServiceDetails('common.whyChoose')} {heroTitle}</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">{tServiceDetails('common.powerfulFeatures')}</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {translatedBenefits.map((benefit, index) => {
-              const BenefitIcon = benefit.icon;
-              return (
-                <motion.div
-                  key={benefit.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card className="h-full hover:shadow-xl transition-all duration-300 border-2 hover:border-primary-200 group">
-                    <CardContent className="p-6">
-                      <div className={`w-14 h-14 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                        <BenefitIcon className="w-7 h-7 text-white" />
-                      </div>
-                      <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2 transition-colors duration-300">{benefit.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm transition-colors duration-300">{benefit.description}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Process Timeline */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{tServiceDetails('common.ourProcess')}</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">{tServiceDetails('common.fromConceptToLaunch')}</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {translatedProcess.map((step, index) => {
-              const StepIcon = step.icon;
-              return (
-                <motion.div
-                  key={step.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.15 }}
-                  className="relative"
-                >
-                  {/* Connection Line */}
-                  {index < translatedProcess.length - 1 && (
-                    <div className="hidden lg:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-primary-300 to-transparent -z-10"></div>
-                  )}
-
-                  <Card className="h-full bg-white dark:bg-gray-800 hover:shadow-xl transition-all">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className={`w-12 h-12 bg-gradient-to-br ${service.color} rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
-                          {index + 1}
-                        </div>
-                        <div className={`w-12 h-12 bg-gradient-to-br ${service.gradient} rounded-xl flex items-center justify-center`}>
-                          <StepIcon className={`w-6 h-6 bg-gradient-to-br ${service.color} bg-clip-text text-transparent`} />
-                        </div>
-                      </div>
-                      <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2 transition-colors duration-300">{step.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm transition-colors duration-300">{step.description}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Technologies with Visual Tags */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{tServiceDetails('common.technologiesWeMaster')}</h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 transition-colors duration-300">{tServiceDetails('common.industryLeadingTools')}</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {finalTechnologies.map((tech, index) => (
-              <motion.div
-                key={tech.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-              >
-                <Card className="overflow-hidden hover:shadow-lg transition-all border-2 hover:border-primary-200">
-                  <CardContent className="p-0">
-                    <div className={`${tech.color} h-2`}></div>
-                    <div className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-bold text-gray-900 dark:text-white transition-colors duration-300">{tech.name}</h3>
-                        <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                          {tech.category}
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-1.5">
-                        <motion.div
-                          className={`${tech.color} h-1.5 rounded-full`}
-                          initial={{ width: 0 }}
-                          whileInView={{ width: '100%' }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 1, delay: index * 0.05 }}
-                        ></motion.div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className={`py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br ${service.color} relative overflow-hidden`}>
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <Sparkles className="w-16 h-16 text-white mx-auto mb-6" />
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Ready to Transform Your Business?
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Let's build something amazing together. Get a free consultation with our experts.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={`/${locale}/contact`}>
-                <Button size="lg" variant="secondary" className="group">
-                  Get Free Consultation
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link href={`/${locale}/services`}>
-                <Button size="lg" variant="outline" className="bg-white/10 text-white border-white hover:bg-white hover:text-gray-900">
-                  View All Services
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </div>
+    <>
+      <DetailHero
+        icon={Icon}
+        title={heroTitle}
+        description={heroDescription}
+        stats={translatedStats}
+        locale={locale}
+        primaryLabel={tServiceDetails('common.getStarted')}
+        secondaryLabel={tServiceDetails('common.scheduleCall')}
+        secondaryHref={`/${locale}/contact`}
+      />
+      <BenefitsSection
+        title={`${tServiceDetails('common.whyChoose')} ${heroTitle}`}
+        subtitle={tServiceDetails('common.powerfulFeatures')}
+        benefits={translatedBenefits}
+      />
+      <StepsSection
+        title={tServiceDetails('common.ourProcess')}
+        subtitle={tServiceDetails('common.fromConceptToLaunch')}
+        steps={translatedProcess}
+      />
+      <TechSection
+        title={tServiceDetails('common.technologiesWeMaster')}
+        subtitle={tServiceDetails('common.industryLeadingTools')}
+        technologies={finalTechnologies}
+      />
+      {finalCta}
+    </>
   );
 }

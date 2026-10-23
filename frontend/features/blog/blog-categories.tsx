@@ -1,66 +1,45 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tag } from 'lucide-react';
 
-export function BlogCategories() {
-  const t = useTranslations('blog.categories');
+/**
+ * Filtre par catégorie, en pastilles. Les catégories proviennent des articles
+ * réellement publiés (calculées par la grille), sans compteurs inventés.
+ */
+export function BlogCategories({
+  categories,
+  active,
+  onSelect,
+}: {
+  categories: Array<{ value: string; label: string }>;
+  active: string | null;
+  onSelect: (value: string | null) => void;
+}) {
+  const t = useTranslations('blog');
 
-  const categories = [
-    { key: 'all', count: 24 },
-    { key: 'api', count: 8 },
-    { key: 'development', count: 12 },
-    { key: 'design', count: 6 },
-    { key: 'security', count: 5 },
-    { key: 'mobile', count: 7 },
-    { key: 'ai', count: 4 },
-  ];
+  const pill = (selected: boolean) =>
+    `rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+      selected
+        ? 'bg-ink text-white dark:bg-white dark:text-ink'
+        : 'border border-gray-200 bg-white text-gray-700 hover:border-primary-300 hover:text-primary-700 dark:border-white/10 dark:bg-white/[0.03] dark:text-gray-300 dark:hover:border-primary-500/40 dark:hover:text-primary-300'
+    }`;
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardContent className="p-6">
-          <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2 transition-colors duration-300">
-            <Tag className="w-5 h-5 text-primary-600" />
-            {t('title')}
-          </h3>
-          <div className="space-y-2">
-            {categories.map((category) => (
-              <button
-                key={category.key}
-                className="w-full flex items-center justify-between py-2 px-3 rounded-lg hover:bg-primary-50 transition-colors text-left group"
-              >
-                <span className="text-gray-700 dark:text-gray-300 group-hover:text-primary-600 transition-colors">
-                  {t(category.key)}
-                </span>
-                <span className="text-xs bg-gray-100 dark:bg-gray-800 group-hover:bg-primary-100 text-gray-600 dark:text-gray-400 group-hover:text-primary-600 px-2 py-1 rounded-full transition-colors">
-                  {category.count}
-                </span>
-              </button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardContent className="p-6">
-          <h3 className="font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300">{t('recentPosts')}</h3>
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex gap-3">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex-shrink-0" />
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-2 mb-1 transition-colors duration-300">
-                    Article récent {i}
-                  </h4>
-                  <p className="text-xs text-gray-500">Il y a {i} jours</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+    <div role="group" aria-label={t('ui.filterLabel')} className="mb-10 flex flex-wrap gap-2">
+      <button type="button" onClick={() => onSelect(null)} aria-pressed={active === null} className={pill(active === null)}>
+        {t('categories.all')}
+      </button>
+      {categories.map((c) => (
+        <button
+          key={c.value}
+          type="button"
+          onClick={() => onSelect(c.value)}
+          aria-pressed={active === c.value}
+          className={pill(active === c.value)}
+        >
+          {c.label}
+        </button>
+      ))}
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
 import { Check, CreditCard, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -87,9 +86,9 @@ export function PlanModal({ isOpen, onClose, plan }: PlanModalProps) {
     <Dialog open={isOpen} onOpenChange={resetAndClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-3 text-2xl">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center">
-              <plan.icon className="w-6 h-6 text-white" />
+          <DialogTitle className="flex items-center gap-3 font-display text-2xl text-ink dark:text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+              <plan.icon className="h-6 w-6" />
             </div>
             Plan {plan.plan}
           </DialogTitle>
@@ -108,35 +107,28 @@ export function PlanModal({ isOpen, onClose, plan }: PlanModalProps) {
             className="space-y-6"
           >
             {/* Pricing */}
-            <Card className="bg-gradient-to-br from-primary-50 to-primary-50 border-2 border-primary-200">
-              <CardContent className="p-6 text-center">
-                <div className="text-5xl font-bold bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent mb-2">
-                  {plan.price} {plan.currency}
-                </div>
-                <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300">par SMS</p>
-                <p className="text-sm text-gray-500 mt-2">{plan.volume} SMS/mois</p>
-              </CardContent>
-            </Card>
+            <div className="bogolan-texture rounded-2xl bg-ink p-6 text-white">
+              <div className="mb-1 flex items-baseline gap-2">
+                <span className="font-display text-5xl font-extrabold">{plan.price}</span>
+                <span className="text-lg font-semibold text-gray-300">{plan.currency}</span>
+              </div>
+              <p className="text-gray-300">par SMS</p>
+              <p className="mt-2 text-sm text-ochre">{plan.volume} SMS/mois</p>
+            </div>
 
             {/* Features */}
             <div>
-              <h3 className="font-bold text-lg mb-4">Fonctionnalités incluses</h3>
-              <div className="space-y-3">
-                {planFeatures[plan.plan as keyof typeof planFeatures]?.map((feature, index) => (
-                  <motion.div
-                    key={feature}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="flex items-start gap-3"
-                  >
-                    <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-3 h-3 text-green-600" />
-                    </div>
-                    <span className="text-gray-700 dark:text-gray-300 transition-colors duration-300">{feature}</span>
-                  </motion.div>
+              <h3 className="mb-4 text-lg font-bold text-ink dark:text-white">Fonctionnalités incluses</h3>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {planFeatures[plan.plan as keyof typeof planFeatures]?.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ochre/20">
+                      <Check className="h-3 w-3 text-ink dark:text-ochre" />
+                    </span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
             <Button onClick={() => setStep('signup')} className="w-full" size="lg">
@@ -224,51 +216,51 @@ export function PlanModal({ isOpen, onClose, plan }: PlanModalProps) {
             className="space-y-6"
           >
             {/* Summary */}
-            <Card className="bg-gray-50 dark:bg-gray-800">
-              <CardContent className="p-4">
-                <h3 className="font-bold mb-2">Récapitulatif</h3>
+            <div className="rounded-2xl border border-gray-200 bg-paper p-5 dark:border-white/10 dark:bg-white/5">
+              <div>
+                <h3 className="mb-3 font-bold text-ink dark:text-white">Récapitulatif</h3>
                 <div className="space-y-1 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600 dark:text-gray-400 transition-colors duration-300">Plan:</span>
                     <span className="font-medium">{plan.plan}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Volume:</span>
+                    <span className="text-gray-600 dark:text-gray-400">Volume:</span>
                     <span className="font-medium">{plan.volume} SMS/mois</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Prix unitaire:</span>
+                    <span className="text-gray-600 dark:text-gray-400">Prix unitaire:</span>
                     <span className="font-medium">{plan.price} {plan.currency}/SMS</span>
                   </div>
-                  <div className="border-t pt-2 mt-2 flex justify-between font-bold">
+                  <div className="mt-2 flex justify-between border-t border-gray-200 pt-2 font-bold dark:border-white/10">
                     <span>Total estimé:</span>
                     <span className="text-primary-600">
                       {parseInt(plan.volume.replace(/,/g, '')) * plan.price} {plan.currency}/mois
                     </span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Payment Methods */}
             <div>
-              <h3 className="font-bold text-lg mb-4">Méthode de paiement</h3>
+              <h3 className="mb-4 text-lg font-bold text-ink dark:text-white">Méthode de paiement</h3>
               <div className="grid gap-3">
-                <Button variant="outline" className="justify-start h-auto p-4">
+                <Button variant="outline" className="h-auto justify-start rounded-xl p-4 dark:border-white/15 dark:bg-transparent dark:text-white dark:hover:bg-white/10">
                   <CreditCard className="w-5 h-5 mr-3" />
                   <div className="text-left">
                     <div className="font-medium">Orange Money</div>
                     <div className="text-xs text-gray-500">Paiement mobile sécurisé</div>
                   </div>
                 </Button>
-                <Button variant="outline" className="justify-start h-auto p-4">
+                <Button variant="outline" className="h-auto justify-start rounded-xl p-4 dark:border-white/15 dark:bg-transparent dark:text-white dark:hover:bg-white/10">
                   <CreditCard className="w-5 h-5 mr-3" />
                   <div className="text-left">
                     <div className="font-medium">Moov Money</div>
                     <div className="text-xs text-gray-500">Paiement mobile sécurisé</div>
                   </div>
                 </Button>
-                <Button variant="outline" className="justify-start h-auto p-4">
+                <Button variant="outline" className="h-auto justify-start rounded-xl p-4 dark:border-white/15 dark:bg-transparent dark:text-white dark:hover:bg-white/10">
                   <CreditCard className="w-5 h-5 mr-3" />
                   <div className="text-left">
                     <div className="font-medium">Carte Bancaire</div>
@@ -282,7 +274,7 @@ export function PlanModal({ isOpen, onClose, plan }: PlanModalProps) {
               <Button type="button" variant="outline" onClick={() => setStep('signup')} className="flex-1">
                 Retour
               </Button>
-              <Button className="flex-1 bg-gradient-to-r from-primary-500 to-primary-700">
+              <Button className="flex-1">
                 Confirmer le paiement
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>

@@ -5,11 +5,9 @@ import { FAQContact } from '@/features/faq/faq-contact';
 export default function FAQPage() {
   return (
     <>
-      <main>
-        <FAQHero />
-        <FAQAccordion />
-        <FAQContact />
-      </main>
+      <FAQHero />
+      <FAQAccordion />
+      <FAQContact />
     </>
   );
 }
