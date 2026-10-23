@@ -58,13 +58,20 @@ export default function LoginPage() {
     const role = session?.user?.role;
     const defaultTarget =
       role === 'ADMIN' ? `/${locale}/admin` : `/${locale}/dashboard`;
-    // Destination demandée : chemin interne uniquement (ni URL externe ni « //hôte »),
-    // et jamais une page de connexion (ex. /fr/admin/login, inexistante → 404).
-    const requested = searchParams.get('callbackUrl') ?? '';
-    const requestedPath = requested.split(/[?#]/)[0];
-    const isSafe =
-      requested.startsWith('/') && !requested.startsWith('//') && !/\/login\/?$/.test(requestedPath);
-    const callbackUrl = isSafe ? requested : defaultTarget;
+    // Destination demandée : même origine uniquement (URL résolue, ce qui couvre aussi
+    // « //hôte » et « /\hôte »), et jamais une page de connexion (ex. /fr/admin/login → 404).
+    let callbackUrl = defaultTarget;
+    const requested = searchParams.get('callbackUrl');
+    if (requested) {
+      try {
+        const target = new URL(requested, window.location.origin);
+        if (target.origin === window.location.origin && !/\/login\/?$/.test(target.pathname)) {
+          callbackUrl = target.pathname + target.search + target.hash;
+        }
+      } catch {
+        /* URL invalide : destination par défaut */
+      }
+    }
     // Cast nécessaire car `experimental.typedRoutes` interdit les chaînes dynamiques.
     router.push(callbackUrl as Parameters<typeof router.push>[0]);
     router.refresh();
