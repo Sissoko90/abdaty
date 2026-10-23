@@ -18,7 +18,7 @@ services:
     image: abdaty/frontend:latest
     container_name: abdaty-frontend
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:${FRONTEND_HOST_PORT:-3000}:3000"
     # Secrets runtime côté serveur (NextAuth) : NEXTAUTH_SECRET / NEXTAUTH_URL.
     env_file:
       - ./frontend/.env.local
@@ -38,7 +38,7 @@ services:
     image: abdaty/backend:latest
     container_name: abdaty-backend
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:${BACKEND_HOST_PORT:-8080}:8080"
     # Secrets applicatifs (JWT, mail, admin…) chargés depuis backend/.env ;
     # les variables d'infra ci-dessous les surchargent pour le réseau Docker.
     env_file:
@@ -107,7 +107,7 @@ services:
     image: redis:7-alpine
     container_name: abdaty-redis
     ports:
-      - "127.0.0.1:6379:6379"
+      - "127.0.0.1:${REDIS_HOST_PORT:-6379}:6379"
     volumes:
       - redis-data:/data
     networks:
@@ -124,7 +124,7 @@ services:
     image: confluentinc/cp-kafka:latest
     container_name: abdaty-kafka
     ports:
-      - "127.0.0.1:9092:9092"
+      - "127.0.0.1:${KAFKA_HOST_PORT:-9092}:9092"
     environment:
       CLUSTER_ID: abdaty-kafka-cluster-1
       KAFKA_NODE_ID: 1

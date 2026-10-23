@@ -81,11 +81,16 @@ jobs:
               printf '%s\n' \
                 "NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://abdatytch.com/api/v1' }}" \
                 "NEXT_PUBLIC_SITE_URL=${{ vars.PUBLIC_SITE_URL || 'https://abdatytch.com' }}" \
-                "GEOIP_HOST_PATH=/opt/geoip" > .env
+                "GEOIP_HOST_PATH=/opt/geoip" \
+                "FRONTEND_HOST_PORT=${{ vars.FRONTEND_HOST_PORT || '3010' }}" \
+                "BACKEND_HOST_PORT=${{ vars.BACKEND_HOST_PORT || '8090' }}" \
+                "POSTGRES_HOST_PORT=15432" "REDIS_HOST_PORT=16379" "KAFKA_HOST_PORT=19092" > .env
             fi
             # Compatible Compose v2 ("docker compose") et v1 ("docker-compose").
             if docker compose version >/dev/null 2>&1; then DC="docker compose"; else DC="docker-compose"; fi
             echo "→ $DC up -d --build"
-            $DC up -d --build --remove-orphans
+            # Serveur partagé : seuls le site et l'API (et leurs dépendances PostgreSQL,
+            # Redis, Kafka) sont démarrés ; liste modifiable via la variable COMPOSE_SERVICES.
+            $DC up -d --build --remove-orphans ${{ vars.COMPOSE_SERVICES || 'frontend backend' }}
             docker image prune -f
             $DC ps
