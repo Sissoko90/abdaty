@@ -1235,50 +1235,16 @@
   },
   {
     "section": "partners",
-    "contentKey": "item-1",
-    "valueFr": {
-      "name": "Orange Mali",
-      "logo": "/api.png",
-      "website": "https://orange.ml"
-    },
-    "valueEn": {
-      "name": "Orange Mali",
-      "logo": "/api.png",
-      "website": "https://orange.ml"
-    },
-    "contentType": "json",
-    "displayOrder": 1,
-    "active": true
-  },
-  {
-    "section": "partners",
-    "contentKey": "item-2",
-    "valueFr": {
-      "name": "Moov Africa",
-      "logo": "/moov.jpg",
-      "website": "https://moov-africa.ml"
-    },
-    "valueEn": {
-      "name": "Moov Africa",
-      "logo": "/moov.jpg",
-      "website": "https://moov-africa.ml"
-    },
-    "contentType": "json",
-    "displayOrder": 2,
-    "active": true
-  },
-  {
-    "section": "partners",
     "contentKey": "item-3",
     "valueFr": {
-      "name": "Malitel",
+      "name": "Chap Chap",
       "logo": "/chapchap.png",
-      "website": "https://malitel.ml"
+      "website": ""
     },
     "valueEn": {
-      "name": "Malitel",
+      "name": "Chap Chap",
       "logo": "/chapchap.png",
-      "website": "https://malitel.ml"
+      "website": ""
     },
     "contentType": "json",
     "displayOrder": 3,
@@ -1288,14 +1254,14 @@
     "section": "partners",
     "contentKey": "item-4",
     "valueFr": {
-      "name": "Bank of Africa",
+      "name": "AUA",
       "logo": "/aua.jpg",
-      "website": "#"
+      "website": ""
     },
     "valueEn": {
-      "name": "Bank of Africa",
+      "name": "AUA",
       "logo": "/aua.jpg",
-      "website": "#"
+      "website": ""
     },
     "contentType": "json",
     "displayOrder": 4,
