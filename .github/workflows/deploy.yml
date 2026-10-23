@@ -74,6 +74,15 @@ jobs:
             cd "${{ vars.DEPLOY_PATH || '/opt/backend/abdaty' }}"
             echo "→ Extraction du source (préserve les .env existants)"
             tar xzf src.tar.gz && rm -f src.tar.gz
+            # .env racine (substitution compose : URLs publiques du build frontend).
+            # Créé seulement s'il manque — un fichier existant n'est jamais modifié.
+            if [ ! -f .env ]; then
+              echo "→ .env racine absent : création avec les URLs publiques de production"
+              printf '%s\n' \
+                "NEXT_PUBLIC_API_URL=${{ vars.PUBLIC_API_URL || 'https://abdatytch.com/api/v1' }}" \
+                "NEXT_PUBLIC_SITE_URL=${{ vars.PUBLIC_SITE_URL || 'https://abdatytch.com' }}" \
+                "GEOIP_HOST_PATH=/opt/geoip" > .env
+            fi
             # Compatible Compose v2 ("docker compose") et v1 ("docker-compose").
             if docker compose version >/dev/null 2>&1; then DC="docker compose"; else DC="docker-compose"; fi
             echo "→ $DC up -d --build"
