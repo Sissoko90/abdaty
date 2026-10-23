@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { Badge } from '@/components/ui/badge';
+import { Badge, type BadgeProps } from '@/components/ui/badge';
+import { AdminPage, AdminPageHeader, AdminStatCard } from '@/components/admin/admin-page';
 import { listUsers, setUserStatus, createUser, type BackendUser, type CreateUserInput } from '@/services/user.service';
 import { ApiRequestError } from '@/lib/api';
 import { 
@@ -26,6 +26,7 @@ import {
   UserPlus,
   X,
   Loader2,
+  AlertCircle,
 } from 'lucide-react';
 
 interface User {
@@ -42,7 +43,6 @@ interface User {
 
 export default function AdminUsersPage() {
   const t = useTranslations('admin.users');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
 
   const { data: session } = useSession();
   const token = session?.accessToken;
@@ -146,12 +146,12 @@ export default function AdminUsersPage() {
   const handleUnblock = (userId: string) => applyStatus(userId, 'unblock');
 
   const getStatusBadge = (status: string) => {
-    const variants: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string }> = {
-      active: { variant: 'default', label: t('statusActive') },
+    const variants: Record<string, { variant: NonNullable<BadgeProps['variant']>; label: string }> = {
+      active: { variant: 'success', label: t('statusActive') },
       inactive: { variant: 'secondary', label: t('statusInactive') },
       deactivated: { variant: 'secondary', label: t('statusDeactivated') },
       banned: { variant: 'destructive', label: t('statusBanned') },
-      blocked: { variant: 'destructive', label: t('statusBlocked') },
+      blocked: { variant: 'warning', label: t('statusBlocked') },
     };
     const config = variants[status] || variants.active;
     return <Badge variant={config.variant}>{config.label}</Badge>;
@@ -159,104 +159,68 @@ export default function AdminUsersPage() {
 
   const getRoleBadge = (role: string) => {
     const variants: Record<string, { color: string; label: string }> = {
-      admin: { color: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200', label: 'Admin' },
-      moderator: { color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200', label: 'Moderator' },
-      user: { color: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200', label: 'User' },
+      admin: { color: 'bg-ink text-white dark:bg-white dark:text-ink', label: 'Admin' },
+      moderator: { color: 'bg-ochre/20 text-amber-800 dark:text-ochre', label: 'Moderator' },
+      user: { color: 'bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-300', label: 'User' },
     };
     const config = variants[role] || variants.user;
-    return <span className={`px-2 py-1 rounded text-xs font-medium ${config.color}`}>{config.label}</span>;
+    return <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${config.color}`}>{config.label}</span>;
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
+    <>
+      <AdminPage>
+        <AdminPageHeader
+          title={t('title')}
+          description={t('subtitle')}
+          icon={Users}
+          actions={
+            <Button
+              onClick={() => setCreating({ username: '', email: '', password: '', firstName: '', lastName: '', phoneNumber: '' })}
+              className="gap-2"
+              disabled={!token}
+            >
+              <UserPlus className="h-4 w-4" />
+              Créer un utilisateur
+            </Button>
+          }
         />
 
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <Users className="w-8 h-8" />
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">{t('subtitle')}</p>
-          </div>
-          <Button onClick={() => setCreating({ username: '', email: '', password: '', firstName: '', lastName: '', phoneNumber: '' })} className="gap-2" disabled={!token}>
-            <UserPlus className="w-4 h-4" />
-            Créer un utilisateur
-          </Button>
-        </div>
-
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('totalUsers')}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{users.length}</p>
-                </div>
-                <Users className="w-8 h-8 text-blue-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('activeUsers')}</p>
-                  <p className="text-2xl font-bold text-green-600">{users.filter(u => u.status === 'active').length}</p>
-                </div>
-                <CheckCircle className="w-8 h-8 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('bannedUsers')}</p>
-                  <p className="text-2xl font-bold text-red-600">{users.filter(u => u.status === 'banned').length}</p>
-                </div>
-                <Ban className="w-8 h-8 text-red-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('blockedUsers')}</p>
-                  <p className="text-2xl font-bold text-orange-600">{users.filter(u => u.status === 'blocked').length}</p>
-                </div>
-                <Lock className="w-8 h-8 text-orange-500" />
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <AdminStatCard label={t('totalUsers')} value={users.length} icon={Users} />
+          <AdminStatCard label={t('activeUsers')} value={users.filter((u) => u.status === 'active').length} icon={CheckCircle} tone="emerald" />
+          <AdminStatCard label={t('bannedUsers')} value={users.filter((u) => u.status === 'banned').length} icon={Ban} tone="ink" />
+          <AdminStatCard label={t('blockedUsers')} value={users.filter((u) => u.status === 'blocked').length} icon={Lock} tone="ochre" />
         </div>
 
-        {/* Search and Filter */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 mb-6">
-          <CardContent className="p-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+        {error && (
+          <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+            {error}
+          </div>
+        )}
+
+        {/* Users Table */}
+        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.03]">
+          <div className="flex flex-col gap-4 border-b border-gray-100 p-5 dark:border-white/10 md:flex-row md:items-center md:justify-between">
+            <h2 className="text-lg font-bold text-ink dark:text-white">{t('usersList')}</h2>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="relative sm:w-72">
+                <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                 <Input
                   placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
+                  aria-label={t('searchPlaceholder')}
                 />
               </div>
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                aria-label={t('status')}
+                className="h-11 rounded-xl border border-gray-300 bg-white px-3.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/5 dark:text-white"
               >
                 <option value="all">{t('allStatus')}</option>
                 <option value="active">{t('statusActive')}</option>
@@ -266,148 +230,113 @@ export default function AdminUsersPage() {
                 <option value="blocked">{t('statusBlocked')}</option>
               </select>
             </div>
-          </CardContent>
-        </Card>
-
-        {error && (
-          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950/40 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
-            {error}
           </div>
-        )}
 
-        {/* Users Table */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700">
-          <CardHeader>
-            <CardTitle>{t('usersList')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <div className="py-12 text-center text-gray-500 dark:text-gray-400">Chargement…</div>
-            ) : filteredUsers.length === 0 ? (
-              <div className="py-12 text-center text-gray-500 dark:text-gray-400">Aucun utilisateur.</div>
-            ) : (
+          {loading ? (
+            <div className="flex items-center justify-center py-14 text-gray-500 dark:text-gray-400">
+              <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary-600" /> Chargement…
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="px-6 py-14 text-center">
+              <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                <Users className="h-6 w-6" />
+              </span>
+              <p className="text-gray-600 dark:text-gray-400">{users.length === 0 ? 'Aucun utilisateur.' : t('noResults')}</p>
+            </div>
+          ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('name')}</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('contact')}</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('role')}</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('status')}</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('joined')}</th>
-                    <th className="text-right py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('actions')}</th>
+                  <tr className="bg-gray-50 text-left text-xs font-semibold text-gray-500 dark:bg-white/[0.03] dark:text-gray-400">
+                    <th className="h-11 px-5">{t('name')}</th>
+                    <th className="h-11 px-5">{t('contact')}</th>
+                    <th className="h-11 px-5">{t('role')}</th>
+                    <th className="h-11 px-5">{t('status')}</th>
+                    <th className="h-11 px-5">{t('joined')}</th>
+                    <th className="h-11 px-5 text-right">{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredUsers.map((user) => (
-                    <tr key={user.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                      <td className="py-4 px-4">
+                    <tr key={user.id} className="border-b border-gray-100 transition-colors last:border-0 hover:bg-gray-50/70 dark:border-white/5 dark:hover:bg-white/[0.03]">
+                      <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
-                            <span className="text-primary-600 dark:text-primary-400 font-medium">
-                              {user.name.charAt(0)}
-                            </span>
-                          </div>
+                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 font-semibold text-primary-700 dark:bg-primary-500/15 dark:text-primary-300">
+                            {user.name.charAt(0).toUpperCase()}
+                          </span>
                           <div>
-                            <p className="font-medium text-gray-900 dark:text-white">{user.name}</p>
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <p className="font-medium text-ink dark:text-white">{user.name}</p>
+                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                               {user.emailVerified ? (
-                                <CheckCircle className="w-3 h-3 text-green-500" />
+                                <CheckCircle className="h-3 w-3 text-emerald-500" />
                               ) : (
-                                <XCircle className="w-3 h-3 text-red-500" />
+                                <XCircle className="h-3 w-3 text-red-500" />
                               )}
                               <span>{user.emailVerified ? t('verified') : t('notVerified')}</span>
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td className="py-4 px-4">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                            <Mail className="w-3 h-3" />
+                      <td className="px-5 py-4">
+                        <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                          <div className="flex items-center gap-2">
+                            <Mail className="h-3.5 w-3.5 text-gray-400" />
                             {user.email}
                           </div>
-                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                            <Phone className="w-3 h-3" />
-                            {user.phone}
-                          </div>
+                          {user.phone && (
+                            <div className="flex items-center gap-2">
+                              <Phone className="h-3.5 w-3.5 text-gray-400" />
+                              {user.phone}
+                            </div>
+                          )}
                         </div>
                       </td>
-                      <td className="py-4 px-4">
-                        {getRoleBadge(user.role)}
-                      </td>
-                      <td className="py-4 px-4">
-                        {getStatusBadge(user.status)}
-                      </td>
-                      <td className="py-4 px-4">
+                      <td className="px-5 py-4">{getRoleBadge(user.role)}</td>
+                      <td className="px-5 py-4">{getStatusBadge(user.status)}</td>
+                      <td className="px-5 py-4">
                         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                          <Calendar className="w-3 h-3" />
+                          <Calendar className="h-3.5 w-3.5 text-gray-400" />
                           {user.createdAt}
                         </div>
                       </td>
-                      <td className="py-4 px-4">
+                      <td className="px-5 py-4">
                         <div className="flex items-center justify-end gap-2">
                           {user.status === 'active' && (
                             <>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleToggleStatus(user.id, 'inactive')}
-                                className="gap-1"
-                              >
-                                <XCircle className="w-3 h-3" />
+                              <Button variant="outline" size="sm" onClick={() => handleToggleStatus(user.id, 'inactive')} className="gap-1">
+                                <XCircle className="h-3.5 w-3.5" />
                                 {t('deactivate')}
                               </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleBlock(user.id)}
-                                className="gap-1"
-                              >
-                                <Lock className="w-3 h-3" />
+                              <Button variant="outline" size="sm" onClick={() => handleBlock(user.id)} className="gap-1">
+                                <Lock className="h-3.5 w-3.5" />
                                 {t('block')}
                               </Button>
                               <Button
-                                variant="destructive"
+                                variant="outline"
                                 size="sm"
                                 onClick={() => handleBan(user.id)}
-                                className="gap-1"
+                                className="gap-1 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 dark:border-red-500/30 dark:text-red-400 dark:hover:bg-red-500/10"
                               >
-                                <Ban className="w-3 h-3" />
+                                <Ban className="h-3.5 w-3.5" />
                                 {t('ban')}
                               </Button>
                             </>
                           )}
                           {(user.status === 'inactive' || user.status === 'deactivated') && (
-                            <Button
-                              variant="default"
-                              size="sm"
-                              onClick={() => handleToggleStatus(user.id, 'active')}
-                              className="gap-1"
-                            >
-                              <CheckCircle className="w-3 h-3" />
+                            <Button variant="default" size="sm" onClick={() => handleToggleStatus(user.id, 'active')} className="gap-1">
+                              <CheckCircle className="h-3.5 w-3.5" />
                               {t('activate')}
                             </Button>
                           )}
                           {user.status === 'banned' && (
-                            <Button
-                              variant="default"
-                              size="sm"
-                              onClick={() => handleUnban(user.id)}
-                              className="gap-1"
-                            >
-                              <Shield className="w-3 h-3" />
+                            <Button variant="default" size="sm" onClick={() => handleUnban(user.id)} className="gap-1">
+                              <Shield className="h-3.5 w-3.5" />
                               {t('unban')}
                             </Button>
                           )}
                           {user.status === 'blocked' && (
-                            <Button
-                              variant="default"
-                              size="sm"
-                              onClick={() => handleUnblock(user.id)}
-                              className="gap-1"
-                            >
-                              <Unlock className="w-3 h-3" />
+                            <Button variant="default" size="sm" onClick={() => handleUnblock(user.id)} className="gap-1">
+                              <Unlock className="h-3.5 w-3.5" />
                               {t('unblock')}
                             </Button>
                           )}
@@ -418,58 +347,60 @@ export default function AdminUsersPage() {
                 </tbody>
               </table>
             </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+          )}
+        </div>
+      </AdminPage>
 
       {/* Modale création d'utilisateur */}
       {creating && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setCreating(null)}>
-          <Card className="w-full max-w-lg dark:bg-gray-800 dark:border-gray-700" onClick={(e) => e.stopPropagation()}>
-            <CardHeader>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm" onClick={() => setCreating(null)}>
+          <Card className="w-full max-w-lg shadow-2xl shadow-ink/20 dark:bg-[#121c2e]" onClick={(e) => e.stopPropagation()}>
+            <CardHeader className="border-b border-gray-100 dark:border-white/10">
               <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <UserPlus className="w-5 h-5" /> Nouvel utilisateur
+                <CardTitle className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                    <UserPlus className="h-5 w-5" />
+                  </span>
+                  Nouvel utilisateur
                 </CardTitle>
-                <Button variant="ghost" size="icon" onClick={() => setCreating(null)}>
-                  <X className="w-5 h-5" />
+                <Button variant="ghost" size="icon" onClick={() => setCreating(null)} aria-label="Fermer">
+                  <X className="h-5 w-5" />
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
+            <CardContent className="space-y-5 pt-6">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
                   <Label>Identifiant *</Label>
-                  <Input value={creating.username} onChange={(e) => setCreating({ ...creating, username: e.target.value })} className="mt-1" />
+                  <Input value={creating.username} onChange={(e) => setCreating({ ...creating, username: e.target.value })} />
                 </div>
-                <div>
+                <div className="space-y-2">
                   <Label>Email *</Label>
-                  <Input type="email" value={creating.email} onChange={(e) => setCreating({ ...creating, email: e.target.value })} className="mt-1" />
+                  <Input type="email" value={creating.email} onChange={(e) => setCreating({ ...creating, email: e.target.value })} />
                 </div>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Mot de passe *</Label>
-                <Input type="password" value={creating.password} onChange={(e) => setCreating({ ...creating, password: e.target.value })} className="mt-1" />
+                <Input type="password" value={creating.password} onChange={(e) => setCreating({ ...creating, password: e.target.value })} />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
                   <Label>Prénom</Label>
-                  <Input value={creating.firstName} onChange={(e) => setCreating({ ...creating, firstName: e.target.value })} className="mt-1" />
+                  <Input value={creating.firstName} onChange={(e) => setCreating({ ...creating, firstName: e.target.value })} />
                 </div>
-                <div>
+                <div className="space-y-2">
                   <Label>Nom</Label>
-                  <Input value={creating.lastName} onChange={(e) => setCreating({ ...creating, lastName: e.target.value })} className="mt-1" />
+                  <Input value={creating.lastName} onChange={(e) => setCreating({ ...creating, lastName: e.target.value })} />
                 </div>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Téléphone</Label>
-                <Input value={creating.phoneNumber} onChange={(e) => setCreating({ ...creating, phoneNumber: e.target.value })} className="mt-1" />
+                <Input value={creating.phoneNumber} onChange={(e) => setCreating({ ...creating, phoneNumber: e.target.value })} />
               </div>
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-2 border-t border-gray-100 pt-5 dark:border-white/10">
                 <Button variant="outline" onClick={() => setCreating(null)}>Annuler</Button>
                 <Button onClick={handleCreate} disabled={createBusy} className="gap-2">
-                  {createBusy ? <Loader2 className="w-4 h-4 animate-spin" /> : <UserPlus className="w-4 h-4" />}
+                  {createBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
                   Créer
                 </Button>
               </div>
@@ -477,6 +408,6 @@ export default function AdminUsersPage() {
           </Card>
         </div>
       )}
-    </div>
+    </>
   );
 }

@@ -179,7 +179,7 @@ public class AuthService implements IAuthService {
         return loginAttemptService.shouldBlockIP(clientIp, maxLoginAttempts)
             .onErrorReturn(false)
             .flatMap(blocked -> Boolean.TRUE.equals(blocked)
-                ? Mono.error(new UnauthorizedException(MessageConstants.TOO_MANY_LOGIN_ATTEMPTS))
+                ? Mono.<AuthResponseDTO>error(new UnauthorizedException(MessageConstants.TOO_MANY_LOGIN_ATTEMPTS))
                 : doLogin(loginRequest, clientIp));
     }
 

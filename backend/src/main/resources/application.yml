@@ -215,6 +215,9 @@ springdoc:
 
 # Configuration personnalisée
 app:
+  contact:
+    # Boîte qui reçoit les messages du formulaire de contact du site.
+    notify-email: ${CONTACT_NOTIFY_EMAIL:contact@abdatytch.com}
   notifications:
     kafka:
       # Topic du bus d'événements pour les notifications push admin.

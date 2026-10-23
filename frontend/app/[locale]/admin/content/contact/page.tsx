@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AdminPage, AdminPageHeader } from '@/components/admin/admin-page';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
 import { Save, Mail, Phone, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useSiteContentSection } from '@/hooks/use-site-content-section';
 
@@ -39,7 +39,6 @@ const DEFAULTS: ContactInfo = {
 
 export default function AdminContactPage() {
   const t = useTranslations('admin.content.contact');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
 
   const { token, blocks, loading, saving, error, success, saveAll, value } =
     useSiteContentSection('contact');
@@ -73,230 +72,218 @@ export default function AdminContactPage() {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
+    <AdminPage>
 
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-              {t('subtitle')}
+      <AdminPageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        icon={Mail}
+        actions={
+          <>
+            <Button onClick={handleSave} size="lg" className="gap-2" disabled={saving || !token}>
+              <Save className="w-4 h-4" />
+              {saving ? '…' : t('save')}
+            </Button>
+          </>
+        }
+      />
+
+      {/* Bandeaux d'état */}
+      {error && (
+        <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+      {success && (
+        <div role="status" className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <span>{success}</span>
+        </div>
+      )}
+      {!token && (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+          Connectez-vous en tant qu&apos;administrateur pour modifier cette section.
+        </p>
+      )}
+      {loading && <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400"><span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />Chargement…</p>}
+
+      <div className="space-y-6">
+        {/* Informations principales */}
+        <Card>
+          <CardHeader className="border-b border-gray-100 dark:border-white/10">
+            <CardTitle className="flex items-center gap-2">
+              <Mail className="w-5 h-5" />
+              {t('mainInfo')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6 pt-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('titleLabel')}<LangChip lang="FR" /></Label>
+                <Input
+                  value={contactInfo.title.fr}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, title: { ...contactInfo.title, fr: e.target.value } })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('titleLabel')}<LangChip lang="EN" /></Label>
+                <Input
+                  value={contactInfo.title.en}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, title: { ...contactInfo.title, en: e.target.value } })
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('subtitleLabel')}<LangChip lang="FR" /></Label>
+                <Input
+                  value={contactInfo.subtitle.fr}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, subtitle: { ...contactInfo.subtitle, fr: e.target.value } })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('subtitleLabel')}<LangChip lang="EN" /></Label>
+                <Input
+                  value={contactInfo.subtitle.en}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, subtitle: { ...contactInfo.subtitle, en: e.target.value } })
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('description')}<LangChip lang="FR" /></Label>
+                <Textarea
+                  value={contactInfo.description.fr}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, description: { ...contactInfo.description, fr: e.target.value } })
+                  }
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('description')}<LangChip lang="EN" /></Label>
+                <Textarea
+                  value={contactInfo.description.en}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, description: { ...contactInfo.description, en: e.target.value } })
+                  }
+                  rows={3}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Coordonnées */}
+        <Card>
+          <CardHeader className="border-b border-gray-100 dark:border-white/10">
+            <CardTitle className="flex items-center gap-2">
+              <Phone className="w-5 h-5" />
+              {t('contactDetails')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6 pt-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label>{t('email')}</Label>
+                <Input
+                  type="email"
+                  value={contactInfo.email}
+                  onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t('phone')}</Label>
+                <Input
+                  value={contactInfo.phone}
+                  onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('address')}<LangChip lang="FR" /></Label>
+                <Input
+                  value={contactInfo.address.fr}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, address: { ...contactInfo.address, fr: e.target.value } })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('address')}<LangChip lang="EN" /></Label>
+                <Input
+                  value={contactInfo.address.en}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, address: { ...contactInfo.address, en: e.target.value } })
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('hours')}<LangChip lang="FR" /></Label>
+                <Input
+                  value={contactInfo.hours.fr}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, hours: { ...contactInfo.hours, fr: e.target.value } })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('hours')}<LangChip lang="EN" /></Label>
+                <Input
+                  value={contactInfo.hours.en}
+                  onChange={(e) =>
+                    setContactInfo({ ...contactInfo, hours: { ...contactInfo.hours, en: e.target.value } })
+                  }
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Les réseaux sociaux sont désormais gérés à un seul endroit
+            (Paramètres → Réseaux sociaux) pour éviter les doublons : ces liens
+            alimentent à la fois la page Contact et le pied de page. */}
+        <Card>
+          <CardHeader className="border-b border-gray-100 dark:border-white/10">
+            <CardTitle>{t('socialMedia')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Les réseaux sociaux se gèrent désormais dans{' '}
+              <Link href={'/admin/settings/social' as Route} className="text-primary-600 dark:text-primary-400 underline">
+                Paramètres → Réseaux sociaux
+              </Link>{' '}
+              (source unique, affichée sur la page Contact et le pied de page).
             </p>
-          </div>
-          <Button onClick={handleSave} className="gap-2" disabled={saving || !token}>
-            <Save className="w-4 h-4" />
-            {saving ? '…' : t('save')}
-          </Button>
-        </div>
-
-        {/* Bandeaux d'état */}
-        {error && (
-          <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300 mb-4">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-        {success && (
-          <div role="status" className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300 mb-4">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span>{success}</span>
-          </div>
-        )}
-        {!token && (
-          <p className="text-sm text-gray-500 mb-4">
-            Connectez-vous en tant qu&apos;administrateur pour modifier cette section.
-          </p>
-        )}
-        {loading && <p className="text-sm text-gray-500 mb-4">Chargement…</p>}
-
-        <div className="space-y-6">
-          {/* Informations principales */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Mail className="w-5 h-5" />
-                {t('mainInfo')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('titleLabel')} (Français)</Label>
-                  <Input
-                    value={contactInfo.title.fr}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, title: { ...contactInfo.title, fr: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('titleLabel')} (English)</Label>
-                  <Input
-                    value={contactInfo.title.en}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, title: { ...contactInfo.title, en: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('subtitleLabel')} (Français)</Label>
-                  <Input
-                    value={contactInfo.subtitle.fr}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, subtitle: { ...contactInfo.subtitle, fr: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('subtitleLabel')} (English)</Label>
-                  <Input
-                    value={contactInfo.subtitle.en}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, subtitle: { ...contactInfo.subtitle, en: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('description')} (Français)</Label>
-                  <Textarea
-                    value={contactInfo.description.fr}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, description: { ...contactInfo.description, fr: e.target.value } })
-                    }
-                    rows={3}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('description')} (English)</Label>
-                  <Textarea
-                    value={contactInfo.description.en}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, description: { ...contactInfo.description, en: e.target.value } })
-                    }
-                    rows={3}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Coordonnées */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Phone className="w-5 h-5" />
-                {t('contactDetails')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('email')}</Label>
-                  <Input
-                    type="email"
-                    value={contactInfo.email}
-                    onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('phone')}</Label>
-                  <Input
-                    value={contactInfo.phone}
-                    onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('address')} (Français)</Label>
-                  <Input
-                    value={contactInfo.address.fr}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, address: { ...contactInfo.address, fr: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('address')} (English)</Label>
-                  <Input
-                    value={contactInfo.address.en}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, address: { ...contactInfo.address, en: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('hours')} (Français)</Label>
-                  <Input
-                    value={contactInfo.hours.fr}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, hours: { ...contactInfo.hours, fr: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('hours')} (English)</Label>
-                  <Input
-                    value={contactInfo.hours.en}
-                    onChange={(e) =>
-                      setContactInfo({ ...contactInfo, hours: { ...contactInfo.hours, en: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Les réseaux sociaux sont désormais gérés à un seul endroit
-              (Paramètres → Réseaux sociaux) pour éviter les doublons : ces liens
-              alimentent à la fois la page Contact et le pied de page. */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle>{t('socialMedia')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Les réseaux sociaux se gèrent désormais dans{' '}
-                <Link href={'/admin/settings/social' as Route} className="text-primary-600 dark:text-primary-400 underline">
-                  Paramètres → Réseaux sociaux
-                </Link>{' '}
-                (source unique, affichée sur la page Contact et le pied de page).
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </AdminPage>
+  );
+}
+
+
+/** Petite pastille de langue (FR / EN) accolée aux libellés des champs traduits. */
+function LangChip({ lang }: { lang: 'FR' | 'EN' }) {
+  return (
+    <span className="rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold text-gray-500 dark:bg-white/10 dark:text-gray-400">
+      {lang}
+    </span>
   );
 }

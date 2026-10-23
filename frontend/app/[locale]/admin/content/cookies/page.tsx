@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { Save, Cookie, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AdminPage, AdminPageHeader } from '@/components/admin/admin-page';
+import { AdminSectionCard, AdminStatus, BilingualField, LangChip } from '@/components/admin/content-list-editor';
+import { Save, Cookie, Layers } from 'lucide-react';
 import { useSiteContentSection } from '@/hooks/use-site-content-section';
 import { CookieConsentAnalytics } from '@/components/admin/cookie-consent-analytics';
 
@@ -40,7 +39,6 @@ const DEFAULTS: CookiesContent = {
 
 export default function AdminCookiesPage() {
   const t = useTranslations('admin.content.cookies');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
 
   const { token, blocks, loading, saving, error, success, saveAll, value } =
     useSiteContentSection('cookies');
@@ -81,155 +79,59 @@ export default function AdminCookiesPage() {
     });
   };
 
-  return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
+  const setBi = (field: 'title' | 'description' | 'acceptAll' | 'rejectAll' | 'customize') => (lang: 'fr' | 'en', v: string) =>
+    setCookiesContent({ ...cookiesContent, [field]: { ...cookiesContent[field], [lang]: v } });
 
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-              {t('subtitle')}
-            </p>
-          </div>
+  const categoryKeys = ['essential', 'analytics', 'marketing'] as const;
+
+  return (
+    <AdminPage>
+      <AdminPageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        icon={Cookie}
+        actions={
           <Button onClick={handleSave} className="gap-2" disabled={saving || !token}>
-            <Save className="w-4 h-4" />
+            <Save className="h-4 w-4" />
             {saving ? '…' : t('save')}
           </Button>
+        }
+      />
+
+      <AdminStatus error={error} success={success} loading={loading} signedOut={!token} />
+
+      {/* Configuration principale */}
+      <AdminSectionCard title={t('mainConfiguration')} icon={Cookie}>
+        <BilingualField label={t('titleLabel')} value={cookiesContent.title} onChange={setBi('title')} />
+        <BilingualField label={t('description')} value={cookiesContent.description} onChange={setBi('description')} multiline />
+        <div className="space-y-6 rounded-xl bg-gray-50 p-4 dark:bg-white/[0.02] sm:p-5">
+          <BilingualField label={t('acceptAll')} value={cookiesContent.acceptAll} onChange={setBi('acceptAll')} />
+          <BilingualField label={t('rejectAll')} value={cookiesContent.rejectAll} onChange={setBi('rejectAll')} />
+          <BilingualField label={t('customize')} value={cookiesContent.customize} onChange={setBi('customize')} />
         </div>
+      </AdminSectionCard>
 
-        {/* Bandeaux d'état */}
-        {error && (
-          <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300 mb-4">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-        {success && (
-          <div role="status" className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300 mb-4">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span>{success}</span>
-          </div>
-        )}
-        {!token && (
-          <p className="text-sm text-gray-500 mb-4">
-            Connectez-vous en tant qu&apos;administrateur pour modifier cette section.
-          </p>
-        )}
-        {loading && <p className="text-sm text-gray-500 mb-4">Chargement…</p>}
-
-        <div className="space-y-6">
-          {/* Configuration principale */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Cookie className="w-5 h-5" />
-                {t('mainConfiguration')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('titleLabel')} (Français)</Label>
-                  <Input value={cookiesContent.title.fr} onChange={(e) => setCookiesContent({ ...cookiesContent, title: { ...cookiesContent.title, fr: e.target.value } })} className="mt-1" />
-                </div>
-                <div>
-                  <Label>{t('titleLabel')} (English)</Label>
-                  <Input value={cookiesContent.title.en} onChange={(e) => setCookiesContent({ ...cookiesContent, title: { ...cookiesContent.title, en: e.target.value } })} className="mt-1" />
-                </div>
+      {/* Catégories de cookies (affichage ; édition fine à venir) */}
+      <AdminSectionCard title={t('categories')} icon={Layers}>
+        <ul className="grid gap-4 lg:grid-cols-3">
+          {categoryKeys.map((key) => (
+            <li key={key} className="space-y-4 rounded-xl border border-gray-200 p-4 dark:border-white/10">
+              <h3 className="font-semibold text-ink dark:text-white">{t(key)}</h3>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('categoryTitle')} <LangChip lang="fr" /></Label>
+                <Input defaultValue={cookiesContent.categories[key].title.fr} />
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('description')} (Français)</Label>
-                  <Textarea value={cookiesContent.description.fr} onChange={(e) => setCookiesContent({ ...cookiesContent, description: { ...cookiesContent.description, fr: e.target.value } })} rows={3} className="mt-1" />
-                </div>
-                <div>
-                  <Label>{t('description')} (English)</Label>
-                  <Textarea value={cookiesContent.description.en} onChange={(e) => setCookiesContent({ ...cookiesContent, description: { ...cookiesContent.description, en: e.target.value } })} rows={3} className="mt-1" />
-                </div>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">{t('categoryTitle')} <LangChip lang="en" /></Label>
+                <Input defaultValue={cookiesContent.categories[key].title.en} />
               </div>
+            </li>
+          ))}
+        </ul>
+      </AdminSectionCard>
 
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label>{t('acceptAll')} (FR)</Label>
-                  <Input value={cookiesContent.acceptAll.fr} onChange={(e) => setCookiesContent({ ...cookiesContent, acceptAll: { ...cookiesContent.acceptAll, fr: e.target.value } })} className="mt-1" />
-                </div>
-                <div>
-                  <Label>{t('rejectAll')} (FR)</Label>
-                  <Input value={cookiesContent.rejectAll.fr} onChange={(e) => setCookiesContent({ ...cookiesContent, rejectAll: { ...cookiesContent.rejectAll, fr: e.target.value } })} className="mt-1" />
-                </div>
-                <div>
-                  <Label>{t('customize')} (FR)</Label>
-                  <Input value={cookiesContent.customize.fr} onChange={(e) => setCookiesContent({ ...cookiesContent, customize: { ...cookiesContent.customize, fr: e.target.value } })} className="mt-1" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Catégories de cookies (affichage ; édition fine à venir) */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle>{t('categories')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="p-4 border rounded-lg dark:border-gray-700">
-                <h3 className="font-semibold mb-3 text-gray-900 dark:text-white">{t('essential')}</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>{t('categoryTitle')} (FR)</Label>
-                    <Input defaultValue={cookiesContent.categories.essential.title.fr} className="mt-1" />
-                  </div>
-                  <div>
-                    <Label>{t('categoryTitle')} (EN)</Label>
-                    <Input defaultValue={cookiesContent.categories.essential.title.en} className="mt-1" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 border rounded-lg dark:border-gray-700">
-                <h3 className="font-semibold mb-3 text-gray-900 dark:text-white">{t('analytics')}</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>{t('categoryTitle')} (FR)</Label>
-                    <Input defaultValue={cookiesContent.categories.analytics.title.fr} className="mt-1" />
-                  </div>
-                  <div>
-                    <Label>{t('categoryTitle')} (EN)</Label>
-                    <Input defaultValue={cookiesContent.categories.analytics.title.en} className="mt-1" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4 border rounded-lg dark:border-gray-700">
-                <h3 className="font-semibold mb-3 text-gray-900 dark:text-white">{t('marketing')}</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>{t('categoryTitle')} (FR)</Label>
-                    <Input defaultValue={cookiesContent.categories.marketing.title.fr} className="mt-1" />
-                  </div>
-                  <div>
-                    <Label>{t('categoryTitle')} (EN)</Label>
-                    <Input defaultValue={cookiesContent.categories.marketing.title.en} className="mt-1" />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Consentements enregistrés + statistiques (RGPD) */}
-          <CookieConsentAnalytics />
-        </div>
-      </div>
-    </div>
+      {/* Consentements enregistrés + statistiques (RGPD) */}
+      <CookieConsentAnalytics />
+    </AdminPage>
   );
 }

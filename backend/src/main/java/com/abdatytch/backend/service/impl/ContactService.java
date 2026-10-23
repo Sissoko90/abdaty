@@ -27,8 +27,8 @@ public class ContactService {
     private final IEmailService emailService;
     private final NotificationEventPublisher notificationPublisher;
 
-    /** Adresse qui reçoit les notifications de contact :
-     *  app.contact.notify-email → sinon ADMIN_EMAIL (.env) → sinon l'expéditeur SMTP. */
+    /** Adresse qui reçoit les notifications de contact : app.contact.notify-email
+     *  (CONTACT_NOTIFY_EMAIL, défaut contact@abdatytch.com dans application.yml). */
     @Value("${app.contact.notify-email:${ADMIN_EMAIL:${spring.mail.from:}}}")
     private String notifyEmail;
 
@@ -69,7 +69,10 @@ public class ContactService {
         Mono<Void> notify = Mono.empty();
         if (notifyEmail != null && !notifyEmail.isBlank()) {
             String subject = "Nouveau message de contact — " + m.getName();
-            notify = emailService.sendHtmlEmail(notifyEmail, subject, buildNotificationHtml(m), null, null, null)
+            // Reply-To = visiteur : « Répondre » depuis la boîte contact lui écrit directement.
+            String replyTo = m.getEmail() == null ? "" : m.getEmail().replaceAll("[\\r\\n]", "");
+            java.util.Map<String, String> headers = replyTo.isBlank() ? null : java.util.Map.of("Reply-To", replyTo);
+            notify = emailService.sendHtmlEmail(notifyEmail, subject, buildNotificationHtml(m), headers, null, null)
                 .onErrorResume(e -> {
                     logger.warn("Notification contact non envoyée : {}", e.getMessage());
                     return Mono.empty();

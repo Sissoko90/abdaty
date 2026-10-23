@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSession } from 'next-auth/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { Badge } from '@/components/ui/badge';
+import { AdminPage, AdminPageHeader, AdminStatCard } from '@/components/admin/admin-page';
 import { Switch } from '@/components/ui/switch';
-import { Globe, Search, Ban, CheckCircle, MapPin, Shield, Loader2, RefreshCw, Plus } from 'lucide-react';
+import { Globe, Search, Ban, CheckCircle, MapPin, Shield, Loader2, RefreshCw, Plus, AlertTriangle } from 'lucide-react';
 import {
   listGeoRules,
   getGeoBlockingStats,
@@ -30,7 +30,6 @@ interface EnrichedRule extends GeoBlockingRule {
 
 export default function AdminGeoBlockingPage() {
   const t = useTranslations('admin.geoBlocking');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
   const { data: session } = useSession();
   const token = session?.accessToken;
 
@@ -166,262 +165,212 @@ export default function AdminGeoBlockingPage() {
     return 'text-green-600 dark:text-green-400';
   };
 
-  return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
+  const th = 'h-11 bg-gray-50 px-4 text-left text-xs font-semibold text-gray-500 first:rounded-l-lg last:rounded-r-lg dark:bg-white/[0.03] dark:text-gray-400';
+  const selectCls =
+    'h-11 rounded-xl border border-gray-300 bg-white px-3.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/5 dark:text-white';
 
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <Globe className="w-8 h-8" />
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">{t('subtitle')}</p>
-          </div>
-          <Button variant="outline" size="sm" onClick={reload} disabled={loading} className="gap-2">
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+  return (
+    <AdminPage>
+      <AdminPageHeader
+        icon={Globe}
+        title={t('title')}
+        description={t('subtitle')}
+        actions={
+          <Button variant="outline" onClick={reload} disabled={loading} className="gap-2">
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             Actualiser
           </Button>
+        }
+      />
+
+      {error && (
+        <div role="alert" className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          {error}
         </div>
+      )}
 
-        {error && (
-          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950/40 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
-            {error}
-          </div>
-        )}
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('totalCountries')}</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalCountries}</p>
-                </div>
-                <Globe className="w-8 h-8 text-blue-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('blockedCountries')}</p>
-                  <p className="text-2xl font-bold text-red-600">{blockedCount}</p>
-                </div>
-                <Ban className="w-8 h-8 text-red-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('allowedCountries')}</p>
-                  <p className="text-2xl font-bold text-green-600">{allowedCount}</p>
-                </div>
-                <CheckCircle className="w-8 h-8 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{t('totalRequests')}</p>
-                  <p className="text-2xl font-bold text-purple-600">{totalRequests.toLocaleString()}</p>
-                </div>
-                <Shield className="w-8 h-8 text-purple-500" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Bloquer un pays */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Ban className="w-5 h-5 text-red-500" />
-              Bloquer un pays
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <select
-                value={blockCode}
-                onChange={(e) => setBlockCode(e.target.value)}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                <option value="">Choisir un pays à bloquer…</option>
-                {COUNTRIES.slice()
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {flagFromCode(c.code)} {c.name} ({c.code}) — {c.continentName}
-                    </option>
-                  ))}
-              </select>
-              <Button onClick={handleBlockNew} disabled={!blockCode || busyCode === 'new'} variant="destructive" className="gap-2">
-                {busyCode === 'new' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                Bloquer
-              </Button>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Le pays est ajouté aux règles et immédiatement bloqué. Vous pouvez le débloquer ensuite dans la liste.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Search and Filter */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 mb-6">
-          <CardContent className="p-4">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  placeholder={t('searchPlaceholder')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <select
-                value={filterContinent}
-                onChange={(e) => setFilterContinent(e.target.value)}
-                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                <option value="all">{t('allContinents')}</option>
-                {continents.map((continent) => (
-                  <option key={continent} value={continent}>
-                    {continent}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </CardContent>
-        </Card>
-
-        {loading ? (
-          <div className="flex items-center justify-center py-12 text-gray-500">
-            <Loader2 className="w-6 h-6 animate-spin mr-2" />
-            Chargement…
-          </div>
-        ) : rules.length === 0 ? (
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="py-12 text-center text-gray-500 dark:text-gray-400">
-              Aucune règle géographique. Utilisez « Bloquer un pays » ci-dessus pour en créer une.
-            </CardContent>
-          </Card>
-        ) : (
-          continents.map((continent) => {
-            const continentRules = filteredRules.filter((r) => r._continentName === continent);
-            if (continentRules.length === 0) return null;
-
-            return (
-              <Card key={continent} className="dark:bg-gray-800 dark:border-gray-700 mb-6">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      <MapPin className="w-5 h-5" />
-                      {continent}
-                      <span className="text-sm font-normal text-gray-600 dark:text-gray-400">
-                        ({continentRules.length} {t('countries')})
-                      </span>
-                    </CardTitle>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        disabled={busyCode === 'continent:' + continent}
-                        onClick={() => handleBlockContinent(continentRules.map((r) => r.countryCode), continent)}
-                      >
-                        {t('blockAll')}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        disabled={busyCode === 'continent:' + continent}
-                        onClick={() => handleUnblockContinent(continentRules.map((r) => r.countryCode), continent)}
-                      >
-                        {t('unblockAll')}
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-gray-200 dark:border-gray-700">
-                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('country')}</th>
-                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('code')}</th>
-                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('requests')}</th>
-                          <th className="text-left py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('threatScore')}</th>
-                          <th className="text-right py-3 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">{t('access')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {continentRules.map((country) => {
-                          const score = country.threatScore ?? 0;
-                          return (
-                            <tr key={country.countryCode} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                              <td className="py-4 px-4">
-                                <div className="flex items-center gap-2">
-                                  <span className="text-2xl">{country._flag}</span>
-                                  <span className="font-medium text-gray-900 dark:text-white">{country._name}</span>
-                                </div>
-                              </td>
-                              <td className="py-4 px-4">
-                                <span className="font-mono text-sm text-gray-600 dark:text-gray-400">{country.countryCode}</span>
-                              </td>
-                              <td className="py-4 px-4">
-                                <span className="text-sm text-gray-900 dark:text-white">{(country.requestCount ?? 0).toLocaleString()}</span>
-                              </td>
-                              <td className="py-4 px-4">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 max-w-[100px]">
-                                    <div
-                                      className={`h-2 rounded-full ${
-                                        score >= 8 ? 'bg-red-500' : score >= 5 ? 'bg-orange-500' : score >= 3 ? 'bg-yellow-500' : 'bg-green-500'
-                                      }`}
-                                      style={{ width: `${Math.min(score, 10) * 10}%` }}
-                                    />
-                                  </div>
-                                  <span className={`text-sm font-medium ${getThreatColor(score)}`}>{score}/10</span>
-                                </div>
-                              </td>
-                              <td className="py-4 px-4">
-                                <div className="flex items-center justify-end gap-3">
-                                  <span className="text-sm text-gray-600 dark:text-gray-400">
-                                    {isBlocked(country) ? t('blocked') : t('allowed')}
-                                  </span>
-                                  <Switch
-                                    checked={!isBlocked(country)}
-                                    disabled={busyCode === country.countryCode}
-                                    onCheckedChange={() => handleToggle(country)}
-                                  />
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })
-        )}
+      {/* Chiffres clés */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <AdminStatCard label={t('totalCountries')} value={totalCountries} icon={Globe} tone="ink" />
+        <AdminStatCard label={t('blockedCountries')} value={blockedCount} icon={Ban} tone="primary" />
+        <AdminStatCard label={t('allowedCountries')} value={allowedCount} icon={CheckCircle} tone="emerald" />
+        <AdminStatCard label={t('totalRequests')} value={totalRequests.toLocaleString()} icon={Shield} tone="ochre" />
       </div>
-    </div>
+
+      {/* Bloquer un pays */}
+      <section className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]">
+        <h2 className="mb-1 flex items-center gap-2 text-lg font-bold text-ink dark:text-white">
+          <Ban className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+          Bloquer un pays
+        </h2>
+        <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+          Le pays est ajouté aux règles et immédiatement bloqué. Vous pouvez le débloquer ensuite dans la liste.
+        </p>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <select
+            value={blockCode}
+            onChange={(e) => setBlockCode(e.target.value)}
+            aria-label="Choisir un pays à bloquer"
+            className={`flex-1 ${selectCls}`}
+          >
+            <option value="">Choisir un pays à bloquer…</option>
+            {COUNTRIES.slice()
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((c) => (
+                <option key={c.code} value={c.code}>
+                  {flagFromCode(c.code)} {c.name} ({c.code}) — {c.continentName}
+                </option>
+              ))}
+          </select>
+          <Button onClick={handleBlockNew} disabled={!blockCode || busyCode === 'new'} variant="destructive" className="h-11 gap-2">
+            {busyCode === 'new' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+            Bloquer
+          </Button>
+        </div>
+      </section>
+
+      {/* Recherche et filtre */}
+      <div className="flex flex-col gap-3 md:flex-row">
+        <div className="relative flex-1">
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Input
+            placeholder={t('searchPlaceholder')}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+            aria-label={t('searchPlaceholder')}
+          />
+        </div>
+        <select
+          value={filterContinent}
+          onChange={(e) => setFilterContinent(e.target.value)}
+          aria-label={t('allContinents')}
+          className={selectCls}
+        >
+          <option value="all">{t('allContinents')}</option>
+          {continents.map((continent) => (
+            <option key={continent} value={continent}>
+              {continent}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-16 text-sm text-gray-500 dark:text-gray-400">
+          <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary-600" />
+          Chargement…
+        </div>
+      ) : rules.length === 0 ? (
+        <div className="flex flex-col items-center rounded-2xl border border-dashed border-gray-300 bg-white px-6 py-16 text-center dark:border-white/15 dark:bg-white/[0.02]">
+          <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+            <Globe className="h-6 w-6" />
+          </span>
+          <p className="max-w-md text-sm text-gray-600 dark:text-gray-400">
+            Aucune règle géographique. Utilisez « Bloquer un pays » ci-dessus pour en créer une.
+          </p>
+        </div>
+      ) : (
+        continents.map((continent) => {
+          const continentRules = filteredRules.filter((r) => r._continentName === continent);
+          if (continentRules.length === 0) return null;
+
+          return (
+            <section key={continent} className="rounded-2xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.03]">
+              <div className="flex flex-col gap-3 border-b border-gray-100 p-6 dark:border-white/10 sm:flex-row sm:items-center sm:justify-between">
+                <h2 className="flex items-center gap-2 text-lg font-bold text-ink dark:text-white">
+                  <MapPin className="h-5 w-5 text-gray-400" />
+                  {continent}
+                  <Badge variant="secondary">
+                    {continentRules.length} {t('countries')}
+                  </Badge>
+                </h2>
+                <div className="flex gap-2">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    disabled={busyCode === 'continent:' + continent}
+                    onClick={() => handleBlockContinent(continentRules.map((r) => r.countryCode), continent)}
+                  >
+                    {t('blockAll')}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={busyCode === 'continent:' + continent}
+                    onClick={() => handleUnblockContinent(continentRules.map((r) => r.countryCode), continent)}
+                  >
+                    {t('unblockAll')}
+                  </Button>
+                </div>
+              </div>
+              <div className="overflow-x-auto p-2 sm:p-4">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr>
+                      <th className={th}>{t('country')}</th>
+                      <th className={th}>{t('code')}</th>
+                      <th className={th}>{t('requests')}</th>
+                      <th className={th}>{t('threatScore')}</th>
+                      <th className={`${th} text-right`}>{t('access')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {continentRules.map((country) => {
+                      const score = country.threatScore ?? 0;
+                      return (
+                        <tr key={country.countryCode} className="border-b border-gray-100 transition-colors last:border-0 hover:bg-gray-50/70 dark:border-white/5 dark:hover:bg-white/[0.03]">
+                          <td className="px-4 py-3.5">
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl leading-none">{country._flag}</span>
+                              <span className="font-medium text-ink dark:text-white">{country._name}</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3.5">
+                            <span className="font-mono text-xs text-gray-500 dark:text-gray-400">{country.countryCode}</span>
+                          </td>
+                          <td className="px-4 py-3.5 tabular-nums text-gray-700 dark:text-gray-300">
+                            {(country.requestCount ?? 0).toLocaleString()}
+                          </td>
+                          <td className="px-4 py-3.5">
+                            <div className="flex items-center gap-3">
+                              <div className="h-1.5 w-full max-w-[100px] rounded-full bg-gray-100 dark:bg-white/10">
+                                <div
+                                  className={`h-1.5 rounded-full ${
+                                    score >= 8 ? 'bg-red-500' : score >= 5 ? 'bg-orange-500' : score >= 3 ? 'bg-amber-400' : 'bg-emerald-500'
+                                  }`}
+                                  style={{ width: `${Math.min(score, 10) * 10}%` }}
+                                />
+                              </div>
+                              <span className={`text-xs font-semibold tabular-nums ${getThreatColor(score)}`}>{score}/10</span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3.5">
+                            <div className="flex items-center justify-end gap-3">
+                              {isBlocked(country) ? (
+                                <Badge variant="destructive">{t('blocked')}</Badge>
+                              ) : (
+                                <Badge variant="success">{t('allowed')}</Badge>
+                              )}
+                              <Switch
+                                checked={!isBlocked(country)}
+                                disabled={busyCode === country.countryCode}
+                                onCheckedChange={() => handleToggle(country)}
+                                aria-label={`${country._name} : ${isBlocked(country) ? t('blocked') : t('allowed')}`}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          );
+        })
+      )}
+    </AdminPage>
   );
 }

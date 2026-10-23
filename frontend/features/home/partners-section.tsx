@@ -11,11 +11,10 @@ interface Partner {
 }
 
 /** Partenaires par défaut (repli si la base est vide). */
+// Noms alignés sur les logos réellement affichés (texte alternatif correct).
 const defaultPartners: Partner[] = [
-  { name: 'Orange Mali', logo: '/api.png' },
-  { name: 'Moov Africa', logo: '/moov.jpg' },
-  { name: 'Malitel', logo: '/chapchap.png' },
-  { name: 'Bank of Africa', logo: '/aua.jpg' },
+  { name: 'Chap Chap', logo: '/chapchap.png' },
+  { name: 'AUA', logo: '/aua.jpg' },
   { name: 'Ecobank', logo: '/ecobank.png' },
 ];
 

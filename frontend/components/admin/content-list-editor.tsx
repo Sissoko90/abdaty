@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Plus, Edit, Trash2, Save, AlertCircle, CheckCircle2, Upload, X, Eye, EyeOff } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Plus, Edit, Trash2, Save, AlertCircle, CheckCircle2, Upload, X, Eye, EyeOff, Inbox, ImageIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useSiteContentSection } from '@/hooks/use-site-content-section';
 import { uploadMedia, mediaUrl } from '@/services/content.service';
@@ -169,12 +171,16 @@ export function ContentListEditor({ section, heading, fields, titleField, addLab
   };
 
   return (
-    <Card className="dark:bg-gray-800 dark:border-gray-700">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-gray-900 dark:text-white">{heading}</CardTitle>
+    <Card>
+      <CardHeader className="border-b border-gray-100 dark:border-white/10">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <CardTitle className="text-lg">{heading}</CardTitle>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              {items.length} {items.length > 1 ? 'éléments' : 'élément'}
+            </p>
+          </div>
           <Button
-            size="sm"
             className="gap-2"
             disabled={!token}
             onClick={() => {
@@ -182,71 +188,116 @@ export function ContentListEditor({ section, heading, fields, titleField, addLab
               setIsCreating(true);
             }}
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="h-4 w-4" />
             {addLabel ?? 'Ajouter'}
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4 pt-6">
         {error && (
-          <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+            <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
         {success && (
-          <div role="status" className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <div role="status" className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>{success}</span>
           </div>
         )}
 
         {/* Liste des items */}
-        <div className="space-y-2">
+        <ul className="space-y-2">
           {items.map((it) => (
-            <div
+            <li
               key={it.id}
-              className={`flex items-center justify-between p-3 border rounded-lg dark:border-gray-700 ${it.active ? '' : 'opacity-60'}`}
+              className={`flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 transition-colors hover:border-gray-300 dark:border-white/10 dark:bg-white/[0.02] dark:hover:border-white/20 ${
+                editing?.id === it.id && !isCreating ? 'ring-2 ring-primary-500' : ''
+              } ${it.active ? '' : 'opacity-60'}`}
             >
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="text-sm font-medium text-gray-900 dark:text-white truncate">{itemLabel(it)}</span>
-                {!it.active && (
-                  <span className="shrink-0 px-2 py-0.5 rounded-full text-xs bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                    Désactivé
-                  </span>
-                )}
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-xs font-semibold tabular-nums text-gray-600 dark:bg-white/10 dark:text-gray-300">
+                  {it.order}
+                </span>
+                <span className="truncate text-sm font-medium text-ink dark:text-white">{itemLabel(it)}</span>
+                {!it.active && <Badge variant="secondary" className="shrink-0">Désactivé</Badge>}
               </div>
-              <div className="flex gap-2">
+              <div className="flex shrink-0 gap-1">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
                   title={it.active ? 'Désactiver' : 'Activer'}
+                  aria-label={it.active ? 'Désactiver' : 'Activer'}
                   disabled={saving || !token}
                   onClick={() => toggleActive(it)}
                 >
-                  {it.active ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                  {it.active ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                 </Button>
-                <Button variant="outline" size="icon" onClick={() => { setEditing(it); setIsCreating(false); }}>
-                  <Edit className="w-4 h-4" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  title="Modifier"
+                  aria-label="Modifier"
+                  onClick={() => { setEditing(it); setIsCreating(false); }}
+                >
+                  <Edit className="h-4 w-4" />
                 </Button>
-                <Button variant="outline" size="icon" onClick={() => handleDelete(it.id)}>
-                  <Trash2 className="w-4 h-4" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  title="Supprimer"
+                  aria-label="Supprimer"
+                  className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10"
+                  onClick={() => handleDelete(it.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
-            </div>
+            </li>
           ))}
-          {items.length === 0 && <p className="text-sm text-gray-500">Aucun élément.</p>}
-        </div>
+        </ul>
+        {items.length === 0 && !editing && (
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-gray-300 px-6 py-10 text-center dark:border-white/15">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+              <Inbox className="h-6 w-6" />
+            </span>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Aucun élément pour le moment.</p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              disabled={!token}
+              onClick={() => {
+                setEditing(emptyItem());
+                setIsCreating(true);
+              }}
+            >
+              <Plus className="h-4 w-4" />
+              {addLabel ?? 'Ajouter'}
+            </Button>
+          </div>
+        )}
 
         {/* Formulaire d'édition */}
         {editing && (
-          <div className="mt-4 p-4 border-2 border-primary-200 dark:border-primary-900 rounded-lg space-y-4">
-            <h4 className="font-semibold text-gray-900 dark:text-white">
-              {isCreating ? 'Nouvel élément' : 'Modifier l’élément'}
-            </h4>
+          <div className="space-y-5 rounded-2xl border border-primary-200 bg-primary-50/40 p-5 dark:border-primary-500/30 dark:bg-primary-500/5 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <h4 className="text-base font-bold text-ink dark:text-white">
+                {isCreating ? 'Nouvel élément' : 'Modifier l’élément'}
+              </h4>
+              <button
+                type="button"
+                onClick={() => setEditing(null)}
+                aria-label="Fermer"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 hover:bg-white hover:text-ink dark:hover:bg-white/10 dark:hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
             {uploadError && (
-              <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300">
-                <AlertCircle className="w-4 h-4 shrink-0" />
+              <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+                <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{uploadError}</span>
               </div>
             )}
@@ -257,18 +308,20 @@ export function ContentListEditor({ section, heading, fields, titleField, addLab
               if (f.type === 'image') {
                 const url = (v as string) || '';
                 return (
-                  <div key={f.name}>
+                  <div key={f.name} className="space-y-2">
                     <Label>{f.label}</Label>
-                    <div className="flex items-center gap-3 mt-1">
+                    <div className="flex items-center gap-4">
                       {url ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={mediaUrl(url)} alt="" className="h-16 w-16 rounded object-cover border border-gray-200 dark:border-gray-700" />
+                        <img src={mediaUrl(url)} alt="" className="h-16 w-16 rounded-xl border border-gray-200 bg-white object-contain p-1 dark:border-white/10" />
                       ) : (
-                        <div className="h-16 w-16 rounded bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-xs text-gray-400">—</div>
+                        <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white text-gray-400 dark:border-white/15 dark:bg-white/5">
+                          <ImageIcon className="h-5 w-5" />
+                        </div>
                       )}
-                      <div className="flex-1 flex items-center gap-2">
-                        <label className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                          <Upload className="w-4 h-4" />
+                      <div className="flex flex-1 flex-wrap items-center gap-2">
+                        <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:bg-gray-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
+                          <Upload className="h-4 w-4" />
                           {uploadingField === f.name ? 'Upload…' : 'Choisir une image'}
                           <input
                             type="file"
@@ -282,8 +335,8 @@ export function ContentListEditor({ section, heading, fields, titleField, addLab
                           />
                         </label>
                         {url && (
-                          <button type="button" onClick={() => setField(f.name, null, '')} className="inline-flex items-center gap-1 text-xs text-red-600 dark:text-red-400">
-                            <X className="w-3 h-3" /> Retirer
+                          <button type="button" onClick={() => setField(f.name, null, '')} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10">
+                            <X className="h-3 w-3" /> Retirer
                           </button>
                         )}
                       </div>
@@ -295,82 +348,75 @@ export function ContentListEditor({ section, heading, fields, titleField, addLab
               // Champ select : liste déroulante d'options prédéfinies.
               if (f.type === 'select') {
                 return (
-                  <div key={f.name}>
+                  <div key={f.name} className="space-y-2">
                     <Label>{f.label}</Label>
                     <select
                       value={(v as string) || ''}
                       onChange={(e) => setField(f.name, null, e.target.value)}
-                      className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="h-11 w-full rounded-xl border border-gray-300 bg-white px-3.5 text-sm text-ink focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/5 dark:text-white"
                     >
                       <option value="">—</option>
                       {(f.options ?? []).map((opt) => (
                         <option key={opt.value} value={opt.value}>{opt.label}</option>
                       ))}
                     </select>
-                    {f.hint && <p className="text-xs text-gray-500 mt-1">{f.hint}</p>}
+                    {f.hint && <p className="text-xs text-gray-500 dark:text-gray-400">{f.hint}</p>}
                   </div>
                 );
               }
 
               if (f.translated && typeof v === 'object') {
                 return (
-                  <div key={f.name} className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label>{f.label} (FR)</Label>
-                      {f.type === 'textarea' ? (
-                        <Textarea value={v.fr} onChange={(e) => setField(f.name, 'fr', e.target.value)} rows={3} className="mt-1" />
-                      ) : (
-                        <Input value={v.fr} onChange={(e) => setField(f.name, 'fr', e.target.value)} className="mt-1" />
-                      )}
-                    </div>
-                    <div>
-                      <Label>{f.label} (EN)</Label>
-                      {f.type === 'textarea' ? (
-                        <Textarea value={v.en} onChange={(e) => setField(f.name, 'en', e.target.value)} rows={3} className="mt-1" />
-                      ) : (
-                        <Input value={v.en} onChange={(e) => setField(f.name, 'en', e.target.value)} className="mt-1" />
-                      )}
-                    </div>
+                  <div key={f.name} className="grid gap-4 md:grid-cols-2">
+                    {(['fr', 'en'] as const).map((lang) => (
+                      <div key={lang} className="space-y-2">
+                        <Label className="flex items-center gap-2">
+                          {f.label}
+                          <LangChip lang={lang} />
+                        </Label>
+                        {f.type === 'textarea' ? (
+                          <Textarea value={v[lang]} onChange={(e) => setField(f.name, lang, e.target.value)} rows={3} />
+                        ) : (
+                          <Input value={v[lang]} onChange={(e) => setField(f.name, lang, e.target.value)} />
+                        )}
+                      </div>
+                    ))}
                   </div>
                 );
               }
               return (
-                <div key={f.name}>
+                <div key={f.name} className="space-y-2">
                   <Label>{f.label}</Label>
                   <Input
                     value={v as string}
                     onChange={(e) => setField(f.name, null, e.target.value)}
                     placeholder={f.hint}
-                    className="mt-1"
                   />
-                  {f.hint && <p className="text-xs text-gray-500 mt-1">{f.hint}</p>}
+                  {f.hint && <p className="text-xs text-gray-500 dark:text-gray-400">{f.hint}</p>}
                 </div>
               );
             })}
-            <div className="grid grid-cols-2 gap-3 items-end">
-              <div>
+            <div className="grid items-end gap-4 md:grid-cols-2">
+              <div className="space-y-2">
                 <Label>Ordre d&apos;affichage</Label>
                 <Input
                   type="number"
                   value={editing.order}
                   onChange={(e) => setEditing({ ...editing, order: parseInt(e.target.value) || 0 })}
-                  className="mt-1"
                 />
               </div>
-              <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer pb-2">
-                <input
-                  type="checkbox"
+              <label className="flex h-11 cursor-pointer items-center gap-3 text-sm font-medium text-ink dark:text-gray-200">
+                <Switch
                   checked={editing.active}
-                  onChange={(e) => setEditing({ ...editing, active: e.target.checked })}
-                  className="rounded"
+                  onCheckedChange={(checked) => setEditing({ ...editing, active: checked })}
                 />
                 Actif (visible sur le site)
               </label>
             </div>
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-2 border-t border-primary-200/60 pt-4 dark:border-white/10">
               <Button variant="outline" onClick={() => setEditing(null)}>Annuler</Button>
               <Button onClick={handleSave} className="gap-2" disabled={saving || !token}>
-                <Save className="w-4 h-4" />
+                <Save className="h-4 w-4" />
                 {saving ? '…' : 'Enregistrer'}
               </Button>
             </div>
@@ -378,5 +424,125 @@ export function ContentListEditor({ section, heading, fields, titleField, addLab
         )}
       </CardContent>
     </Card>
+  );
+}
+
+/** Petite pastille de langue pour les champs bilingues (réutilisée par les pages de contenu). */
+export function LangChip({ lang }: { lang: 'fr' | 'en' }) {
+  return (
+    <span className="rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gray-600 dark:bg-white/10 dark:text-gray-300">
+      {lang}
+    </span>
+  );
+}
+
+/**
+ * Paire de champs bilingues FR / EN côte à côte (Input ou Textarea).
+ * `onChange(lang, valeur)` reçoit la langue modifiée.
+ */
+export function BilingualField({
+  label,
+  value,
+  onChange,
+  multiline = false,
+  rows = 3,
+}: {
+  label: React.ReactNode;
+  value: { fr: string; en: string };
+  onChange: (lang: 'fr' | 'en', v: string) => void;
+  multiline?: boolean;
+  rows?: number;
+}) {
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      {(['fr', 'en'] as const).map((lang) => (
+        <div key={lang} className="space-y-2">
+          <Label className="flex items-center gap-2">
+            {label}
+            <LangChip lang={lang} />
+          </Label>
+          {multiline ? (
+            <Textarea value={value[lang]} onChange={(e) => onChange(lang, e.target.value)} rows={rows} />
+          ) : (
+            <Input value={value[lang]} onChange={(e) => onChange(lang, e.target.value)} />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Carte de section d'un formulaire admin : icône + titre + description, puis contenu. */
+export function AdminSectionCard({
+  title,
+  description,
+  icon: Icon,
+  actions,
+  children,
+}: {
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  icon?: React.ComponentType<{ className?: string }>;
+  actions?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="rounded-2xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.03]">
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-gray-100 px-6 py-5 dark:border-white/10">
+        <div className="flex items-start gap-3">
+          {Icon && (
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+              <Icon className="h-5 w-5" />
+            </span>
+          )}
+          <div>
+            <h2 className="text-lg font-bold text-ink dark:text-white">{title}</h2>
+            {description && <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">{description}</p>}
+          </div>
+        </div>
+        {actions}
+      </div>
+      <div className="space-y-6 p-6">{children}</div>
+    </section>
+  );
+}
+
+/** Bandeaux d'état communs (erreur, succès, non connecté, chargement). */
+export function AdminStatus({
+  error,
+  success,
+  loading,
+  signedOut,
+  signedOutMessage = 'Connectez-vous en tant qu’administrateur pour modifier cette section.',
+}: {
+  error?: string | null;
+  success?: string | null;
+  loading?: boolean;
+  signedOut?: boolean;
+  signedOutMessage?: React.ReactNode;
+}) {
+  if (!error && !success && !loading && !signedOut) return null;
+  return (
+    <div className="space-y-3">
+      {error && (
+        <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+      {success && (
+        <div role="status" className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+          <CheckCircle2 className="h-4 w-4 shrink-0" />
+          <span>{success}</span>
+        </div>
+      )}
+      {signedOut && <p className="text-sm text-gray-500 dark:text-gray-400">{signedOutMessage}</p>}
+      {loading && (
+        <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+          Chargement…
+        </p>
+      )}
+    </div>
   );
 }

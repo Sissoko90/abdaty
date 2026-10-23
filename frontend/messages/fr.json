@@ -1670,7 +1670,8 @@
         "inactive": "Inactif",
         "cancel": "Annuler",
         "save": "Enregistrer",
-        "saved": "Enregistré avec succès"
+        "saved": "Enregistré avec succès",
+        "empty": "Aucun service pour le moment. Ajoutez le premier pour l’afficher sur le site."
       },
       "hero": {
         "title": "Gérer la Section Hero",
@@ -1719,7 +1720,8 @@
         "cancel": "Annuler",
         "save": "Enregistrer",
         "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce témoignage ?",
-        "saved": "Enregistré avec succès"
+        "saved": "Enregistré avec succès",
+        "empty": "Aucun témoignage pour le moment. Ajoutez-en un pour l’afficher sur le site."
       },
       "navigation": {
         "title": "Gérer la Navigation",
@@ -1883,7 +1885,8 @@
         "filter": "Filtrer",
         "download": "Télécharger",
         "noFiles": "Aucun fichier trouvé",
-        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce fichier ?"
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce fichier ?",
+        "allDomains": "Tous les contextes"
       }
     },
     "settings": {
@@ -1972,7 +1975,11 @@
       "cancel": "Annuler",
       "save": "Enregistrer",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet article ?",
-      "saved": "Enregistré avec succès"
+      "saved": "Enregistré avec succès",
+      "total": "Articles",
+      "allStatuses": "Tous les statuts",
+      "noPosts": "Aucun article pour le moment.",
+      "tagsHint": "Séparés par des virgules"
     },
     "docs": {
       "title": "Gérer la Documentation",
@@ -1990,7 +1997,8 @@
       "cancel": "Annuler",
       "save": "Enregistrer",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette section ?",
-      "saved": "Enregistré avec succès"
+      "saved": "Enregistré avec succès",
+      "noSections": "Aucune section de documentation pour le moment."
     },
     "users": {
       "title": "Gestion des Utilisateurs",
@@ -2022,7 +2030,8 @@
       "block": "Bloquer",
       "unblock": "Débloquer",
       "confirmBan": "Êtes-vous sûr de vouloir bannir cet utilisateur ?",
-      "confirmBlock": "Êtes-vous sûr de vouloir bloquer cet utilisateur ?"
+      "confirmBlock": "Êtes-vous sûr de vouloir bloquer cet utilisateur ?",
+      "noResults": "Aucun utilisateur ne correspond à votre recherche."
     },
     "smsSubscribers": {
       "title": "Abonnés SMS",
@@ -2048,7 +2057,8 @@
       "activate": "Activer",
       "cancel": "Annuler",
       "confirmSuspend": "Êtes-vous sûr de vouloir suspendre cet abonné ?",
-      "confirmCancel": "Êtes-vous sûr de vouloir annuler cet abonnement ?"
+      "confirmCancel": "Êtes-vous sûr de vouloir annuler cet abonnement ?",
+      "noResults": "Aucun abonné ne correspond à votre recherche."
     },
     "security": {
       "title": "Sécurité & IPs Suspectes",
@@ -2140,7 +2150,8 @@
       "totalEndpoints": "Total Endpoints",
       "apiVersion": "Version API",
       "apiStatus": "Statut API",
-      "operational": "Opérationnel"
+      "operational": "Opérationnel",
+      "categories": "Catégories"
     }
   },
   "partners": {

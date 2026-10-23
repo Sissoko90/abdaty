@@ -1670,7 +1670,8 @@
         "inactive": "Inactive",
         "cancel": "Cancel",
         "save": "Save",
-        "saved": "Saved successfully"
+        "saved": "Saved successfully",
+        "empty": "No services yet. Add the first one to show it on the site."
       },
       "hero": {
         "title": "Manage Hero Section",
@@ -1719,7 +1720,8 @@
         "cancel": "Cancel",
         "save": "Save",
         "confirmDelete": "Are you sure you want to delete this testimonial?",
-        "saved": "Saved successfully"
+        "saved": "Saved successfully",
+        "empty": "No testimonials yet. Add one to show it on the site."
       },
       "navigation": {
         "title": "Manage Navigation",
@@ -1883,7 +1885,8 @@
         "filter": "Filter",
         "download": "Download",
         "noFiles": "No files found",
-        "confirmDelete": "Are you sure you want to delete this file?"
+        "confirmDelete": "Are you sure you want to delete this file?",
+        "allDomains": "All contexts"
       }
     },
     "settings": {
@@ -1972,7 +1975,11 @@
       "cancel": "Cancel",
       "save": "Save",
       "confirmDelete": "Are you sure you want to delete this post?",
-      "saved": "Saved successfully"
+      "saved": "Saved successfully",
+      "total": "Posts",
+      "allStatuses": "All statuses",
+      "noPosts": "No posts yet.",
+      "tagsHint": "Comma-separated"
     },
     "docs": {
       "title": "Manage Documentation",
@@ -1990,7 +1997,8 @@
       "cancel": "Cancel",
       "save": "Save",
       "confirmDelete": "Are you sure you want to delete this section?",
-      "saved": "Saved successfully"
+      "saved": "Saved successfully",
+      "noSections": "No documentation sections yet."
     },
     "users": {
       "title": "User Management",
@@ -2022,7 +2030,8 @@
       "block": "Block",
       "unblock": "Unblock",
       "confirmBan": "Are you sure you want to ban this user?",
-      "confirmBlock": "Are you sure you want to block this user?"
+      "confirmBlock": "Are you sure you want to block this user?",
+      "noResults": "No user matches your search."
     },
     "smsSubscribers": {
       "title": "SMS Subscribers",
@@ -2048,7 +2057,8 @@
       "activate": "Activate",
       "cancel": "Cancel",
       "confirmSuspend": "Are you sure you want to suspend this subscriber?",
-      "confirmCancel": "Are you sure you want to cancel this subscription?"
+      "confirmCancel": "Are you sure you want to cancel this subscription?",
+      "noResults": "No subscriber matches your search."
     },
     "security": {
       "title": "Security & Suspicious IPs",
@@ -2140,7 +2150,8 @@
       "totalEndpoints": "Total Endpoints",
       "apiVersion": "API Version",
       "apiStatus": "API Status",
-      "operational": "Operational"
+      "operational": "Operational",
+      "categories": "Categories"
     }
   },
   "content": {

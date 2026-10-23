@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { Plus, Save, Trash2, HelpCircle, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { AdminPage, AdminPageHeader } from '@/components/admin/admin-page';
+import { LangChip } from '@/components/admin/content-list-editor';
+import { Plus, Save, Trash2, HelpCircle, AlertCircle, CheckCircle2, Pencil, X } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { useSiteContentSection } from '@/hooks/use-site-content-section';
 import type { SiteContent } from '@/types/content';
@@ -44,7 +46,6 @@ function parseItem(block: SiteContent): FAQItem {
 
 export default function AdminFAQPage() {
   const t = useTranslations('admin.content.faq');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
 
   const { token, blocks, loading, saving, error, success, saveAll, remove } =
     useSiteContentSection('faq');
@@ -102,176 +103,180 @@ export default function AdminFAQPage() {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
-
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-              {t('subtitle')}
-            </p>
-          </div>
+    <AdminPage>
+      <AdminPageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        icon={HelpCircle}
+        actions={
           <Button onClick={handleCreate} className="gap-2" disabled={!token}>
-            <Plus className="w-4 h-4" />
+            <Plus className="h-4 w-4" />
+            {t('addQuestion')}
+          </Button>
+        }
+      />
+
+      {/* Bandeaux d'état */}
+      {(error || success || !token || loading) && (
+        <div className="space-y-3">
+          {error && (
+            <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+          {success && (
+            <div role="status" className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+              <CheckCircle2 className="h-4 w-4 shrink-0" />
+              <span>{success}</span>
+            </div>
+          )}
+          {!token && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Connectez-vous en tant qu&apos;administrateur pour gérer la FAQ.
+            </p>
+          )}
+          {loading && (
+            <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+              Chargement…
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Liste des FAQ */}
+      {faqItems.length === 0 && !loading ? (
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-gray-300 bg-white px-6 py-14 text-center dark:border-white/15 dark:bg-white/[0.02]">
+          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+            <HelpCircle className="h-6 w-6" />
+          </span>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Aucune question pour le moment.</p>
+          <Button variant="outline" size="sm" onClick={handleCreate} className="gap-2" disabled={!token}>
+            <Plus className="h-4 w-4" />
             {t('addQuestion')}
           </Button>
         </div>
-
-        {/* Bandeaux d'état */}
-        {error && (
-          <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300 mb-4">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-        {success && (
-          <div role="status" className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300 mb-4">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span>{success}</span>
-          </div>
-        )}
-        {!token && (
-          <p className="text-sm text-gray-500 mb-4">
-            Connectez-vous en tant qu&apos;administrateur pour gérer la FAQ.
-          </p>
-        )}
-        {loading && <p className="text-sm text-gray-500 mb-4">Chargement…</p>}
-
-        {/* Liste des FAQ */}
-        <div className="grid gap-4 mb-8">
+      ) : (
+        <ul className="space-y-3">
           {faqItems.map((item) => (
-            <Card key={item.id} className="dark:bg-gray-800 dark:border-gray-700">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <HelpCircle className="w-5 h-5 text-blue-600" />
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
-                        {item.question.fr}
-                      </h3>
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
-                      {item.answer.fr}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm">
-                      <span className="text-gray-500">Catégorie: {item.category}</span>
-                      <span className="text-gray-500">Ordre: {item.order}</span>
-                    </div>
+            <li
+              key={item.id}
+              className={`rounded-2xl border border-gray-200 bg-white p-5 transition-colors hover:border-gray-300 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20 sm:p-6 ${
+                item.isActive ? '' : 'opacity-60'
+              }`}
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 flex-1">
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <Badge variant="secondary">{item.category}</Badge>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Ordre {item.order}</span>
+                    {!item.isActive && <Badge variant="outline">Désactivé</Badge>}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Switch checked={item.isActive} onCheckedChange={() => toggleActive(item)} />
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setEditingItem(item);
-                        setIsCreating(false);
-                      }}
-                    >
-                      {t('edit')}
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
+                  <h3 className="font-semibold text-ink dark:text-white">{item.question.fr}</h3>
+                  <p className="mt-1 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">{item.answer.fr}</p>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="flex shrink-0 items-center gap-2">
+                  <Switch
+                    checked={item.isActive}
+                    onCheckedChange={() => toggleActive(item)}
+                    aria-label={item.isActive ? 'Désactiver' : 'Activer'}
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => {
+                      setEditingItem(item);
+                      setIsCreating(false);
+                    }}
+                  >
+                    <Pencil className="h-4 w-4" />
+                    {t('edit')}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Supprimer"
+                    title="Supprimer"
+                    className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10"
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
+      )}
 
-        {/* Modale d'édition (overlay centré) */}
-        {editingItem && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <Card className="w-full max-w-3xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle>{isCreating ? t('createQuestion') : t('editQuestion')}</CardTitle>
+      {/* Modale d'édition (overlay centré) */}
+      {editingItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm">
+          <Card className="max-h-[90vh] w-full max-w-3xl overflow-y-auto bg-white shadow-2xl dark:bg-[#121c2e]">
+            <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0 border-b border-gray-100 dark:border-white/10">
+              <CardTitle className="text-lg">{isCreating ? t('createQuestion') : t('editQuestion')}</CardTitle>
+              <button
+                type="button"
+                onClick={() => setEditingItem(null)}
+                aria-label={t('cancel')}
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-ink dark:hover:bg-white/10 dark:hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('question')} (Français)</Label>
-                  <Input
-                    value={editingItem.question.fr}
-                    onChange={(e) =>
-                      setEditingItem({
-                        ...editingItem,
-                        question: { ...editingItem.question, fr: e.target.value },
-                      })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('question')} (English)</Label>
-                  <Input
-                    value={editingItem.question.en}
-                    onChange={(e) =>
-                      setEditingItem({
-                        ...editingItem,
-                        question: { ...editingItem.question, en: e.target.value },
-                      })
-                    }
-                    className="mt-1"
-                  />
-                </div>
+            <CardContent className="space-y-6 pt-6">
+              <div className="grid gap-4 md:grid-cols-2">
+                {(['fr', 'en'] as const).map((lang) => (
+                  <div key={lang} className="space-y-2">
+                    <Label className="flex items-center gap-2">
+                      {t('question')}
+                      <LangChip lang={lang} />
+                    </Label>
+                    <Input
+                      value={editingItem.question[lang]}
+                      onChange={(e) =>
+                        setEditingItem({
+                          ...editingItem,
+                          question: { ...editingItem.question, [lang]: e.target.value },
+                        })
+                      }
+                    />
+                  </div>
+                ))}
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('answer')} (Français)</Label>
-                  <Textarea
-                    value={editingItem.answer.fr}
-                    onChange={(e) =>
-                      setEditingItem({
-                        ...editingItem,
-                        answer: { ...editingItem.answer, fr: e.target.value },
-                      })
-                    }
-                    rows={4}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('answer')} (English)</Label>
-                  <Textarea
-                    value={editingItem.answer.en}
-                    onChange={(e) =>
-                      setEditingItem({
-                        ...editingItem,
-                        answer: { ...editingItem.answer, en: e.target.value },
-                      })
-                    }
-                    rows={4}
-                    className="mt-1"
-                  />
-                </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                {(['fr', 'en'] as const).map((lang) => (
+                  <div key={lang} className="space-y-2">
+                    <Label className="flex items-center gap-2">
+                      {t('answer')}
+                      <LangChip lang={lang} />
+                    </Label>
+                    <Textarea
+                      value={editingItem.answer[lang]}
+                      onChange={(e) =>
+                        setEditingItem({
+                          ...editingItem,
+                          answer: { ...editingItem.answer, [lang]: e.target.value },
+                        })
+                      }
+                      rows={5}
+                    />
+                  </div>
+                ))}
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
                   <Label>{t('category')}</Label>
                   <Input
                     value={editingItem.category}
                     onChange={(e) => setEditingItem({ ...editingItem, category: e.target.value })}
-                    className="mt-1"
                   />
                 </div>
-                <div>
+                <div className="space-y-2">
                   <Label>{t('order')}</Label>
                   <Input
                     type="number"
@@ -279,25 +284,24 @@ export default function AdminFAQPage() {
                     onChange={(e) =>
                       setEditingItem({ ...editingItem, order: parseInt(e.target.value) || 0 })
                     }
-                    className="mt-1"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2 border-t border-gray-100 pt-5 dark:border-white/10">
                 <Button variant="outline" onClick={() => setEditingItem(null)}>
                   {t('cancel')}
                 </Button>
                 <Button onClick={handleSave} className="gap-2" disabled={saving || !token}>
-                  <Save className="w-4 h-4" />
+                  <Save className="h-4 w-4" />
                   {saving ? '…' : t('save')}
                 </Button>
               </div>
             </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
-    </div>
+          </Card>
+        </div>
+      )}
+    </AdminPage>
   );
 }
+

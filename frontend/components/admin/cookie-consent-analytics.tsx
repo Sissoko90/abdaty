@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AdminStatCard } from '@/components/admin/admin-page';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BarChart3, Check, X, RefreshCw, Loader2 } from 'lucide-react';
+import { BarChart3, Check, X, RefreshCw, Loader2, Users, Megaphone, Ban, Percent, Inbox } from 'lucide-react';
 import {
   listCookieConsents,
   getCookieConsentStats,
@@ -54,96 +54,110 @@ export function CookieConsentAnalytics() {
   }, [reload]);
 
   const yesNo = (v?: boolean) =>
-    v ? <Check className="w-4 h-4 text-green-600 inline" /> : <X className="w-4 h-4 text-gray-400 inline" />;
+    v ? (
+      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400">
+        <Check className="h-3.5 w-3.5" aria-label="Oui" />
+      </span>
+    ) : (
+      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-white/10">
+        <X className="h-3.5 w-3.5" aria-label="Non" />
+      </span>
+    );
 
   const cards = [
-    { label: 'Total consentements', value: stats?.total ?? 0 },
-    { label: 'Analytics acceptés', value: stats?.analyticsAccepted ?? 0 },
-    { label: 'Marketing acceptés', value: stats?.marketingAccepted ?? 0 },
-    { label: 'Tout refusé', value: stats?.rejectedAll ?? 0 },
-    { label: "Taux d'acceptation analytics", value: `${stats?.analyticsRate ?? 0}%` },
+    { label: 'Total consentements', value: stats?.total ?? 0, icon: Users, tone: 'ink' as const },
+    { label: 'Analytics acceptés', value: stats?.analyticsAccepted ?? 0, icon: BarChart3, tone: 'primary' as const },
+    { label: 'Marketing acceptés', value: stats?.marketingAccepted ?? 0, icon: Megaphone, tone: 'ochre' as const },
+    { label: 'Tout refusé', value: stats?.rejectedAll ?? 0, icon: Ban, tone: 'primary' as const },
+    { label: "Taux d'acceptation analytics", value: `${stats?.analyticsRate ?? 0}%`, icon: Percent, tone: 'emerald' as const },
   ];
 
   return (
-    <Card className="dark:bg-gray-800 dark:border-gray-700 mt-6">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
-            Consentements &amp; analytics
-          </CardTitle>
-          <Button variant="outline" size="sm" onClick={reload} disabled={loading} className="gap-2">
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            Actualiser
-          </Button>
+    <section className="rounded-2xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.03]">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 px-6 py-5 dark:border-white/10">
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+            <BarChart3 className="h-5 w-5" />
+          </span>
+          <div>
+            <h2 className="text-lg font-bold text-ink dark:text-white">Consentements &amp; analytics</h2>
+            <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">Choix exprimés par les visiteurs (RGPD).</p>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-6">
+        <Button variant="outline" size="sm" onClick={reload} disabled={loading} className="gap-2">
+          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+          Actualiser
+        </Button>
+      </div>
+
+      <div className="space-y-6 p-6">
         {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 dark:bg-red-950/40 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
+          <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
             {error}
           </div>
         )}
 
         {/* Statistiques */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {cards.map((c) => (
-            <div key={c.label} className="rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-              <p className="text-xs text-gray-600 dark:text-gray-400">{c.label}</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{c.value}</p>
-            </div>
+            <AdminStatCard key={c.label} label={c.label} value={c.value} icon={c.icon} tone={c.tone} />
           ))}
         </div>
 
         {/* Journal des consentements */}
         {loading ? (
-          <div className="flex items-center justify-center py-10 text-gray-500">
-            <Loader2 className="w-5 h-5 animate-spin mr-2" /> Chargement…
+          <div className="flex items-center justify-center py-10 text-sm text-gray-500 dark:text-gray-400">
+            <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary-600" /> Chargement…
           </div>
         ) : items.length === 0 ? (
-          <p className="py-8 text-center text-gray-500 dark:text-gray-400">
-            Aucun consentement enregistré pour le moment.
-          </p>
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-gray-300 px-6 py-10 text-center dark:border-white/15">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+              <Inbox className="h-6 w-6" />
+            </span>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Aucun consentement enregistré pour le moment.</p>
+          </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700 text-left text-gray-600 dark:text-gray-400">
-                  <th className="py-2 px-3">Date</th>
-                  <th className="py-2 px-3">Visiteur</th>
-                  <th className="py-2 px-3 text-center">Essentiels</th>
-                  <th className="py-2 px-3 text-center">Analytics</th>
-                  <th className="py-2 px-3 text-center">Marketing</th>
-                  <th className="py-2 px-3">Page</th>
-                  <th className="py-2 px-3">IP</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((c) => (
-                  <tr key={c.id} className="border-b border-gray-100 dark:border-gray-700">
-                    <td className="py-2 px-3 text-gray-700 dark:text-gray-300 whitespace-nowrap">
-                      {c.createdAt ? new Date(c.createdAt).toLocaleString() : '—'}
-                    </td>
-                    <td className="py-2 px-3">
-                      <Badge variant="outline" className="font-mono text-xs">{(c.visitorId || '').slice(0, 8)}</Badge>
-                    </td>
-                    <td className="py-2 px-3 text-center">{yesNo(c.necessary)}</td>
-                    <td className="py-2 px-3 text-center">{yesNo(c.analytics)}</td>
-                    <td className="py-2 px-3 text-center">{yesNo(c.marketing)}</td>
-                    <td className="py-2 px-3 text-gray-500 dark:text-gray-400 max-w-[160px] truncate">{c.page || '—'}</td>
-                    <td className="py-2 px-3 text-gray-500 dark:text-gray-400">{c.ipAddress || '—'}</td>
+          <div>
+            <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-white/10">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-gray-50 text-left text-xs font-semibold text-gray-500 dark:bg-white/[0.03] dark:text-gray-400">
+                    <th className="px-4 py-3">Date</th>
+                    <th className="px-4 py-3">Visiteur</th>
+                    <th className="px-4 py-3 text-center">Essentiels</th>
+                    <th className="px-4 py-3 text-center">Analytics</th>
+                    <th className="px-4 py-3 text-center">Marketing</th>
+                    <th className="px-4 py-3">Page</th>
+                    <th className="px-4 py-3">IP</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                  {items.map((c) => (
+                    <tr key={c.id} className="transition-colors hover:bg-gray-50/70 dark:hover:bg-white/[0.03]">
+                      <td className="whitespace-nowrap px-4 py-3 text-gray-700 dark:text-gray-300">
+                        {c.createdAt ? new Date(c.createdAt).toLocaleString() : '—'}
+                      </td>
+                      <td className="px-4 py-3">
+                        <Badge variant="outline" className="font-mono text-xs">{(c.visitorId || '').slice(0, 8)}</Badge>
+                      </td>
+                      <td className="px-4 py-3 text-center">{yesNo(c.necessary)}</td>
+                      <td className="px-4 py-3 text-center">{yesNo(c.analytics)}</td>
+                      <td className="px-4 py-3 text-center">{yesNo(c.marketing)}</td>
+                      <td className="max-w-[160px] truncate px-4 py-3 text-gray-500 dark:text-gray-400">{c.page || '—'}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-gray-500 dark:text-gray-400">{c.ipAddress || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             {/* Pagination serveur */}
             {(() => {
               const total = stats?.total ?? 0;
               const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
               return (
-                <div className="flex items-center justify-between pt-3 mt-2 border-t border-gray-100 dark:border-gray-700">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                   <span className="text-xs text-gray-500 dark:text-gray-400">
-                    Page {page + 1} / {totalPages} — {total} consentement{total > 1 ? 's' : ''}
+                    Page {page + 1} / {totalPages}, {total} consentement{total > 1 ? 's' : ''}
                   </span>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" disabled={page === 0 || loading} onClick={() => setPage((p) => Math.max(0, p - 1))}>
@@ -158,7 +172,7 @@ export function CookieConsentAnalytics() {
             })()}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   );
 }

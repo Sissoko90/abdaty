@@ -2,11 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AdminPage, AdminPageHeader } from '@/components/admin/admin-page';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Save, Globe, ArrowUp, ArrowDown, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { Save, Globe, ArrowUp, ArrowDown, Trash2, AlertCircle, CheckCircle2, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSiteContentSection, type ContentBlockInput } from '@/hooks/use-site-content-section';
 import type { SiteContent } from '@/types/content';
@@ -52,7 +52,6 @@ function parseNav(block: SiteContent): NavItem {
 
 export default function AdminNavigationPage() {
   const t = useTranslations('admin.content.navigation');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
 
   const { token, blocks, loading, saving, error, success, saveAll, remove } =
     useSiteContentSection('navigation');
@@ -141,163 +140,154 @@ export default function AdminNavigationPage() {
   const sortedNavItems = [...navItems].sort((a, b) => a.order - b.order);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
+    <AdminPage>
 
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-              {t('subtitle')}
-            </p>
-          </div>
-          <Button onClick={handleSave} className="gap-2" disabled={saving || !token}>
-            <Save className="w-4 h-4" />
-            {saving ? '…' : t('save')}
-          </Button>
+      <AdminPageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        icon={Globe}
+        actions={
+          <>
+            <Button onClick={handleSave} size="lg" className="gap-2" disabled={saving || !token}>
+              <Save className="w-4 h-4" />
+              {saving ? '…' : t('save')}
+            </Button>
+          </>
+        }
+      />
+
+      {/* Bandeaux d'état */}
+      {error && (
+        <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span>{error}</span>
         </div>
+      )}
+      {success && (
+        <div role="status" className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <span>{success}</span>
+        </div>
+      )}
+      {!token && (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+          Connectez-vous en tant qu&apos;administrateur pour modifier la navigation.
+        </p>
+      )}
+      {loading && <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400"><span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-600 border-t-transparent" />Chargement…</p>}
 
-        {/* Bandeaux d'état */}
-        {error && (
-          <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300 mb-4">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-        {success && (
-          <div role="status" className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300 mb-4">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span>{success}</span>
-          </div>
-        )}
-        {!token && (
-          <p className="text-sm text-gray-500 mb-4">
-            Connectez-vous en tant qu&apos;administrateur pour modifier la navigation.
-          </p>
-        )}
-        {loading && <p className="text-sm text-gray-500 mb-4">Chargement…</p>}
+      {/* Liens existants : une ligne par lien (ordre, libellés FR/EN, URL, options) */}
+      <Card>
+        <CardHeader className="border-b border-gray-100 dark:border-white/10">
+          <CardTitle>{t('navItems')}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 pt-6">
+          {sortedNavItems.map((item, index) => (
+            <div
+              key={item.id}
+              className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-white/[0.02] lg:flex-row lg:items-end"
+            >
+              <div className="flex gap-1 lg:flex-col">
+                <Button variant="outline" size="icon" onClick={() => handleMoveUp(index)} disabled={index === 0} className="h-8 w-8" aria-label="Monter">
+                  <ArrowUp className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" onClick={() => handleMoveDown(index)} disabled={index === sortedNavItems.length - 1} className="h-8 w-8" aria-label="Descendre">
+                  <ArrowDown className="h-4 w-4" />
+                </Button>
+              </div>
 
-        {/* Navigation Items List */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300 mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white transition-colors duration-300">
-              <Globe className="w-5 h-5" />
-              {t('navItems')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {sortedNavItems.map((item, index) => (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-300"
-                >
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="icon" onClick={() => handleMoveUp(index)} disabled={index === 0} className="h-8 w-8">
-                      <ArrowUp className="w-4 h-4" />
-                    </Button>
-                    <Button variant="outline" size="icon" onClick={() => handleMoveDown(index)} disabled={index === sortedNavItems.length - 1} className="h-8 w-8">
-                      <ArrowDown className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-xs">{t('label')} (FR)</Label>
-                        <Input
-                          value={item.label.fr}
-                          onChange={(e) => setNavItems(navItems.map((n) => (n.id === item.id ? { ...n, label: { ...n.label, fr: e.target.value } } : n)))}
-                          className="text-sm"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs">{t('label')} (EN)</Label>
-                        <Input
-                          value={item.label.en}
-                          onChange={(e) => setNavItems(navItems.map((n) => (n.id === item.id ? { ...n, label: { ...n.label, en: e.target.value } } : n)))}
-                          className="text-sm"
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <Label className="text-xs">{t('href')}</Label>
-                      <Input
-                        value={item.href}
-                        onChange={(e) => setNavItems(navItems.map((n) => (n.id === item.id ? { ...n, href: e.target.value } : n)))}
-                        className="text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1">
-                      <input type="checkbox" checked={item.isActive} onChange={() => handleToggleActive(item.id)} className="w-4 h-4" />
-                      <Label className="text-xs">{t('active')}</Label>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <input type="checkbox" checked={item.isExternal} onChange={() => handleToggleExternal(item.id)} className="w-4 h-4" />
-                      <Label className="text-xs">{t('external')}</Label>
-                    </div>
-                    <Button variant="outline" size="icon" onClick={() => handleDelete(item.id)}>
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
+              <div className="grid flex-1 gap-4 md:grid-cols-3">
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2 text-xs">{t('label')}<LangChip lang="FR" /></Label>
+                  <Input
+                    value={item.label.fr}
+                    onChange={(e) => setNavItems(navItems.map((n) => (n.id === item.id ? { ...n, label: { ...n.label, fr: e.target.value } } : n)))}
+                  />
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2 text-xs">{t('label')}<LangChip lang="EN" /></Label>
+                  <Input
+                    value={item.label.en}
+                    onChange={(e) => setNavItems(navItems.map((n) => (n.id === item.id ? { ...n, label: { ...n.label, en: e.target.value } } : n)))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs">{t('href')}</Label>
+                  <Input
+                    value={item.href}
+                    onChange={(e) => setNavItems(navItems.map((n) => (n.id === item.id ? { ...n, href: e.target.value } : n)))}
+                  />
+                </div>
+              </div>
 
-        {/* Add New Item */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300">
-          <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white transition-colors duration-300">
-              {t('addNewItem')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <Label>{t('label')} (Français)</Label>
-                <Input value={newItem.label.fr} onChange={(e) => setNewItem({ ...newItem, label: { ...newItem.label, fr: e.target.value } })} className="mt-1" />
-              </div>
-              <div>
-                <Label>{t('label')} (English)</Label>
-                <Input value={newItem.label.en} onChange={(e) => setNewItem({ ...newItem, label: { ...newItem.label, en: e.target.value } })} className="mt-1" />
+              <div className="flex flex-wrap items-center gap-2">
+                <OptionToggle checked={item.isActive} onChange={() => handleToggleActive(item.id)} label={t('active')} />
+                <OptionToggle checked={item.isExternal} onChange={() => handleToggleExternal(item.id)} label={t('external')} />
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} aria-label="Supprimer" className="text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-500/10">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
             </div>
-            <div className="mb-4">
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* Ajout d'un lien */}
+      <Card>
+        <CardHeader className="border-b border-gray-100 dark:border-white/10">
+          <CardTitle>{t('addNewItem')}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-6">
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2">{t('label')}<LangChip lang="FR" /></Label>
+              <Input value={newItem.label.fr} onChange={(e) => setNewItem({ ...newItem, label: { ...newItem.label, fr: e.target.value } })} />
+            </div>
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2">{t('label')}<LangChip lang="EN" /></Label>
+              <Input value={newItem.label.en} onChange={(e) => setNewItem({ ...newItem, label: { ...newItem.label, en: e.target.value } })} />
+            </div>
+            <div className="space-y-2">
               <Label>{t('href')}</Label>
-              <Input value={newItem.href} onChange={(e) => setNewItem({ ...newItem, href: e.target.value })} className="mt-1" />
+              <Input value={newItem.href} onChange={(e) => setNewItem({ ...newItem, href: e.target.value })} />
             </div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <input type="checkbox" checked={newItem.isActive} onChange={(e) => setNewItem({ ...newItem, isActive: e.target.checked })} className="w-4 h-4" />
-                <Label>{t('active')}</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <input type="checkbox" checked={newItem.isExternal} onChange={(e) => setNewItem({ ...newItem, isExternal: e.target.checked })} className="w-4 h-4" />
-                <Label>{t('external')}</Label>
-              </div>
-              <Button onClick={handleAddNewItem}>
-                {t('add')}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <OptionToggle checked={newItem.isActive} onChange={(v) => setNewItem({ ...newItem, isActive: v })} label={t('active')} />
+            <OptionToggle checked={newItem.isExternal} onChange={(v) => setNewItem({ ...newItem, isExternal: v })} label={t('external')} />
+            <Button onClick={handleAddNewItem} className="ml-auto gap-2">
+              <Plus className="h-4 w-4" />
+              {t('add')}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </AdminPage>
+  );
+}
+
+
+/** Petite pastille de langue (FR / EN) accolée aux libellés des champs traduits. */
+function LangChip({ lang }: { lang: 'FR' | 'EN' }) {
+  return (
+    <span className="rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold text-gray-500 dark:bg-white/10 dark:text-gray-400">
+      {lang}
+    </span>
+  );
+}
+
+/** Option cochable présentée comme une pastille (actif, lien externe…). */
+function OptionToggle({ checked, onChange, label }: { checked: boolean; onChange: (checked: boolean) => void; label: string }) {
+  return (
+    <label
+      className={`inline-flex h-9 cursor-pointer items-center gap-2 rounded-full border px-3 text-xs font-semibold transition-colors ${
+        checked
+          ? 'border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-500/30 dark:bg-primary-500/10 dark:text-primary-300'
+          : 'border-gray-200 bg-white text-gray-600 dark:border-white/10 dark:bg-white/5 dark:text-gray-300'
+      }`}
+    >
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="h-3.5 w-3.5 accent-primary-600" />
+      {label}
+    </label>
   );
 }

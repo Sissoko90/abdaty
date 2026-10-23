@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AdminPage, AdminPageHeader } from '@/components/admin/admin-page';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
 import { Save, Users, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useSiteContentSection } from '@/hooks/use-site-content-section';
 import { ContentListEditor, type FieldDef } from '@/components/admin/content-list-editor';
@@ -68,7 +68,6 @@ const CERT_FIELDS: FieldDef[] = [
 
 export default function AdminAboutPage() {
   const t = useTranslations('admin.content.about');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
 
   // Champs "blocs" de la section about (héro + mission/vision).
   const { token, blocks, saving, error, success, saveAll, value } = useSiteContentSection('about');
@@ -99,97 +98,92 @@ export default function AdminAboutPage() {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
+    <AdminPage>
 
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-            {t('title')}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-            Gérez l&apos;ensemble des sections de la page « À propos ».
-          </p>
-        </div>
+      <AdminPageHeader
+        title={t('title')}
+        description={<>Gérez l&apos;ensemble des sections de la page « À propos ».</>}
+        icon={Users}
+      />
 
-        {!token && (
-          <p className="text-sm text-gray-500 mb-4">
-            Connectez-vous en tant qu&apos;administrateur pour modifier cette page.
-          </p>
-        )}
+      {!token && (
+        <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+          Connectez-vous en tant qu&apos;administrateur pour modifier cette page.
+        </p>
+      )}
 
-        <div className="space-y-6">
-          {/* Section principale + Mission/Vision (champs blocs) */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
-                  <Users className="w-5 h-5" />
-                  En-tête & Mission / Vision
-                </CardTitle>
-                <Button onClick={saveBlocks} className="gap-2" disabled={saving || !token}>
-                  <Save className="w-4 h-4" />
-                  {saving ? '…' : 'Enregistrer'}
-                </Button>
+      <div className="space-y-6">
+        {/* Section principale + Mission/Vision (champs blocs) */}
+        <Card>
+          <CardHeader className="border-b border-gray-100 dark:border-white/10">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <CardTitle>En-tête & Mission / Vision</CardTitle>
+              <Button onClick={saveBlocks} className="gap-2" disabled={saving || !token}>
+                <Save className="w-4 h-4" />
+                {saving ? '…' : 'Enregistrer'}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6 pt-6">
+            {error && (
+              <div role="alert" className="flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
               </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {error && (
-                <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
-                  <span>{error}</span>
-                </div>
-              )}
-              {success && (
-                <div role="status" className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>{success}</span>
-                </div>
-              )}
+            )}
+            {success && (
+              <div role="status" className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{success}</span>
+              </div>
+            )}
 
-              {(['title', 'subtitle'] as const).map((k) => (
-                <div key={k} className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>{k === 'title' ? 'Titre' : 'Sous-titre'} (FR)</Label>
-                    <Input value={about[k].fr} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], fr: e.target.value } })} className="mt-1" />
-                  </div>
-                  <div>
-                    <Label>{k === 'title' ? 'Titre' : 'Sous-titre'} (EN)</Label>
-                    <Input value={about[k].en} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], en: e.target.value } })} className="mt-1" />
-                  </div>
+            {(['title', 'subtitle'] as const).map((k) => (
+              <div key={k} className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">{k === 'title' ? 'Titre' : 'Sous-titre'}<LangChip lang="FR" /></Label>
+                  <Input value={about[k].fr} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], fr: e.target.value } })} />
                 </div>
-              ))}
-
-              {(['description', 'mission', 'vision'] as const).map((k) => (
-                <div key={k} className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>{k === 'description' ? 'Description' : k === 'mission' ? 'Mission' : 'Vision'} (FR)</Label>
-                    <Textarea value={about[k].fr} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], fr: e.target.value } })} rows={3} className="mt-1" />
-                  </div>
-                  <div>
-                    <Label>{k === 'description' ? 'Description' : k === 'mission' ? 'Mission' : 'Vision'} (EN)</Label>
-                    <Textarea value={about[k].en} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], en: e.target.value } })} rows={3} className="mt-1" />
-                  </div>
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">{k === 'title' ? 'Titre' : 'Sous-titre'}<LangChip lang="EN" /></Label>
+                  <Input value={about[k].en} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], en: e.target.value } })} />
                 </div>
-              ))}
-            </CardContent>
-          </Card>
+              </div>
+            ))}
 
-          {/* Sous-sections de type liste */}
-          <ContentListEditor section="about-stats" heading="Chiffres clés" fields={STATS_FIELDS} titleField="label" addLabel="Ajouter un chiffre" />
-          <ContentListEditor section="about-values" heading="Valeurs" fields={VALUES_FIELDS} titleField="title" addLabel="Ajouter une valeur" />
-          <ContentListEditor section="about-timeline" heading="Historique (timeline)" fields={TIMELINE_FIELDS} titleField="title" addLabel="Ajouter une étape" />
-          <ContentListEditor section="about-team" heading="Équipe" fields={TEAM_FIELDS} titleField="name" addLabel="Ajouter un membre" />
-          <ContentListEditor section="about-why" heading="Pourquoi nous choisir" fields={WHY_FIELDS} titleField="title" addLabel="Ajouter une raison" />
-          <ContentListEditor section="about-certifications" heading="Certifications" fields={CERT_FIELDS} titleField="title" addLabel="Ajouter une certification" />
-        </div>
+            {(['description', 'mission', 'vision'] as const).map((k) => (
+              <div key={k} className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">{k === 'description' ? 'Description' : k === 'mission' ? 'Mission' : 'Vision'}<LangChip lang="FR" /></Label>
+                  <Textarea value={about[k].fr} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], fr: e.target.value } })} rows={3} />
+                </div>
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">{k === 'description' ? 'Description' : k === 'mission' ? 'Mission' : 'Vision'}<LangChip lang="EN" /></Label>
+                  <Textarea value={about[k].en} onChange={(e) => setAbout({ ...about, [k]: { ...about[k], en: e.target.value } })} rows={3} />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Sous-sections de type liste */}
+        <ContentListEditor section="about-stats" heading="Chiffres clés" fields={STATS_FIELDS} titleField="label" addLabel="Ajouter un chiffre" />
+        <ContentListEditor section="about-values" heading="Valeurs" fields={VALUES_FIELDS} titleField="title" addLabel="Ajouter une valeur" />
+        <ContentListEditor section="about-timeline" heading="Historique (timeline)" fields={TIMELINE_FIELDS} titleField="title" addLabel="Ajouter une étape" />
+        <ContentListEditor section="about-team" heading="Équipe" fields={TEAM_FIELDS} titleField="name" addLabel="Ajouter un membre" />
+        <ContentListEditor section="about-why" heading="Pourquoi nous choisir" fields={WHY_FIELDS} titleField="title" addLabel="Ajouter une raison" />
+        <ContentListEditor section="about-certifications" heading="Certifications" fields={CERT_FIELDS} titleField="title" addLabel="Ajouter une certification" />
       </div>
-    </div>
+    </AdminPage>
+  );
+}
+
+
+/** Petite pastille de langue (FR / EN) accolée aux libellés des champs traduits. */
+function LangChip({ lang }: { lang: 'FR' | 'EN' }) {
+  return (
+    <span className="rounded-md bg-gray-100 px-1.5 py-0.5 text-[10px] font-bold text-gray-500 dark:bg-white/10 dark:text-gray-400">
+      {lang}
+    </span>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { useSession } from 'next-auth/react';
 import { uploadMedia, mediaUrl } from '@/services/content.service';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,9 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
+import { Badge, type BadgeProps } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AdminPage, AdminPageHeader, AdminStatCard } from '@/components/admin/admin-page';
 import {
   Mail,
   Users,
@@ -32,6 +31,8 @@ import {
   Bold,
   Heading,
   Link2,
+  AlertCircle,
+  Save,
 } from 'lucide-react';
 import {
   listSubscribers,
@@ -64,7 +65,6 @@ interface CampaignDraft {
 }
 
 export default function AdminNewsletterPage() {
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
   const { data: session } = useSession();
   const token = session?.accessToken;
 
@@ -290,11 +290,11 @@ export default function AdminNewsletterPage() {
   };
 
   const statusBadge = (s: NewsletterCampaign['campaignStatus']) => {
-    const map: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string }> = {
+    const map: Record<string, { variant: NonNullable<BadgeProps['variant']>; label: string }> = {
       DRAFT: { variant: 'secondary', label: 'Brouillon' },
-      SCHEDULED: { variant: 'default', label: 'Programmée' },
+      SCHEDULED: { variant: 'warning', label: 'Programmée' },
       SENDING: { variant: 'default', label: 'En cours…' },
-      SENT: { variant: 'outline', label: 'Envoyée' },
+      SENT: { variant: 'success', label: 'Envoyée' },
       FAILED: { variant: 'destructive', label: 'Échec' },
     };
     const c = map[s] || map.DRAFT;
@@ -303,65 +303,49 @@ export default function AdminNewsletterPage() {
 
   const statCards = useMemo(
     () => [
-      { label: 'Abonnés', value: stats?.totalSubscribers ?? subscribers.length, icon: Users, cls: 'text-blue-500' },
-      { label: 'Actifs', value: stats?.activeSubscribers ?? subscribers.filter((s) => s.subscribed).length, icon: UserCheck, cls: 'text-green-500' },
-      { label: 'Désinscrits', value: stats?.unsubscribed ?? subscribers.filter((s) => !s.subscribed).length, icon: UserX, cls: 'text-gray-500' },
-      { label: 'Emails envoyés', value: stats?.emailsSent ?? 0, icon: Send, cls: 'text-purple-500' },
-      { label: 'Ouvertures', value: stats?.totalOpens ?? 0, icon: Eye, cls: 'text-orange-500' },
-      { label: 'Clics', value: stats?.totalClicks ?? 0, icon: MousePointerClick, cls: 'text-red-500' },
+      { label: 'Abonnés', value: stats?.totalSubscribers ?? subscribers.length, icon: Users, tone: 'primary' as const },
+      { label: 'Actifs', value: stats?.activeSubscribers ?? subscribers.filter((s) => s.subscribed).length, icon: UserCheck, tone: 'emerald' as const },
+      { label: 'Désinscrits', value: stats?.unsubscribed ?? subscribers.filter((s) => !s.subscribed).length, icon: UserX, tone: 'ink' as const },
+      { label: 'Emails envoyés', value: stats?.emailsSent ?? 0, icon: Send, tone: 'primary' as const },
+      { label: 'Ouvertures', value: stats?.totalOpens ?? 0, icon: Eye, tone: 'ochre' as const },
+      { label: 'Clics', value: stats?.totalClicks ?? 0, icon: MousePointerClick, tone: 'emerald' as const },
     ],
     [stats, subscribers]
   );
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: 'Newsletter' },
-          ]}
+    <>
+      <AdminPage>
+        <AdminPageHeader
+          title="Newsletter"
+          description="Abonnés, campagnes (envoi immédiat ou programmé) et statistiques."
+          icon={Mail}
+          actions={
+            <>
+              <Button variant="outline" onClick={reload} disabled={loading} className="gap-2">
+                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                Actualiser
+              </Button>
+              <Button onClick={newCampaign} className="gap-2" disabled={!token}>
+                <Plus className="h-4 w-4" />
+                Nouvelle campagne
+              </Button>
+            </>
+          }
         />
 
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <Mail className="w-8 h-8" />
-              Newsletter
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">Abonnés, campagnes (envoi immédiat ou programmé) et statistiques.</p>
-          </div>
-          <Button variant="outline" size="sm" onClick={reload} disabled={loading} className="gap-2">
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            Actualiser
-          </Button>
-        </div>
-
         {error && (
-          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950/40 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
+          <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
             {error}
           </div>
         )}
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-          {statCards.map((s) => {
-            const Icon = s.icon;
-            return (
-              <Card key={s.label} className="dark:bg-gray-800 dark:border-gray-700">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">{s.label}</p>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">{s.value}</p>
-                    </div>
-                    <Icon className={`w-7 h-7 ${s.cls}`} />
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {statCards.map((s) => (
+            <AdminStatCard key={s.label} label={s.label} value={s.value} icon={s.icon} tone={s.tone} />
+          ))}
         </div>
 
         <Tabs defaultValue="campaigns" className="space-y-6">
@@ -372,31 +356,33 @@ export default function AdminNewsletterPage() {
 
           {/* Campagnes */}
           <TabsContent value="campaigns" className="space-y-4">
-            <div className="flex justify-end">
-              <Button onClick={newCampaign} className="gap-2" disabled={!token}>
-                <Plus className="w-4 h-4" />
-                Nouvelle campagne
-              </Button>
-            </div>
-
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
+            <Card className="overflow-hidden">
               <CardContent className="p-0">
                 {loading ? (
-                  <div className="flex items-center justify-center py-12 text-gray-500">
-                    <Loader2 className="w-6 h-6 animate-spin mr-2" /> Chargement…
+                  <div className="flex items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary-600" /> Chargement…
                   </div>
                 ) : campaigns.length === 0 ? (
-                  <div className="py-12 text-center text-gray-500 dark:text-gray-400">Aucune campagne. Créez-en une.</div>
+                  <div className="px-6 py-14 text-center">
+                    <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                      <Send className="h-6 w-6" />
+                    </span>
+                    <p className="mb-5 text-gray-600 dark:text-gray-400">Aucune campagne. Créez-en une.</p>
+                    <Button onClick={newCampaign} className="gap-2" disabled={!token}>
+                      <Plus className="h-4 w-4" />
+                      Nouvelle campagne
+                    </Button>
+                  </div>
                 ) : (
-                  <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                  <div className="divide-y divide-gray-100 dark:divide-white/5">
                     {campaigns.map((c) => {
                       const sent = c.campaignStatus === 'SENT';
                       return (
-                        <div key={c.id} className="p-4 flex flex-col md:flex-row md:items-center gap-3">
+                        <div key={c.id} className="flex flex-col gap-3 p-5 transition-colors hover:bg-gray-50/70 dark:hover:bg-white/[0.03] md:flex-row md:items-center">
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                            <div className="mb-1 flex flex-wrap items-center gap-2">
                               {statusBadge(c.campaignStatus)}
-                              <span className="font-medium text-gray-900 dark:text-white truncate">{c.subject}</span>
+                              <span className="truncate font-semibold text-ink dark:text-white">{c.subject}</span>
                             </div>
                             <div className="text-xs text-gray-500 dark:text-gray-400 flex flex-wrap gap-x-4 gap-y-1">
                               {c.scheduledAt && !sent && (
@@ -423,12 +409,20 @@ export default function AdminNewsletterPage() {
                                 <Button size="sm" variant="outline" onClick={() => schedule(c)} disabled={busy === 'camp:' + c.id} className="gap-1">
                                   <Clock className="w-3 h-3" /> Programmer
                                 </Button>
-                                <Button size="sm" variant="outline" onClick={() => editCampaign(c)} className="gap-1">
+                                <Button size="sm" variant="outline" onClick={() => editCampaign(c)} className="gap-1" aria-label="Modifier" title="Modifier">
                                   <Edit className="w-3 h-3" />
                                 </Button>
                               </>
                             )}
-                            <Button size="sm" variant="outline" onClick={() => removeCampaign(c)} disabled={busy === 'camp:' + c.id}>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => removeCampaign(c)}
+                              disabled={busy === 'camp:' + c.id}
+                              aria-label="Supprimer"
+                              title="Supprimer"
+                              className="hover:border-red-300 hover:text-red-600"
+                            >
                               <Trash2 className="w-3 h-3" />
                             </Button>
                           </div>
@@ -443,38 +437,43 @@ export default function AdminNewsletterPage() {
 
           {/* Abonnés */}
           <TabsContent value="subscribers">
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
+            <Card>
               <CardHeader>
-                <CardTitle>Abonnés</CardTitle>
+                <CardTitle className="text-lg">Abonnés</CardTitle>
               </CardHeader>
               <CardContent>
                 {loading ? (
-                  <div className="flex items-center justify-center py-12 text-gray-500">
-                    <Loader2 className="w-6 h-6 animate-spin mr-2" /> Chargement…
+                  <div className="flex items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary-600" /> Chargement…
                   </div>
                 ) : subscribers.length === 0 ? (
-                  <div className="py-12 text-center text-gray-500 dark:text-gray-400">Aucun abonné pour le moment.</div>
+                  <div className="py-12 text-center">
+                    <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+                      <Users className="h-6 w-6" />
+                    </span>
+                    <p className="text-gray-600 dark:text-gray-400">Aucun abonné pour le moment.</p>
+                  </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b border-gray-200 dark:border-gray-700 text-left text-sm text-gray-600 dark:text-gray-400">
-                          <th className="py-3 px-3">Email</th>
-                          <th className="py-3 px-3">Nom</th>
-                          <th className="py-3 px-3">Statut</th>
-                          <th className="py-3 px-3">Source</th>
-                          <th className="py-3 px-3">Inscrit le</th>
-                          <th className="py-3 px-3 text-right">Actions</th>
+                        <tr className="text-left text-xs font-semibold text-gray-500 dark:text-gray-400">
+                          <th className="h-11 rounded-l-lg bg-gray-50 px-3 dark:bg-white/[0.03]">Email</th>
+                          <th className="h-11 bg-gray-50 px-3 dark:bg-white/[0.03]">Nom</th>
+                          <th className="h-11 bg-gray-50 px-3 dark:bg-white/[0.03]">Statut</th>
+                          <th className="h-11 bg-gray-50 px-3 dark:bg-white/[0.03]">Source</th>
+                          <th className="h-11 bg-gray-50 px-3 dark:bg-white/[0.03]">Inscrit le</th>
+                          <th className="h-11 rounded-r-lg bg-gray-50 px-3 text-right dark:bg-white/[0.03]">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {subscribers.map((s) => (
-                          <tr key={s.id} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                            <td className="py-3 px-3 text-sm font-medium text-gray-900 dark:text-white">{s.email}</td>
+                          <tr key={s.id} className="border-b border-gray-100 transition-colors hover:bg-gray-50/70 dark:border-white/5 dark:hover:bg-white/[0.03]">
+                            <td className="py-3 px-3 text-sm font-medium text-ink dark:text-white">{s.email}</td>
                             <td className="py-3 px-3 text-sm text-gray-700 dark:text-gray-300">{s.name || '—'}</td>
                             <td className="py-3 px-3">
                               {s.subscribed ? (
-                                <Badge variant="default">Actif</Badge>
+                                <Badge variant="success">Actif</Badge>
                               ) : (
                                 <Badge variant="secondary">Désactivé</Badge>
                               )}
@@ -495,7 +494,15 @@ export default function AdminNewsletterPage() {
                                   {s.subscribed ? <UserX className="w-3 h-3" /> : <UserCheck className="w-3 h-3" />}
                                   {s.subscribed ? 'Désactiver' : 'Activer'}
                                 </Button>
-                                <Button size="sm" variant="outline" onClick={() => removeSubscriber(s)} disabled={busy === 'sub:' + s.id}>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => removeSubscriber(s)}
+                                  disabled={busy === 'sub:' + s.id}
+                                  aria-label="Supprimer"
+                                  title="Supprimer"
+                                  className="hover:border-red-300 hover:text-red-600"
+                                >
                                   <Trash2 className="w-3 h-3" />
                                 </Button>
                               </div>
@@ -512,7 +519,7 @@ export default function AdminNewsletterPage() {
                   const total = stats?.totalSubscribers ?? 0;
                   const totalPages = Math.max(1, Math.ceil(total / SUB_PAGE_SIZE));
                   return (
-                    <div className="flex items-center justify-between pt-4 mt-2 border-t border-gray-100 dark:border-gray-700">
+                    <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-white/5">
                       <span className="text-sm text-gray-500 dark:text-gray-400">
                         Page {subPage + 1} / {totalPages} — {total} abonné{total > 1 ? 's' : ''}
                       </span>
@@ -541,30 +548,30 @@ export default function AdminNewsletterPage() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
+      </AdminPage>
 
       {/* Modal composition de campagne */}
       {editing && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setEditing(null)}>
-          <Card className="w-full max-w-3xl max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700" onClick={(e) => e.stopPropagation()}>
-            <CardHeader>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm" onClick={() => setEditing(null)}>
+          <Card className="max-h-[90vh] w-full max-w-3xl overflow-y-auto shadow-2xl shadow-ink/20 dark:bg-[#121c2e]" onClick={(e) => e.stopPropagation()}>
+            <CardHeader className="border-b border-gray-100 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <CardTitle>{editing.id ? 'Modifier la campagne' : 'Nouvelle campagne'}</CardTitle>
-                <Button variant="ghost" size="icon" onClick={() => setEditing(null)}>
+                <Button variant="ghost" size="icon" onClick={() => setEditing(null)} aria-label="Fermer">
                   <X className="w-5 h-5" />
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
+            <CardContent className="space-y-6 pt-6">
+              <div className="space-y-2">
                 <Label>Objet</Label>
-                <Input value={editing.subject} onChange={(e) => setEditing({ ...editing, subject: e.target.value })} className="mt-1" />
+                <Input value={editing.subject} onChange={(e) => setEditing({ ...editing, subject: e.target.value })} />
               </div>
               <div>
                 <Label>Contenu</Label>
 
                 {/* Barre d'outils : mise en forme + insertion de médias n'importe où */}
-                <div className="flex flex-wrap items-center gap-1 mt-1 mb-2 p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+                <div className="mb-2 mt-2 flex flex-wrap items-center gap-1 rounded-xl border border-gray-200 bg-gray-50 p-1.5 dark:border-white/10 dark:bg-white/5">
                   <Button type="button" variant="ghost" size="sm" title="Titre" onClick={() => insertAtCursor('\n<h2>Titre</h2>\n')}>
                     <Heading className="w-4 h-4" />
                   </Button>
@@ -586,8 +593,8 @@ export default function AdminNewsletterPage() {
                   >
                     <Link2 className="w-4 h-4" />
                   </Button>
-                  <span className="w-px h-5 bg-gray-300 dark:bg-gray-600 mx-1" />
-                  <label className="inline-flex items-center gap-1 px-2 py-1 text-sm rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700">
+                  <span className="mx-1 h-5 w-px bg-gray-300 dark:bg-white/15" />
+                  <label className="inline-flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-700 hover:bg-white dark:text-gray-300 dark:hover:bg-white/10">
                     <ImageIcon className="w-4 h-4" /> Image
                     <input
                       type="file"
@@ -601,7 +608,7 @@ export default function AdminNewsletterPage() {
                       }}
                     />
                   </label>
-                  <label className="inline-flex items-center gap-1 px-2 py-1 text-sm rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700">
+                  <label className="inline-flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-700 hover:bg-white dark:text-gray-300 dark:hover:bg-white/10">
                     <ImageIcon className="w-4 h-4" /> GIF
                     <input
                       type="file"
@@ -615,7 +622,7 @@ export default function AdminNewsletterPage() {
                       }}
                     />
                   </label>
-                  <label className="inline-flex items-center gap-1 px-2 py-1 text-sm rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700">
+                  <label className="inline-flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1 text-sm text-gray-700 hover:bg-white dark:text-gray-300 dark:hover:bg-white/10">
                     <Film className="w-4 h-4" /> Vidéo
                     <input
                       type="file"
@@ -642,40 +649,39 @@ export default function AdminNewsletterPage() {
                     placeholder="<p>Bonjour,</p><p>Votre actualité…</p>"
                   />
                   {/* Aperçu en direct (comme dans la boîte mail) */}
-                  <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-auto bg-white dark:bg-gray-950 max-h-[360px]">
-                    <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">Aperçu</p>
+                  <div className="max-h-[360px] overflow-auto rounded-xl border border-gray-200 bg-white p-4 dark:border-white/10 dark:bg-[#0b1322]">
+                    <p className="mb-2 text-xs font-semibold text-gray-500 dark:text-gray-400">Aperçu</p>
                     <div
                       className="prose prose-sm max-w-none dark:prose-invert"
                       dangerouslySetInnerHTML={{ __html: previewHtml || '<p style="color:#9ca3af">L’aperçu s’affiche ici…</p>' }}
                     />
                   </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
                   Insérez images, GIF ou vidéos n’importe où via la barre d’outils. Les liens et ouvertures sont suivis automatiquement ;
                   un lien « Se désinscrire » natif apparaît à côté de l’expéditeur (et en bas de l’email).
                 </p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label>Programmer l&apos;envoi (optionnel)</Label>
                 <Input
                   type="datetime-local"
                   value={editing.scheduledAt}
                   onChange={(e) => setEditing({ ...editing, scheduledAt: e.target.value })}
-                  className="mt-1"
                 />
-                <p className="text-xs text-gray-500 mt-1">Laissez vide pour un brouillon (envoi manuel via « Envoyer »).</p>
+                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">Laissez vide pour un brouillon (envoi manuel via « Envoyer »).</p>
               </div>
 
               {/* Pièces jointes (PDF, CSV, …) — différentes des images inline */}
               <div>
                 <Label>Pièces jointes (PDF, CSV, …)</Label>
-                <div className="mt-1 space-y-2">
+                <div className="mt-2 space-y-2">
                   {editing.attachments.length > 0 && (
                     <ul className="space-y-1">
                       {editing.attachments.map((a, i) => (
                         <li
                           key={i}
-                          className="flex items-center justify-between gap-2 rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2 text-sm"
+                          className="flex items-center justify-between gap-2 rounded-xl border border-gray-200 px-3 py-2 text-sm dark:border-white/10"
                         >
                           <span className="truncate text-gray-800 dark:text-gray-200">{a.filename}</span>
                           <button
@@ -689,7 +695,7 @@ export default function AdminNewsletterPage() {
                       ))}
                     </ul>
                   )}
-                  <label className="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 w-fit">
+                  <label className="inline-flex w-fit cursor-pointer items-center gap-2 rounded-xl border border-gray-300 px-3 py-2 text-sm font-medium text-ink hover:bg-gray-50 dark:border-white/15 dark:text-white dark:hover:bg-white/5">
                     {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                     Ajouter un fichier
                     <input
@@ -704,14 +710,14 @@ export default function AdminNewsletterPage() {
                       }}
                     />
                   </label>
-                  <p className="text-xs text-gray-500">Les fichiers sont joints à l’email (et non insérés dans le texte).</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Les fichiers sont joints à l’email (et non insérés dans le texte).</p>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex justify-end gap-2 border-t border-gray-100 pt-5 dark:border-white/10">
                 <Button variant="outline" onClick={() => setEditing(null)}>Annuler</Button>
                 <Button onClick={saveCampaign} disabled={busy === 'save'} className="gap-2">
-                  {busy === 'save' ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                  {busy === 'save' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="h-4 w-4" />}
                   Enregistrer
                 </Button>
               </div>
@@ -719,6 +725,6 @@ export default function AdminNewsletterPage() {
           </Card>
         </div>
       )}
-    </div>
+    </>
   );
 }

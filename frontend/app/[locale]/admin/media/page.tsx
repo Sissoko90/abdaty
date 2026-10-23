@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -11,13 +10,15 @@ import {
   Trash2,
   Download,
   Search,
-  Filter,
   AlertCircle,
   Copy,
   Check,
+  ChevronLeft,
+  ChevronRight,
+  X,
 } from 'lucide-react';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { useCallback, useEffect, useState } from 'react';
+import { AdminPage, AdminPageHeader } from '@/components/admin/admin-page';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import * as content from '@/services/content.service';
 import { mediaUrl } from '@/services/content.service';
@@ -64,15 +65,17 @@ const MEDIA_PAGE_SIZE = 12;
 
 export default function AdminMediaPage() {
   const t = useTranslations('admin.content.media');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
   const { data: session } = useSession();
   const token = session?.accessToken;
   const userId = session?.user?.id;
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [domainFilter, setDomainFilter] = useState('all');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState('');
 
   /** Recharge la liste des médias depuis le backend. */
@@ -89,11 +92,14 @@ export default function AdminMediaPage() {
     reload();
   }, [reload]);
 
+  const domains = Array.from(new Set(mediaFiles.map((f) => f.domain))).sort();
+
   const filteredFiles = mediaFiles.filter(
     (file) =>
-      file.filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      file.altText.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      file.domain.toLowerCase().includes(searchTerm.toLowerCase())
+      (domainFilter === 'all' || file.domain === domainFilter) &&
+      (file.filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        file.altText.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        file.domain.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Pagination de l'affichage.
@@ -124,6 +130,14 @@ export default function AdminMediaPage() {
     }
   };
 
+  // Le texte « glisser-déposer » est maintenant tenu : un fichier image déposé est sélectionné.
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) setSelectedFile(file);
+  };
+
   const handleUpload = async () => {
     if (!selectedFile || !token) return;
     setUploading(true);
@@ -132,6 +146,7 @@ export default function AdminMediaPage() {
       // Domaine "general" pour le gestionnaire de médias générique.
       await content.uploadMedia(selectedFile, 'general', token, userId);
       setSelectedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
       reload();
     } catch (e) {
       setError(e instanceof ApiRequestError ? e.message : "Erreur lors de l'upload.");
@@ -160,214 +175,217 @@ export default function AdminMediaPage() {
     return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
   };
 
+  const actionBtn =
+    'flex h-9 w-9 items-center justify-center rounded-lg bg-white/95 text-ink shadow-sm transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500';
+
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
+    <AdminPage>
+      <AdminPageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        icon={ImageIcon}
+        actions={
+          <Button onClick={() => fileInputRef.current?.click()} className="gap-2" disabled={!token}>
+            <Upload className="h-4 w-4" />
+            {t('uploadFile')}
+          </Button>
+        }
+      />
 
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-              {t('subtitle')}
-            </p>
-          </div>
+      {/* Bandeau d'erreur */}
+      {error && (
+        <div
+          role="alert"
+          className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300"
+        >
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{error}</span>
         </div>
+      )}
+      {!token && (
+        <p className="rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-gray-400">
+          Connectez-vous en tant qu&apos;administrateur pour gérer les médias.
+        </p>
+      )}
 
-        {/* Bandeau d'erreur */}
-        {error && (
-          <div
-            role="alert"
-            className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300 mb-4"
-          >
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
+      {/* Zone d'upload */}
+      <div
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={handleDrop}
+        className={`rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
+          dragOver
+            ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10'
+            : 'border-gray-300 bg-white dark:border-white/15 dark:bg-white/[0.02]'
+        }`}
+      >
+        <input ref={fileInputRef} type="file" onChange={handleFileSelect} accept="image/*" className="sr-only" id="media-upload" />
+        {selectedFile ? (
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <div className="flex items-center gap-3 rounded-xl bg-paper px-4 py-3 text-left dark:bg-white/5">
+              <ImageIcon className="h-5 w-5 shrink-0 text-primary-600 dark:text-primary-400" />
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-ink dark:text-white">
+                  {t('selectedFile')} : {selectedFile.name}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{formatFileSize(selectedFile.size)}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedFile(null);
+                  if (fileInputRef.current) fileInputRef.current.value = '';
+                }}
+                aria-label="Retirer le fichier"
+                className="ml-2 rounded-md p-1 text-gray-400 hover:bg-gray-200 hover:text-ink dark:hover:bg-white/10"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <Button onClick={handleUpload} className="gap-2" disabled={uploading || !token}>
+              <Upload className="h-4 w-4" />
+              {uploading ? '…' : t('upload')}
+            </Button>
           </div>
+        ) : (
+          <label htmlFor="media-upload" className="flex cursor-pointer flex-col items-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+              <Upload className="h-6 w-6" />
+            </span>
+            <span className="font-medium text-ink dark:text-white">{t('dragDrop')}</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              {t('or')} <span className="font-semibold text-primary-600 dark:text-primary-400">{t('uploadFile')}</span>
+            </span>
+          </label>
         )}
-        {!token && (
-          <p className="text-sm text-gray-500 mb-4">
-            Connectez-vous en tant qu&apos;administrateur pour gérer les médias.
-          </p>
-        )}
+      </div>
 
-        {/* Upload Section */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300 mb-6">
-          <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white transition-colors duration-300">
-              {t('uploadFile')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
-              <div className="flex flex-col items-center gap-4">
-                <div className="p-4 bg-primary-100 dark:bg-primary-900 rounded-full">
-                  <Upload className="w-8 h-8 text-primary-600 dark:text-primary-400" />
-                </div>
-                <div>
-                  <p className="text-gray-900 dark:text-white transition-colors duration-300 font-medium">
-                    {t('dragDrop')}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                    {t('or')}
-                  </p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Input
-                    type="file"
-                    onChange={handleFileSelect}
-                    accept="image/*"
-                    className="max-w-xs"
-                  />
-                  {selectedFile && (
-                    <Button onClick={handleUpload} className="gap-2" disabled={uploading || !token}>
-                      <Upload className="w-4 h-4" />
-                      {uploading ? '…' : t('upload')}
-                    </Button>
-                  )}
-                </div>
-                {selectedFile && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                    {t('selectedFile')}: {selectedFile.name}
-                  </p>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Recherche et filtre */}
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="relative flex-1">
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <Input
+            placeholder={t('searchPlaceholder')}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+            aria-label={t('searchPlaceholder')}
+          />
+        </div>
+        <select
+          value={domainFilter}
+          onChange={(e) => setDomainFilter(e.target.value)}
+          aria-label={t('filter')}
+          className="h-11 rounded-xl border border-gray-300 bg-white px-3.5 text-sm text-ink focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/5 dark:text-white sm:w-48"
+        >
+          <option value="all">{t('allDomains')}</option>
+          {domains.map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
+        </select>
+      </div>
 
-        {/* Search and Filter */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300 mb-6">
-          <CardContent className="p-4">
-            <div className="flex gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  placeholder={t('searchPlaceholder')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <Button variant="outline" className="gap-2">
-                <Filter className="w-4 h-4" />
-                {t('filter')}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Media Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* Grille des médias */}
+      {filteredFiles.length === 0 ? (
+        <div className="flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center dark:border-white/10 dark:bg-white/[0.03]">
+          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+            <ImageIcon className="h-6 w-6" />
+          </span>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{t('noFiles')}</p>
+          <Button variant="outline" onClick={() => fileInputRef.current?.click()} className="gap-2" disabled={!token}>
+            <Upload className="h-4 w-4" />
+            {t('uploadFile')}
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {pagedFiles.map((file) => (
-            <Card key={file.id} className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300 overflow-hidden">
-              <div className="aspect-video bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
+            <figure
+              key={file.id}
+              className="group overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.03]"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-white/5">
                 {file.mimeType.startsWith('image/') ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={mediaUrl(file.url)}
                     alt={file.altText}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 ) : (
-                  <ImageIcon className="w-12 h-12 text-gray-400" />
+                  <div className="flex h-full items-center justify-center">
+                    <ImageIcon className="h-10 w-10 text-gray-400" />
+                  </div>
                 )}
-              </div>
-              <CardContent className="p-4">
-                <div className="mb-2">
-                  <p className="font-medium text-gray-900 dark:text-white transition-colors duration-300 text-sm truncate" title={file.originalFilename}>
-                    {file.originalFilename}
-                  </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                    {formatFileSize(file.size)}
-                  </p>
-                </div>
-
-                {/* Contexte + visibilité */}
-                <div className="flex flex-wrap items-center gap-1.5 mb-2">
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">
-                    {file.domain}
-                  </span>
-                  <span
-                    className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
-                    title="Servi publiquement sous /uploads (accessible via son lien)"
-                  >
-                    Public
-                  </span>
-                </div>
-
-                {/* Lien copiable */}
-                <div className="flex items-center gap-1 mb-2">
-                  <input
-                    readOnly
-                    value={mediaUrl(file.url)}
-                    onFocus={(e) => e.currentTarget.select()}
-                    className="flex-1 min-w-0 text-[11px] font-mono px-2 py-1 rounded border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-300"
-                  />
-                  <Button variant="outline" size="sm" className="shrink-0 px-2" onClick={() => copyUrl(file)}>
-                    {copiedId === file.id ? <Check className="w-3 h-3 text-green-600" /> : <Copy className="w-3 h-3" />}
-                  </Button>
-                </div>
-
-                <div className="flex gap-2">
+                <span className="absolute left-2 top-2 rounded-full bg-ink/80 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
+                  {file.domain}
+                </span>
+                {/* Actions : visibles au survol/focus (toujours visibles sur mobile) */}
+                <div className="absolute inset-x-0 bottom-0 flex justify-end gap-1.5 bg-gradient-to-t from-ink/70 to-transparent p-2 opacity-100 transition-opacity md:opacity-0 md:group-focus-within:opacity-100 md:group-hover:opacity-100">
+                  <button type="button" onClick={() => copyUrl(file)} className={actionBtn} aria-label="Copier le lien" title={mediaUrl(file.url)}>
+                    {copiedId === file.id ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
+                  </button>
                   <a
                     href={mediaUrl(file.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     download
-                    className="flex-1"
+                    className={actionBtn}
+                    aria-label={t('download')}
+                    title={t('download')}
                   >
-                    <Button variant="outline" size="sm" className="w-full gap-1">
-                      <Download className="w-3 h-3" />
-                      {t('download')}
-                    </Button>
+                    <Download className="h-4 w-4" />
                   </a>
-                  <Button variant="outline" size="icon" onClick={() => handleDelete(file.id)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(file.id)}
+                    className={`${actionBtn} hover:text-red-600`}
+                    aria-label={t('confirmDelete')}
+                    title={t('confirmDelete')}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              <figcaption className="p-3">
+                <p className="truncate text-sm font-medium text-ink dark:text-white" title={file.originalFilename}>
+                  {file.originalFilename}
+                </p>
+                <div className="mt-1 flex items-center justify-between gap-2 text-xs text-gray-500 dark:text-gray-400">
+                  <span>{formatFileSize(file.size)}</span>
+                  <span title="Servi publiquement sous /uploads (accessible via son lien)" className="text-emerald-600 dark:text-emerald-400">
+                    Public
+                  </span>
+                </div>
+              </figcaption>
+            </figure>
           ))}
         </div>
+      )}
 
-        {/* Pagination */}
-        {filteredFiles.length > 0 && (
-          <div className="flex items-center justify-between mt-6">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              Page {page + 1} / {totalPages} — {filteredFiles.length} fichier{filteredFiles.length > 1 ? 's' : ''}
-            </span>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
-                Précédent
-              </Button>
-              <Button variant="outline" size="sm" disabled={page + 1 >= totalPages} onClick={() => setPage((p) => p + 1)}>
-                Suivant
-              </Button>
-            </div>
+      {/* Pagination */}
+      {filteredFiles.length > 0 && (
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            Page {page + 1} / {totalPages} — {filteredFiles.length} fichier{filteredFiles.length > 1 ? 's' : ''}
+          </span>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="gap-1" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+              <ChevronLeft className="h-4 w-4" />
+              Précédent
+            </Button>
+            <Button variant="outline" size="sm" className="gap-1" disabled={page + 1 >= totalPages} onClick={() => setPage((p) => p + 1)}>
+              Suivant
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
-        )}
-
-        {filteredFiles.length === 0 && (
-          <Card className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300">
-            <CardContent className="py-12 text-center">
-              <ImageIcon className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-              <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                {t('noFiles')}
-              </p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </AdminPage>
   );
 }

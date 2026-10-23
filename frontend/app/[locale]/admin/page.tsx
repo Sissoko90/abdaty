@@ -4,24 +4,24 @@ import type { Route } from 'next';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   FileText,
   Package,
   Layout,
   Settings,
   Users,
-  BookOpen
+  BookOpen,
+  LayoutDashboard,
+  ArrowUpRight,
 } from 'lucide-react';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { listAllPosts, listAllContent, getSectionContent } from '@/services/content.service';
 import { getNewsletterStats } from '@/services/newsletter.service';
+import { AdminPage, AdminPageHeader, AdminStatCard } from '@/components/admin/admin-page';
 
 export default function AdminDashboardPage() {
   const t = useTranslations('admin.dashboard');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
   const { data: session } = useSession();
   const token = session?.accessToken;
 
@@ -47,34 +47,10 @@ export default function AdminDashboardPage() {
   }, [token]);
 
   const stats = [
-    {
-      title: t('stats.totalArticles'),
-      value: String(counts.articles),
-      change: '',
-      icon: FileText,
-      color: 'bg-blue-500',
-    },
-    {
-      title: t('stats.activeServices'),
-      value: String(counts.services),
-      change: '',
-      icon: Package,
-      color: 'bg-green-500',
-    },
-    {
-      title: t('stats.sitePages'),
-      value: String(counts.sections),
-      change: '',
-      icon: Layout,
-      color: 'bg-purple-500',
-    },
-    {
-      title: t('stats.users'),
-      value: String(counts.users),
-      change: '',
-      icon: Users,
-      color: 'bg-orange-500',
-    },
+    { title: t('stats.totalArticles'), value: String(counts.articles), icon: FileText, tone: 'primary' as const },
+    { title: t('stats.activeServices'), value: String(counts.services), icon: Package, tone: 'emerald' as const },
+    { title: t('stats.sitePages'), value: String(counts.sections), icon: Layout, tone: 'ochre' as const },
+    { title: t('stats.users'), value: String(counts.users), icon: Users, tone: 'ink' as const },
   ];
 
   const quickActions = [
@@ -83,162 +59,87 @@ export default function AdminDashboardPage() {
       description: t('actions.manageServices.description'),
       icon: Package,
       href: `/admin/content/services`,
-      color: 'text-blue-600 bg-blue-50 dark:bg-blue-900/20',
     },
     {
       title: t('actions.manageBlog.title'),
       description: t('actions.manageBlog.description'),
       icon: FileText,
       href: `/admin/blog`,
-      color: 'text-green-600 bg-green-50 dark:bg-green-900/20',
     },
     {
       title: t('actions.manageDocs.title'),
       description: t('actions.manageDocs.description'),
       icon: BookOpen,
       href: `/admin/docs`,
-      color: 'text-purple-600 bg-purple-50 dark:bg-purple-900/20',
     },
     {
       title: t('actions.siteSettings.title'),
       description: t('actions.siteSettings.description'),
       icon: Settings,
-      href: `/admin/settings/general`,
-      color: 'text-orange-600 bg-orange-50 dark:bg-orange-900/20',
+      href: `/admin/settings/theme`,
     },
   ];
 
+  // Activité récente (exemples statiques, comme auparavant).
+  const recentActivity = [
+    { icon: FileText, label: 'Nouvel article de blog créé', time: 'Il y a 2 heures' },
+    { icon: Package, label: 'Service "Cybersécurité" modifié', time: 'Il y a 5 heures' },
+    { icon: Settings, label: 'Paramètres du site mis à jour', time: 'Il y a 1 jour' },
+  ];
+
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin') },
-          ]}
-        />
+    <AdminPage>
+      <AdminPageHeader title={t('title')} description={t('subtitle')} icon={LayoutDashboard} />
 
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-            {t('title')}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-            {t('subtitle')}
-          </p>
-        </div>
+      {/* Stats */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <AdminStatCard key={stat.title} label={stat.title} value={stat.value} icon={stat.icon} tone={stat.tone} />
+        ))}
+      </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={index} className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                      {stat.title}
-                    </p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-300 mt-1">
-                      {stat.value}
-                    </p>
-                    {stat.change && (
-                      <p className="text-xs text-green-600 dark:text-green-400 mt-1">
-                        {stat.change}
-                      </p>
-                    )}
-                  </div>
-                  <div className={`p-3 rounded-lg ${stat.color}`}>
-                    <stat.icon className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
+      <div className="grid gap-6 lg:grid-cols-3">
         {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300 mb-4">
-            {t('quickActions')}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {quickActions.map((action, index) => (
-              <Link key={index} href={action.href as Route}>
-                <Card className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300 hover:shadow-lg cursor-pointer">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-lg ${action.color}`}>
-                        <action.icon className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 dark:text-white transition-colors duration-300">
-                          {action.title}
-                        </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-1">
-                          {action.description}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+        <section className="lg:col-span-2">
+          <h2 className="mb-4 text-lg font-bold text-ink dark:text-white">{t('quickActions')}</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {quickActions.map((action) => (
+              <Link
+                key={action.href}
+                href={action.href as Route}
+                className="group flex items-start gap-4 rounded-2xl border border-gray-200 bg-white p-5 transition-colors hover:border-primary-300 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-primary-500/40"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-600 transition-colors group-hover:bg-primary-600 group-hover:text-white dark:bg-primary-500/10 dark:text-primary-400">
+                  <action.icon className="h-5 w-5" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-semibold text-ink dark:text-white">{action.title}</h3>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{action.description}</p>
+                </div>
+                <ArrowUpRight className="h-5 w-5 shrink-0 text-gray-300 transition-colors group-hover:text-primary-600 dark:text-gray-600" />
               </Link>
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Recent Activity */}
-        <Card className="dark:bg-gray-800 dark:border-gray-700 border border-gray-200 transition-colors duration-300">
-          <CardHeader>
-            <CardTitle className="text-gray-900 dark:text-white transition-colors duration-300">
-              {t('recentActivity')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-300">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                  <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+        <section className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03]">
+          <h2 className="mb-4 text-lg font-bold text-ink dark:text-white">{t('recentActivity')}</h2>
+          <ul className="divide-y divide-gray-100 dark:divide-white/5">
+            {recentActivity.map((item) => (
+              <li key={item.label} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-600 dark:bg-white/5 dark:text-gray-300">
+                  <item.icon className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-ink dark:text-white">{item.label}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{item.time}</p>
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">
-                    Nouvel article de blog créé
-                  </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                    Il y a 2 heures
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-300">
-                <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                  <Package className="w-4 h-4 text-green-600 dark:text-green-400" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">
-                    Service "Cybersécurité" modifié
-                  </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                    Il y a 5 heures
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors duration-300">
-                <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                  <Settings className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">
-                    Paramètres du site mis à jour
-                  </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                    Il y a 1 jour
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
-    </div>
+    </AdminPage>
   );
 }

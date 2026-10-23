@@ -2,13 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { Save, Mail, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AdminPage, AdminPageHeader } from '@/components/admin/admin-page';
+import { AdminSectionCard, AdminStatus, BilingualField } from '@/components/admin/content-list-editor';
+import { Save, Mail } from 'lucide-react';
 import { useSiteContentSection } from '@/hooks/use-site-content-section';
 
 interface NewsletterContent {
@@ -40,7 +37,6 @@ const DEFAULTS: NewsletterContent = {
 
 export default function AdminNewsletterPage() {
   const t = useTranslations('admin.content.newsletter');
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
 
   const { token, blocks, loading, saving, error, success, saveAll, value } =
     useSiteContentSection('newsletter');
@@ -84,159 +80,32 @@ export default function AdminNewsletterPage() {
     });
   };
 
-  return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: t('title') },
-          ]}
-        />
+  const setBi = (field: keyof NewsletterContent) => (lang: 'fr' | 'en', v: string) =>
+    setNewsletterContent({ ...newsletterContent, [field]: { ...newsletterContent[field], [lang]: v } });
 
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
-              {t('title')}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 transition-colors duration-300 mt-2">
-              {t('subtitle')}
-            </p>
-          </div>
+  return (
+    <AdminPage>
+      <AdminPageHeader
+        title={t('title')}
+        description={t('subtitle')}
+        icon={Mail}
+        actions={
           <Button onClick={handleSave} className="gap-2" disabled={saving || !token}>
-            <Save className="w-4 h-4" />
+            <Save className="h-4 w-4" />
             {saving ? '…' : t('save')}
           </Button>
-        </div>
+        }
+      />
 
-        {/* Bandeaux d'état */}
-        {error && (
-          <div role="alert" className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-3 py-2 text-sm text-red-700 dark:text-red-300 mb-4">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
-          </div>
-        )}
-        {success && (
-          <div role="status" className="flex items-center gap-2 rounded-md bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 px-3 py-2 text-sm text-green-700 dark:text-green-300 mb-4">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-            <span>{success}</span>
-          </div>
-        )}
-        {!token && (
-          <p className="text-sm text-gray-500 mb-4">
-            Connectez-vous en tant qu&apos;administrateur pour modifier cette section.
-          </p>
-        )}
-        {loading && <p className="text-sm text-gray-500 mb-4">Chargement…</p>}
+      <AdminStatus error={error} success={success} loading={loading} signedOut={!token} />
 
-        <div className="space-y-6">
-          {/* Configuration Newsletter */}
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Mail className="w-5 h-5" />
-                {t('configuration')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('titleLabel')} (Français)</Label>
-                  <Input
-                    value={newsletterContent.title.fr}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, title: { ...newsletterContent.title, fr: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('titleLabel')} (English)</Label>
-                  <Input
-                    value={newsletterContent.title.en}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, title: { ...newsletterContent.title, en: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('description')} (Français)</Label>
-                  <Textarea
-                    value={newsletterContent.description.fr}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, description: { ...newsletterContent.description, fr: e.target.value } })
-                    }
-                    rows={3}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('description')} (English)</Label>
-                  <Textarea
-                    value={newsletterContent.description.en}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, description: { ...newsletterContent.description, en: e.target.value } })
-                    }
-                    rows={3}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('placeholder')} (Français)</Label>
-                  <Input
-                    value={newsletterContent.placeholder.fr}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, placeholder: { ...newsletterContent.placeholder, fr: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('placeholder')} (English)</Label>
-                  <Input
-                    value={newsletterContent.placeholder.en}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, placeholder: { ...newsletterContent.placeholder, en: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>{t('buttonText')} (Français)</Label>
-                  <Input
-                    value={newsletterContent.buttonText.fr}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, buttonText: { ...newsletterContent.buttonText, fr: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <Label>{t('buttonText')} (English)</Label>
-                  <Input
-                    value={newsletterContent.buttonText.en}
-                    onChange={(e) =>
-                      setNewsletterContent({ ...newsletterContent, buttonText: { ...newsletterContent.buttonText, en: e.target.value } })
-                    }
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
+      {/* Configuration Newsletter */}
+      <AdminSectionCard title={t('configuration')} icon={Mail}>
+        <BilingualField label={t('titleLabel')} value={newsletterContent.title} onChange={setBi('title')} />
+        <BilingualField label={t('description')} value={newsletterContent.description} onChange={setBi('description')} multiline />
+        <BilingualField label={t('placeholder')} value={newsletterContent.placeholder} onChange={setBi('placeholder')} />
+        <BilingualField label={t('buttonText')} value={newsletterContent.buttonText} onChange={setBi('buttonText')} />
+      </AdminSectionCard>
+    </AdminPage>
   );
 }

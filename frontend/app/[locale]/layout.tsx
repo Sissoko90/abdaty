@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { locales } from '@/i18n';
 import { Chatbot } from '@/components/chatbot';
 import { CookieBanner } from '@/components/cookie-banner';
+import { PublicOnly } from '@/components/public-only';
 import { SkipLink } from '@/components/skip-link';
 import { StructuredData } from '@/components/structured-data';
 import { MainLayoutWrapper } from '@/components/main-layout-wrapper';
@@ -146,8 +147,11 @@ export default async function LocaleLayout({
           <div id="main-content">
             <MainLayoutWrapper>{children}</MainLayoutWrapper>
           </div>
-          <Chatbot />
-          <CookieBanner />
+          {/* Chatbot et bannière cookies : site public uniquement (pas dans l'admin). */}
+          <PublicOnly>
+            <Chatbot />
+            <CookieBanner />
+          </PublicOnly>
         </NextIntlClientProvider>
       </body>
     </html>

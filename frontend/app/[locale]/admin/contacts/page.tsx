@@ -1,13 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { useSession } from 'next-auth/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Breadcrumb } from '@/components/ui/breadcrumb';
-import { Mail, MailOpen, Trash2, RefreshCw, Loader2, Inbox, Phone, Building2, Tag } from 'lucide-react';
+import { Mail, MailOpen, Trash2, RefreshCw, Loader2, Inbox, Phone, Building2, Tag, AlertCircle } from 'lucide-react';
 import {
   listContactMessages,
   getContactStats,
@@ -17,11 +14,21 @@ import {
   type ContactStats,
 } from '@/services/contact.service';
 import { ApiRequestError } from '@/lib/api';
+import { AdminPage, AdminPageHeader, AdminStatCard } from '@/components/admin/admin-page';
 
 const PAGE_SIZE = 20;
 
+/** Initiales d'un expéditeur (« Awa Traoré » -> « AT »). */
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase())
+    .join('');
+}
+
 export default function AdminContactsPage() {
-  const tBreadcrumb = useTranslations('admin.breadcrumb');
   const { data: session } = useSession();
   const token = session?.accessToken;
 
@@ -85,103 +92,141 @@ export default function AdminContactsPage() {
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb
-          items={[
-            { label: tBreadcrumb('dashboard'), href: `/admin` },
-            { label: tBreadcrumb('admin'), href: `/admin` },
-            { label: 'Messages de contact' },
-          ]}
-        />
-
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-              <Inbox className="w-8 h-8" />
-              Messages de contact
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              {total} message{total > 1 ? 's' : ''}
-              {stats ? ` — ${stats.unread} non lu${stats.unread > 1 ? 's' : ''}` : ''}.
-            </p>
-          </div>
-          <Button variant="outline" size="sm" onClick={reload} disabled={loading} className="gap-2">
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+    <AdminPage>
+      <AdminPageHeader
+        title="Messages de contact"
+        description={`${total} message${total > 1 ? 's' : ''}${stats ? ` — ${stats.unread} non lu${stats.unread > 1 ? 's' : ''}` : ''}.`}
+        icon={Inbox}
+        actions={
+          <Button variant="outline" onClick={reload} disabled={loading} className="gap-2">
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             Actualiser
           </Button>
+        }
+      />
+
+      {stats && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <AdminStatCard label="Messages reçus" value={total} icon={Inbox} />
+          <AdminStatCard label="Non lus" value={stats.unread} icon={Mail} tone="ochre" />
         </div>
+      )}
 
-        {error && (
-          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 dark:bg-red-950/40 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
-            {error}
-          </div>
-        )}
+      {error && (
+        <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          {error}
+        </div>
+      )}
 
-        {loading ? (
-          <div className="flex items-center justify-center py-16 text-gray-500">
-            <Loader2 className="w-6 h-6 animate-spin mr-2" /> Chargement…
-          </div>
-        ) : items.length === 0 ? (
-          <Card className="dark:bg-gray-800 dark:border-gray-700">
-            <CardContent className="py-16 text-center text-gray-500 dark:text-gray-400">
-              <Inbox className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              Aucun message pour le moment.
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-3">
-            {items.map((m) => (
-              <Card
-                key={m.id}
-                className={`dark:bg-gray-800 dark:border-gray-700 ${m.isRead ? '' : 'border-l-4 border-l-primary-500'}`}
-              >
-                <CardHeader className="pb-2">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <CardTitle className="text-base flex items-center gap-2 flex-wrap">
-                        {m.name}
-                        {!m.isRead && <Badge variant="default">Nouveau</Badge>}
-                      </CardTitle>
-                      <a href={`mailto:${m.email}`} className="text-sm text-primary-600 dark:text-primary-400 hover:underline">
-                        {m.email}
-                      </a>
+      {loading ? (
+        <div className="flex items-center justify-center py-16 text-gray-500 dark:text-gray-400">
+          <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary-600" /> Chargement…
+        </div>
+      ) : items.length === 0 ? (
+        <div className="rounded-2xl border border-gray-200 bg-white px-6 py-16 text-center dark:border-white/10 dark:bg-white/[0.03]">
+          <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400">
+            <Inbox className="h-7 w-7" />
+          </span>
+          <p className="text-gray-600 dark:text-gray-400">Aucun message pour le moment.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {items.map((m) => (
+            <article
+              key={m.id}
+              className={`rounded-2xl border bg-white p-5 dark:bg-white/[0.03] ${
+                m.isRead
+                  ? 'border-gray-200 dark:border-white/10'
+                  : 'border-primary-200 ring-1 ring-primary-100 dark:border-primary-500/30 dark:ring-primary-500/10'
+              }`}
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex min-w-0 items-start gap-3">
+                  <span
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
+                      m.isRead ? 'bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-gray-300' : 'bg-primary-600 text-white'
+                    }`}
+                  >
+                    {initials(m.name)}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="font-semibold text-ink dark:text-white">{m.name}</h2>
+                      {!m.isRead && <Badge variant="default">Nouveau</Badge>}
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {m.createdAt ? new Date(m.createdAt).toLocaleString() : ''}
-                      </span>
-                      <Button variant="outline" size="icon" title={m.isRead ? 'Marquer non lu' : 'Marquer lu'} disabled={busy === m.id} onClick={() => toggleRead(m)}>
-                        {m.isRead ? <Mail className="w-4 h-4" /> : <MailOpen className="w-4 h-4" />}
-                      </Button>
-                      <Button variant="outline" size="icon" disabled={busy === m.id} onClick={() => remove(m)}>
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    <a href={`mailto:${m.email}`} className="text-sm text-primary-600 hover:underline dark:text-primary-400">
+                      {m.email}
+                    </a>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400 mb-2">
-                    {m.company && <span className="flex items-center gap-1"><Building2 className="w-3 h-3" /> {m.company}</span>}
-                    {m.phone && <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {m.phone}</span>}
-                    {m.service && <span className="flex items-center gap-1"><Tag className="w-3 h-3" /> {m.service}</span>}
-                  </div>
-                  <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-line">{m.message}</p>
-                </CardContent>
-              </Card>
-            ))}
-
-            {/* Pagination */}
-            <div className="flex items-center justify-between pt-2">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Page {page + 1} / {totalPages}</span>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>Précédent</Button>
-                <Button variant="outline" size="sm" disabled={page + 1 >= totalPages} onClick={() => setPage((p) => p + 1)}>Suivant</Button>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {m.createdAt ? new Date(m.createdAt).toLocaleString() : ''}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    title={m.isRead ? 'Marquer non lu' : 'Marquer lu'}
+                    aria-label={m.isRead ? 'Marquer non lu' : 'Marquer lu'}
+                    disabled={busy === m.id}
+                    onClick={() => toggleRead(m)}
+                  >
+                    {m.isRead ? <Mail className="h-4 w-4" /> : <MailOpen className="h-4 w-4" />}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    title="Supprimer"
+                    aria-label="Supprimer"
+                    disabled={busy === m.id}
+                    onClick={() => remove(m)}
+                    className="hover:border-red-300 hover:text-red-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
+
+              {(m.company || m.phone || m.service) && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {m.company && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">
+                      <Building2 className="h-3 w-3" /> {m.company}
+                    </span>
+                  )}
+                  {m.phone && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">
+                      <Phone className="h-3 w-3" /> {m.phone}
+                    </span>
+                  )}
+                  {m.service && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-ochre/15 px-3 py-1 text-xs text-amber-800 dark:text-ochre">
+                      <Tag className="h-3 w-3" /> {m.service}
+                    </span>
+                  )}
+                </div>
+              )}
+              <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-gray-700 dark:text-gray-200">{m.message}</p>
+            </article>
+          ))}
+
+          {/* Pagination */}
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              Page {page + 1} / {totalPages}
+            </span>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+                Précédent
+              </Button>
+              <Button variant="outline" size="sm" disabled={page + 1 >= totalPages} onClick={() => setPage((p) => p + 1)}>
+                Suivant
+              </Button>
             </div>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </AdminPage>
   );
 }
