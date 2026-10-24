@@ -66,7 +66,9 @@ export default function LoginPage() {
       try {
         const target = new URL(requested, window.location.origin);
         if (target.origin === window.location.origin && !/\/login\/?$/.test(target.pathname)) {
-          callbackUrl = target.pathname + target.search + target.hash;
+          // Un seul « / » en tête : « //hôte » (ex. via « /.//hôte ») serait relu comme un autre site.
+          const path = '/' + target.pathname.replace(/^[/\\]+/, '');
+          callbackUrl = path + target.search + target.hash;
         }
       } catch {
         /* URL invalide : destination par défaut */
